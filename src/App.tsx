@@ -272,7 +272,7 @@ export function App() {
         {isLoading ? (
           <div className="h-96 flex flex-col items-center justify-center space-y-3">
             <RotateCw className="w-6 h-6 text-cyan-400 animate-spin" />
-            <p className="text-xs text-slate-400 font-mono">Initializing Stratum Intelligence Database...</p>
+            <p className="text-xs text-slate-400 font-mono">Initializing GetSome Intelligence Database...</p>
           </div>
         ) : selectedProspect ? (
           <ProspectDossier

@@ -403,7 +403,7 @@ apiRouter.get('/outreach/export', (req, res) => {
         .map(val => `"${String(val).replace(/"/g, '""')}"`)
         .join(',')
     );
-    res.type('text/csv').attachment('stratum_approved_outreach.csv').send([headers, ...lines].join('\n'));
+    res.type('text/csv').attachment('getsome_approved_outreach.csv').send([headers, ...lines].join('\n'));
   } else {
     res.json(exportRows);
   }

@@ -43,11 +43,11 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[Stratum Intelligence] Server running on http://0.0.0.0:${PORT} (env: ${isProduction ? 'prod' : 'dev'})`);
+    console.log(`[GetSome] Server running on http://0.0.0.0:${PORT} (env: ${isProduction ? 'prod' : 'dev'})`);
   });
 }
 
 startServer().catch((err) => {
-  console.error('[Stratum Intelligence] Fatal server startup error:', err);
+  console.error('[GetSome] Fatal server startup error:', err);
   process.exit(1);
 });

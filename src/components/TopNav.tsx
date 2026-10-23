@@ -31,12 +31,12 @@ export const TopNav: React.FC<TopNavProps> = ({
           className="text-lg font-bold tracking-tight text-white flex items-center gap-2.5 whitespace-nowrap"
         >
           <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-600 to-sky-500 flex items-center justify-center text-white font-mono font-bold text-sm shadow-sm">
-            S
+            G
           </div>
-          <span>Stratum Intelligence</span>
+          <span>GetSome</span>
         </a>
         <span className="text-xs text-slate-500 font-mono hidden lg:inline">
-          B2B Prospect Research & Hyperpersonalized Outreach
+          AI Prospect Intelligence & Hyperpersonalized Outreach
         </span>
       </div>
 
