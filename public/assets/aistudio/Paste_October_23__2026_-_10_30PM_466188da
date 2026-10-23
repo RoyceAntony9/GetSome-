@@ -1,0 +1,649 @@
+# Build an AI-Native Prospect Intelligence & Hyperpersonalized Outreach Platform
+
+Act as an elite product architect, AI systems engineer, full-stack developer, data engineer, and B2B sales intelligence strategist. Build a production-minded, AI-native prospecting platform that discovers potential customers, researches their companies and industries, evaluates their fit against a configurable Ideal Customer Profile (ICP), and generates deeply researched, genuinely personalized outreach messages.
+
+This is an actual product I want to use, not a landing page, a static dashboard, a chatbot wrapper, or a collection of disconnected AI demos.
+
+The objective is to create a platform that does the work of an excellent B2B business development researcher: finding the right people, understanding their businesses, identifying credible reasons to contact them, and preparing thoughtful outreach that feels individually written rather than mass-generated.
+
+Do not name the product after any employer, client, or existing company. Give it a distinctive, professional product identity of your own choosing.
+
+## 1. Core product philosophy
+
+Build the entire experience around one fundamental workflow:
+
+**Discover → Investigate → Qualify → Understand → Personalize → Review → Outreach → Learn**
+
+The system should autonomously perform as much of the research and preparation as possible, while maintaining factual accuracy, source transparency, and human control over external communication.
+
+I should be able to open the application, define the kind of customer I want, launch a prospect discovery run, and return to a dashboard containing researched, qualified prospects with evidence-backed insights and outreach drafts ready for review.
+
+Do not make me manually research every prospect, copy information between tools, or write each message from scratch.
+
+The AI should do the investigative work. The interface should make its reasoning, findings, confidence, and recommended next action easy to understand.
+
+## 2. Choose an architecture that actually supports the product
+
+Do not default to n8n as the application's core architecture. Design the product around a proper application backend, durable database, background job processing, search/research integrations, and AI orchestration.
+
+Choose the most appropriate stack based on the existing project and available infrastructure. If the application is already using React and TypeScript, preserve that foundation where sensible.
+
+Preferred architectural direction:
+
+- **Frontend:** React, TypeScript, and a modern component system.
+- **Backend:** TypeScript with a structured API layer, or Python with FastAPI if it materially improves research orchestration.
+- **Database:** PostgreSQL for users, ICP definitions, prospects, companies, research records, sources, message drafts, approvals, and activity history.
+- **Background processing:** A durable job queue with retries, concurrency controls, rate limits, job status, and recovery after failures.
+- **AI orchestration:** A provider-independent model interface supporting local Ollama models and hosted LLM APIs.
+- **Research and discovery:** Pluggable web search, public web research, authorized data providers, and user-provided prospect sources.
+- **Optional semantic retrieval:** Embeddings and PostgreSQL vector search when useful for finding related evidence or matching prospects to ICP criteria.
+
+Treat this as a recommendation, not a reason to blindly replace working infrastructure. Inspect the current repository before making architectural changes.
+
+Do not assume any paid API, CRM, enrichment service, or data provider is available. Create explicit integration adapters and configuration screens. When credentials are missing, display exactly what is required and allow the rest of the product to function with the integrations already configured.
+
+Avoid creating a large, expensive infrastructure stack before establishing a working end-to-end workflow.
+
+## 3. ICP configuration engine
+
+Create a flexible ICP builder that lets me define the customer profile I want to target.
+
+Support configurable criteria such as:
+
+### Company attributes
+- Industry and subindustry
+- Geography and operating markets
+- Company size and employee count
+- Estimated revenue range
+- Business model
+- Company maturity and growth stage
+- Technology stack, where verifiable
+- Existing products and services
+- Current strategic priorities
+- Hiring activity
+- Digital maturity
+- Likely operational inefficiencies
+- Potential need for software development, AI implementation, automation, cloud services, or consulting
+
+### Contact attributes
+- Job title and seniority
+- Department and functional responsibilities
+- Decision-making authority
+- Likely ownership of the problem being addressed
+- Relevant professional experience
+- Publicly available professional interests
+- Connection to the company's strategic priorities
+
+### Qualification logic
+Allow users to define:
+- Required conditions
+- Preferred attributes
+- Exclusion criteria
+- Positive buying signals
+- Negative buying signals
+- Weighted scoring criteria
+- Minimum qualification thresholds
+
+The user must be able to edit these criteria without modifying code.
+
+Each ICP should be saved as a reusable targeting profile. Multiple profiles and campaigns must be supported.
+
+For every prospect, show both the overall fit score and a criterion-by-criterion breakdown. Explain which requirements are satisfied, which are uncertain, which are contradicted, and which could not be researched.
+
+Never confuse missing information with a negative signal.
+
+## 4. Prospect discovery engine
+
+The system must actively help discover prospects instead of requiring me to supply every lead manually.
+
+Provide several discovery methods:
+
+1. **Natural-language discovery:** I describe the type of company or person I want, and the AI translates that into a structured search plan.
+2. **ICP-driven discovery:** Generate searches based on the saved targeting profile.
+3. **Company-first discovery:** Find promising companies, understand their business, and identify relevant publicly discoverable decision-makers.
+4. **Signal-driven discovery:** Find prospects associated with credible buying signals such as expansion, new product launches, hiring, digital transformation initiatives, acquisitions, or publicly announced strategic priorities.
+5. **User-provided leads:** Import CSV files or add known company and prospect names or URLs.
+6. **Additional sources:** Support authorized data-provider integrations when configured.
+
+Discovery should run through a combination of targeted search queries, source retrieval, candidate extraction, deduplication, and qualification.
+
+Do not simply generate plausible names using an LLM and present them as real prospects.
+
+Every discovered person and company must be grounded in an identifiable source. Store the original source URL, discovery timestamp, retrieval status, and any relevant evidence.
+
+If the platform cannot find a verified contact for a promising company, retain the company as a company-level opportunity rather than inventing a decision-maker.
+
+Deduplicate by stable identifiers wherever possible, including normalized company domains, professional profile URLs, and other verified identifiers.
+
+Respect website terms, provider restrictions, privacy requirements, applicable law, and rate limits. Do not bypass access controls, scrape restricted databases, or automate prohibited activity on professional networking platforms.
+
+## 5. Multi-stage research engine
+
+Research must be a staged investigation, not one enormous prompt that asks an LLM to summarize a company.
+
+Implement separate, inspectable stages.
+
+### Stage A — Identity verification
+
+Establish that the company and person exist and that the retrieved sources refer to the intended entities.
+
+Collect, where available:
+- Full name
+- Current role
+- Company
+- Company website and domain
+- Professional profile URL
+- Location
+- Department
+- Seniority
+- Public professional biography
+- Relevant past experience
+
+Resolve conflicting information using source quality, recency, and corroboration. Do not silently combine information from different people with similar names.
+
+### Stage B — Company intelligence
+
+Build a concise but substantial company intelligence profile containing:
+
+- What the company actually does
+- Products and services
+- Target customers
+- Business model
+- Markets and geographies served
+- Company size and organizational structure, where verifiable
+- Recent launches, announcements, partnerships, or acquisitions
+- Growth and expansion signals
+- Strategic initiatives
+- Operational challenges explicitly disclosed by the company
+- Likely technical or commercial opportunities
+- Existing technology and digital capabilities, where evidence exists
+- Competitors and relevant market alternatives
+- Potential areas where the company's current operations could benefit from the solutions described in the configured ICP or offering
+
+Clearly separate documented facts from analytical inferences.
+
+### Stage C — Person-level intelligence
+
+Research the prospect as an individual professional, not just an employee record.
+
+Investigate:
+- Their responsibilities and scope of influence
+- Their professional background
+- Publicly available interviews, talks, articles, or professional posts
+- Projects or initiatives they have publicly discussed
+- Topics they consistently engage with professionally
+- Publicly expressed priorities or challenges
+- Their likely relevance to the business problem being addressed
+- The most credible reason this person, rather than another executive, should receive the outreach
+
+Use professional context relevant to business communication. Do not infer sensitive personal attributes or exploit private personal information.
+
+### Stage D — Industry and market research
+
+Research the surrounding market sufficiently to understand the prospect's operating environment.
+
+Cover relevant factors such as:
+- Industry structure
+- Emerging trends
+- Competitive pressures
+- Regulatory or technological shifts
+- Changes in customer expectations
+- Industry-specific operational challenges
+- Relevant market opportunities
+- Recent developments that could affect the company
+- Potential implications for the prospect's role or priorities
+
+Prioritize recent, credible sources for current developments. Use primary sources when available, supplemented by reputable reporting and industry analysis.
+
+Avoid adding generic market statistics merely to make a report appear sophisticated.
+
+### Stage E — Opportunity and buying-signal analysis
+
+Connect the findings to a plausible business opportunity.
+
+For each prospect, identify:
+- The strongest observable signal
+- The underlying business context
+- The problem that might be worth discussing
+- Why the problem could matter now
+- Which of the configured offerings may be relevant
+- Why the prospect may have influence over the problem
+- What additional evidence would strengthen the hypothesis
+- What could make the opportunity a poor fit
+
+Assign each buying signal a confidence level and supporting evidence.
+
+A hiring announcement, for example, may indicate an expansion initiative, but it does not automatically prove that the company needs consulting or software development.
+
+### Stage F — Research synthesis
+
+Produce a coherent intelligence brief rather than dumping search results into the dashboard.
+
+Every substantial factual claim should have a source reference. The user should be able to click through to the underlying source and understand where the claim originated.
+
+Store research in structured form, with fields for:
+- Claim
+- Claim type: fact, inference, or unknown
+- Source URL
+- Source title
+- Publisher or domain
+- Publication date, if available
+- Retrieval date
+- Supporting excerpt or evidence
+- Confidence
+- Relevance to the prospect
+- Potential outreach application
+
+Preserve source provenance throughout the pipeline. An LLM-generated summary must not become its own source of truth.
+
+## 6. Qualification and ranking
+
+Implement a transparent prospect-scoring system.
+
+Separate the following dimensions:
+
+- ICP fit
+- Decision-maker relevance
+- Strength of buying signals
+- Evidence quality
+- Recency of supporting information
+- Potential business relevance
+- Research completeness
+
+Display a configurable overall score, but do not conceal uncertainty behind a single number.
+
+The scoring system should:
+- Explain why each prospect scored as it did
+- Cite evidence for material conclusions
+- Penalize verified contradictions and poor evidence quality
+- Avoid automatically penalizing unknown attributes
+- Flag stale, contradictory, or insufficient research
+- Support a minimum confidence threshold
+- Allow manual override and feedback
+- Recalculate when the ICP or underlying evidence changes
+
+Distinguish a high-ICP-fit prospect from a prospect with a strong immediate buying signal. These are not necessarily the same thing.
+
+## 7. Hyperpersonalized message generation
+
+This is one of the product's most important capabilities.
+
+Build an outreach-writing engine that creates individualized messages based on the prospect's verified professional context, company research, industry developments, and the configured offering.
+
+The output must not feel like a mass-generated template with the person's name, company name, and job title inserted.
+
+### The personalization process
+
+Before drafting, the AI must identify:
+
+1. The most relevant verified fact about the prospect or company.
+2. Why that fact matters in the context of the prospect's role.
+3. A plausible business problem, opportunity, or strategic question connected to that fact.
+4. Why the configured offering might be relevant.
+5. A natural way to begin a conversation without immediately pitching a generic service.
+
+Select the strongest angle rather than mentioning every fact discovered.
+
+### Message requirements
+
+Each draft should:
+- Open with a specific and natural observation, question, or relevant connection.
+- Demonstrate an understanding of the prospect's business.
+- Make a credible connection between the research and a possible business opportunity.
+- Avoid assuming the prospect has a problem unless there is evidence.
+- Sound like a thoughtful professional who did their homework.
+- Be concise enough for the selected channel.
+- Use an appropriate tone for the person's role and seniority.
+- End with a low-friction, relevant question or call to action.
+- Avoid exaggerated praise, empty compliments, and forced familiarity.
+- Never claim that the sender read a post, report, or interview unless the source was actually retrieved and reviewed.
+- Never fabricate shared connections, past conversations, company initiatives, customer results, or technical details.
+- Never reveal internal research language or mention that the message was generated by AI.
+
+Avoid generic openings such as:
+- "I came across your impressive profile."
+- "I hope this message finds you well."
+- "I noticed your company is doing amazing things."
+- "I wanted to reach out to explore synergies."
+- "Given your extensive experience in the industry..."
+
+These should not appear unless there is an unusually strong, authentic contextual reason.
+
+### Generate channel-specific drafts
+
+For each qualified prospect, generate drafts for the applicable channels:
+
+**Connection request**
+A concise introduction that makes one relevant observation and gives the recipient a reason to connect.
+
+**LinkedIn message or InMail**
+A more developed message that connects a researched business context to a specific question or opportunity.
+
+**Follow-up**
+A contextual continuation that adds a new angle, useful observation, or thoughtful question instead of merely asking whether the previous message was seen.
+
+**Email**
+A personalized subject line and email body, if an email address has been legitimately obtained and the user has configured email outreach.
+
+Respect each channel's actual character limits and current platform rules. Validate lengths programmatically before presenting a draft.
+
+### Provide multiple genuinely different approaches
+
+Generate up to three distinct message approaches where appropriate:
+
+- **Insight-led:** Lead with a specific company or industry observation.
+- **Problem-led:** Explore a plausible operational or commercial challenge.
+- **Curiosity-led:** Ask a thoughtful question grounded in the prospect's role or strategic context.
+
+These must differ in reasoning and angle, not simply in wording.
+
+For each draft, show:
+- The chosen personalization angle
+- The evidence supporting that angle
+- Why the angle is relevant
+- The intended tone
+- The channel and character count
+- Any assumptions or uncertainties
+
+Allow the user to edit the message, regenerate it with a specific instruction, switch angles, shorten it, make it more direct, or remove a particular claim.
+
+Do not sacrifice factual integrity for creativity.
+
+## 8. The research dashboard
+
+The dashboard should be the main working environment, not merely a statistics page.
+
+### Overview
+
+Show:
+- Total discovered prospects
+- Prospects under research
+- Qualified prospects
+- High-priority opportunities
+- Drafts awaiting review
+- Approved drafts
+- Outreach activity, when available
+- Reply and conversion metrics, when legitimately tracked
+- Recent research runs
+- Failed or incomplete jobs requiring attention
+
+Do not show fabricated metrics or sample activity as though it were real. Use clear empty states until actual data exists.
+
+### Prospect pipeline
+
+Create a searchable, filterable table with:
+- Prospect name
+- Role
+- Company
+- Industry
+- Location
+- ICP fit
+- Buying-signal strength
+- Research confidence
+- Most recent relevant signal
+- Research status
+- Draft status
+- Next recommended action
+
+Allow filtering by ICP, company, geography, score, signal type, research status, and outreach status.
+
+Support sorting, pagination or efficient virtualized rendering, and bulk actions where safe.
+
+### Prospect intelligence workspace
+
+Clicking a prospect should open a detailed research workspace containing:
+
+**Overview:** Identity, role, company, fit score, confidence and current status.
+
+**Why this prospect:** A short, evidence-backed explanation of the match.
+
+**Company intelligence:** Business model, offerings, customers, strategy and relevant developments.
+
+**Person intelligence:** Role, background and professionally relevant public information.
+
+**Industry context:** Trends and developments relevant to the opportunity.
+
+**Buying signals:** Evidence-backed events and hypotheses.
+
+**Opportunity analysis:** The strongest potential business angles and relevant offerings.
+
+**Sources:** Clickable references, source dates, evidence excerpts and confidence indicators.
+
+**Outreach drafts:** Channel-specific drafts, alternative angles, editable text and approval controls.
+
+**Activity timeline:** Discovery, research, scoring changes, edits, approvals, exports and outreach events.
+
+Use a polished, information-dense layout with clear hierarchy. The user should be able to understand the opportunity quickly and then explore the evidence in depth.
+
+## 9. Campaign workspace
+
+Allow me to create campaigns for different ICPs, industries, markets, and business offerings.
+
+Each campaign should have:
+- Campaign name and objective
+- ICP selection
+- Target geography
+- Target industries
+- Target roles and seniority
+- Exclusions
+- Offering or value proposition
+- Tone and messaging preferences
+- Maximum discovery volume
+- Research depth
+- Qualification threshold
+- Channel preferences
+- Campaign status
+- Progress and error reporting
+
+Campaigns should be repeatable and resumable.
+
+If a campaign is interrupted, it should resume from the last successful stage rather than starting from scratch.
+
+Provide controls for pausing, resuming, cancelling, and rerunning research. Reruns should preserve previous findings and identify what changed.
+
+## 10. AI provider and model management
+
+Build a provider-independent AI layer.
+
+Support:
+- Local Ollama models
+- Hosted LLM APIs
+- Configurable model selection by task
+- Model-specific timeout and token settings
+- Structured JSON outputs
+- Retry and fallback policies
+- Usage and latency tracking
+- Cost tracking when provider usage data is available
+
+Use different model capabilities for different jobs when appropriate:
+
+- Lightweight model: query generation, extraction, classification and deduplication assistance.
+- Strong reasoning model: complex qualification and opportunity analysis.
+- Strong writing model: synthesis and hyperpersonalized outreach.
+- Embedding model: semantic retrieval and deduplication support.
+
+Do not force every task through one expensive model.
+
+Validate model outputs against schemas. If an output is invalid, retry or flag the job rather than silently saving malformed information.
+
+Treat webpages and retrieved documents as untrusted data. They may contain malicious instructions. Never allow source content to override system instructions, leak secrets, execute tools without authorization, or change the user's configured workflow.
+
+## 11. Human approval and compliant outreach
+
+The application must separate research and drafting from sending.
+
+Implement a review queue where I can:
+- Approve a draft
+- Edit a draft
+- Reject it
+- Request regeneration
+- Save a prospect for later
+- Mark a prospect as irrelevant
+- Record a reason for rejection
+- Export approved drafts
+
+Do not automatically send connection requests, messages, or emails by default.
+
+Support external outreach integrations only where their APIs and permissions explicitly allow the required operation. Do not assume Sales Navigator access automatically authorizes API-based messaging or connection requests.
+
+Do not build browser bots or unauthorized automation that scrapes restricted professional profiles or simulates human activity on LinkedIn.
+
+When no approved sending integration is available, make the final workflow efficient through a copy-to-clipboard action, a direct profile link where available, and a clear manual-send step.
+
+Track actual delivery and replies only through a legitimate integration or explicit user updates. Never infer a reply simply because a message was drafted or marked as sent.
+
+## 12. Data model and persistence
+
+Design a relational data model that supports:
+
+- Users and settings
+- ICP profiles and criteria
+- Campaigns
+- Companies
+- Prospects and professional identifiers
+- Discovery runs
+- Research jobs and job events
+- Research claims and sources
+- Buying signals
+- Qualification assessments
+- Message drafts and draft versions
+- Human approvals
+- Outreach activities
+- User feedback
+- Integration credentials and connection status
+- Audit events
+
+Use stable relationships and appropriate unique constraints.
+
+Persist all important application state in the database. Do not keep the only copy of a prospect, research report, or draft in frontend state or an in-memory process.
+
+Implement migrations, timestamps, appropriate indexes, validation, and access controls.
+
+Store secrets securely on the server side. Never expose provider API keys in browser code, logs, source maps, or client responses.
+
+## 13. Research execution and reliability
+
+Implement research as durable background jobs with visible progress.
+
+A prospect research job should move through states such as:
+
+Queued → Discovering → Verifying → Researching Company → Researching Person → Industry Analysis → Qualifying → Drafting → Ready for Review
+
+Also support:
+- Failed
+- Partially complete
+- Needs user input
+- Cancelled
+
+Each stage should persist its results before moving on.
+
+Include:
+- Retries with backoff
+- Provider rate limiting
+- Concurrency controls
+- Idempotent processing
+- Duplicate prevention
+- Timeout handling
+- Failure recovery
+- Structured logs
+- Clear error messages
+- Cancellation support
+
+Allow partially completed research to remain useful. If industry analysis fails, preserve the verified identity and company research instead of discarding everything.
+
+Track where each fact came from and when it was retrieved.
+
+## 14. Research quality and source discipline
+
+Make evidence quality a first-class product feature.
+
+Prioritize:
+1. Official company websites and announcements
+2. First-party executive statements and published professional material
+3. Reputable news organizations and industry publications
+4. Public business registries and credible company databases
+5. Other relevant public sources with appropriate confidence adjustments
+
+Use recent information for current claims. Store publication dates separately from retrieval dates.
+
+Do not invent citations, source URLs, job titles, company revenue, employee counts, quotes, personal interests, or buying signals.
+
+If a fact cannot be verified, explicitly mark it unknown or inferred.
+
+If sources conflict, display the conflict and explain which source appears more reliable and why.
+
+The platform must be willing to say "insufficient evidence" rather than manufacture a convincing narrative.
+
+## 15. User experience and visual quality
+
+Create a premium, modern, professional intelligence workspace.
+
+The interface should feel like a serious research and decision-support product, not a generic admin template or chatbot.
+
+Use:
+- A clear navigation system
+- A strong prospect pipeline
+- Rich prospect detail views
+- Evidence panels and source links
+- Responsive tables
+- Meaningful filters
+- Compact but readable research summaries
+- Clear confidence and status indicators
+- Subtle loading and progress animations
+- Useful empty, error, and partial-result states
+- Fast interactions and predictable navigation
+
+Prioritize information clarity, research traceability, and efficient daily use over decorative charts.
+
+Every displayed metric must come from persisted application data.
+
+## 16. Implementation sequence
+
+Build the product incrementally, but ensure each milestone results in a working, testable feature.
+
+**Milestone 1 — Foundation**
+Inspect the existing project, establish the database schema, implement configuration, and create the dashboard and prospect data model.
+
+**Milestone 2 — Discovery**
+Implement source adapters, search-query generation, prospect extraction, identity verification, deduplication, and persisted discovery runs.
+
+**Milestone 3 — Research**
+Implement the multi-stage research pipeline, evidence storage, source citations, and research workspace.
+
+**Milestone 4 — ICP qualification**
+Implement configurable ICPs, scoring, evidence-based fit explanations, exclusions, and ranking.
+
+**Milestone 5 — Message intelligence**
+Implement research-grounded message generation, multiple approaches, channel validation, draft versioning, and editing.
+
+**Milestone 6 — Workflow and approval**
+Implement the review queue, approvals, activity timeline, export, and human-controlled outreach handoff.
+
+**Milestone 7 — Reliability**
+Add background jobs, retries, progress tracking, rate limits, error recovery, security controls, and observability.
+
+**Milestone 8 — Quality assurance**
+Test the complete flow from discovery to approved draft. Fix failures and document any integrations that require credentials.
+
+Do not stop after creating a visually convincing dashboard. Complete at least one real end-to-end workflow using an available research source and a configured AI provider.
+
+## 17. Definition of done
+
+The product is only considered functional when I can:
+
+1. Create an ICP using the UI.
+2. Start a discovery run without manually entering every prospect.
+3. Discover real companies and people from available, permitted sources.
+4. Verify identities and deduplicate records.
+5. Research a company, prospect, and relevant industry.
+6. Inspect evidence and source URLs for material claims.
+7. See an explainable ICP score and buying-signal assessment.
+8. Open a comprehensive prospect intelligence report.
+9. Generate multiple genuinely different outreach drafts based on the research.
+10. Edit, regenerate, approve, and export drafts.
+11. Resume an interrupted research run without losing prior work.
+12. See accurate progress and error states.
+13. Restart the application without losing persisted records.
+14. Use the product without fabricated metrics, fake prospects, fake research, or nonfunctional controls.
+
+Begin by inspecting the current project and identifying the shortest reliable path to this end-to-end experience. Make sensible engineering decisions independently, explain important trade-offs briefly, and then implement the working system.
