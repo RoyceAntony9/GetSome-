@@ -8,7 +8,14 @@ import {
   signOut,
   Auth,
 } from 'firebase/auth';
-import staticConfig from '../../firebase-applet-config.json';
+const defaultFallbackConfig = {
+  projectId: 'gen-lang-client-0995138710',
+  appId: '1:98601093677:web:d94caa737b06f81f7186a4',
+  authDomain: 'gen-lang-client-0995138710.firebaseapp.com',
+  storageBucket: 'gen-lang-client-0995138710.firebasestorage.app',
+  messagingSenderId: '98601093677',
+  apiKey: '',
+};
 
 let appInstance: FirebaseApp | null = null;
 let authInstance: Auth | null = null;
@@ -33,7 +40,7 @@ export async function getAuthInstance(): Promise<Auth> {
         return authInstance;
       }
 
-      let config: any = { ...staticConfig };
+      let config: any = { ...defaultFallbackConfig };
       try {
         const res = await fetch('/api/firebase-config');
         if (res.ok) {

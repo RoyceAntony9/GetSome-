@@ -201,7 +201,9 @@
       "qualificationThreshold": 70,
       "status": "active",
       "createdAt": "2026-10-10T10:00:00Z",
-      "updatedAt": "2026-10-23T09:00:00Z"
+      "updatedAt": "2026-10-23T09:00:00Z",
+      "targetSubIndustries": [],
+      "customIndustries": []
     },
     {
       "id": "camp_healthtech_interop",
@@ -233,10 +235,1302 @@
       "qualificationThreshold": 72,
       "status": "active",
       "createdAt": "2026-10-15T11:00:00Z",
-      "updatedAt": "2026-10-22T16:00:00Z"
+      "updatedAt": "2026-10-22T16:00:00Z",
+      "targetSubIndustries": [],
+      "customIndustries": []
     }
   ],
   "prospects": [
+    {
+      "id": "prospect_1792914870031_4f6v0",
+      "campaignId": "camp_fintech_q4_2026",
+      "icpId": "icp_fintech_enterprise",
+      "name": "Julian Thorne",
+      "role": "Head of Core Infrastructure & Systems",
+      "company": "AeroFreight Technologies",
+      "domain": "aerofreight.tech",
+      "location": "Atlanta, GA, USA",
+      "linkedinUrl": "https://linkedin.com/in/julian-thorne-aerofreight",
+      "email": "j.thorne@aerofreight.tech",
+      "stage": "rejected",
+      "unifiedStatus": "rejected",
+      "discoverySource": "Expansion Signal: 100+ telematics API integrations rolling out",
+      "discoveryTimestamp": "2026-10-25T07:54:30.031Z",
+      "verified": true,
+      "fitScore": 58,
+      "buyingSignalScore": 25,
+      "confidenceScore": 30,
+      "companyData": {
+        "id": "comp_prospect_1792914870031_4f6v0",
+        "name": "AeroFreight Technologies",
+        "domain": "aerofreight.tech",
+        "website": "https://aerofreight.tech",
+        "industry": "Supply Chain / Freight Logistics",
+        "headquarters": "Atlanta, GA, USA",
+        "employeeCount": "250",
+        "estimatedRevenue": "$35M ARR",
+        "businessModel": "B2B SaaS / Infrastructure API",
+        "whatTheyDo": "AeroFreight Technologies builds enterprise solutions in Supply Chain / Freight Logistics.",
+        "productsAndServices": [
+          "AeroFreight Technologies Core Engine",
+          "AeroFreight Technologies Platform API"
+        ],
+        "targetCustomers": [
+          "Enterprise Customers",
+          "Mid-market Platforms"
+        ],
+        "strategicPriorities": [
+          "Platform modernization and scaling throughput"
+        ],
+        "growthSignals": [
+          "Expanding engineering teams and infrastructure investment"
+        ],
+        "operationalChallenges": [
+          "Managing data latency and transaction throughput at scale"
+        ],
+        "knownTechStack": [
+          "PostgreSQL",
+          "Kubernetes",
+          "Cloud Infrastructure",
+          "Event Streaming"
+        ],
+        "competitors": [
+          "Industry Competitor A",
+          "Industry Competitor B"
+        ],
+        "offeringBenefitFit": "Accelerates throughput and eliminates distributed latency bottlenecks.",
+        "verifiedAt": "2026-10-25T07:54:30.031Z"
+      },
+      "personData": {
+        "id": "person_prospect_1792914870031_4f6v0",
+        "fullName": "Julian Thorne",
+        "currentRole": "Head of Core Infrastructure & Systems",
+        "company": "AeroFreight Technologies",
+        "companyDomain": "aerofreight.tech",
+        "location": "Atlanta, GA, USA",
+        "linkedinUrl": "https://linkedin.com/in/julian-thorne-aerofreight",
+        "email": "j.thorne@aerofreight.tech",
+        "department": "Infrastructure & IoT",
+        "seniority": "Head",
+        "publicBio": "Head of Core Infrastructure & Systems leading platform architecture at AeroFreight Technologies.",
+        "pastExperience": [
+          "Senior Engineering Leader at high-growth software firms (2018-2023)"
+        ],
+        "responsibilities": [
+          "Engineering leadership and technical architecture for AeroFreight Technologies",
+          "Vendor evaluation and infrastructure tooling adoption"
+        ],
+        "publicContentAndTalks": [],
+        "publicTopics": [
+          "Distributed systems",
+          "Infrastructure resilience",
+          "Engineering scaling"
+        ],
+        "problemOwnership": "Platform latency, infrastructure cost-efficiency, and system reliability.",
+        "whyThisPerson": "As Head of Core Infrastructure & Systems, directly owns technology decisions for mission-critical infrastructure.",
+        "verifiedAt": "2026-10-25T07:54:30.031Z"
+      },
+      "industryData": {
+        "industry": "Supply Chain / Freight Logistics",
+        "keyTrends": [
+          "Sub-second latency expectations across enterprise B2B workflows"
+        ],
+        "competitivePressures": [
+          "Rapid feature velocity from competitive venture-backed entrants"
+        ],
+        "regulatoryOrTechShifts": [
+          "Increasing focus on data sovereignty and zero-downtime reliability"
+        ],
+        "implicationsForRole": "Demands continuous pipeline modernization while maintaining five-nines availability.",
+        "sources": [
+          "https://aerofreight.tech/press/iot-telematics-expansion"
+        ]
+      },
+      "claims": [
+        {
+          "id": "claim_1792914870031_1",
+          "claim": "AeroFreight Technologies is an active enterprise entity in Supply Chain / Freight Logistics.",
+          "claimType": "fact",
+          "sourceUrl": "https://aerofreight.tech/press/iot-telematics-expansion",
+          "sourceTitle": "AeroFreight Technologies Corporate Overview",
+          "publisher": "AeroFreight Technologies",
+          "publishedDate": "2026-08-01",
+          "retrievedDate": "2026-10-25",
+          "excerpt": "Owns IoT stream ingestion pipelines for fleet telematics and real-time dispatching.",
+          "confidence": "high",
+          "relevance": "Verifies company presence and operations.",
+          "potentialOutreachApplication": "Foundational entity grounding."
+        }
+      ],
+      "signals": [
+        {
+          "id": "sig_1792914870031_1",
+          "type": "expansion",
+          "description": "Acquired regional dispatch routing platform to integrate telematics streams.",
+          "evidence": "Corroborated via primary source: https://aerofreight.tech/press/iot-telematics-expansion",
+          "sourceUrl": "https://aerofreight.tech/press/iot-telematics-expansion",
+          "date": "2026-08-15",
+          "confidence": "high",
+          "relevanceToOffering": "Provides relevant conversational anchor."
+        }
+      ],
+      "qualification": {
+        "overallScore": 58,
+        "isQualified": false,
+        "dimensionScores": {
+          "icpFit": 65,
+          "decisionMakerRelevance": 65,
+          "buyingSignalStrength": 25,
+          "evidenceQuality": 30,
+          "recency": 85
+        },
+        "criteriaEvaluation": [
+          {
+            "criterion": "Target Industry (FinTech, Financial Services, Banking Technology, Payments)",
+            "category": "required",
+            "status": "contradicted",
+            "evidenceNotes": "Company operates in Supply Chain / Freight Logistics."
+          },
+          {
+            "criterion": "Company Size: 150–3000 employees",
+            "category": "preferred",
+            "status": "satisfied",
+            "evidenceNotes": "Verified employee count 250 fits within target [150-3000]."
+          },
+          {
+            "criterion": "Operating Geography (North America, United States, United Kingdom, European Union)",
+            "category": "preferred",
+            "status": "contradicted",
+            "evidenceNotes": "Headquartered in Atlanta, GA, USA."
+          },
+          {
+            "criterion": "Target Leadership Role (VP of Engineering, Head of Infrastructure, CTO)",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Current title: Head of Core Infrastructure & Systems."
+          },
+          {
+            "criterion": "Seniority Level: C-Level, VP, Head",
+            "category": "required",
+            "status": "satisfied",
+            "evidenceNotes": "Assessed seniority: Head."
+          },
+          {
+            "criterion": "Required: Operates mission-critical transaction or payment reconciliation pipelines",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          },
+          {
+            "criterion": "Required: Has dedicated engineering/infrastructure organization",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          }
+        ],
+        "summaryExplanation": "Fit score (58/100) falls below threshold of 70. Core leadership relevance confirmed, but company attributes or buying triggers require corroboration.",
+        "riskFactors": []
+      },
+      "drafts": [],
+      "outreachStatus": "none",
+      "activityLog": [
+        {
+          "timestamp": "2026-10-25T07:54:30.051Z",
+          "action": "Outreach Guardrail Enforced",
+          "details": "Prospect scored 58% which is below the threshold of 70%. Outreach generation withheld until explicit manual override.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.051Z",
+          "action": "Stage E & F: Qualified and Scored",
+          "details": "Overall Fit Score: 58/100 (Qualified: NO). Criteria evaluated: 7.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.047Z",
+          "action": "Stage D: Industry Analysis Completed",
+          "details": "Synthesized market pressures and regulatory vectors for Supply Chain / Freight Logistics.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.043Z",
+          "action": "Stage C: Person Intelligence Completed",
+          "details": "Mapped executive scope, public talks, and problem ownership for Julian Thorne.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.039Z",
+          "action": "Stage B: Company Intelligence Completed",
+          "details": "Analyzed AeroFreight Technologies operating model, tech stack, and strategic priorities.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.036Z",
+          "action": "Stage A: Identity Verified",
+          "details": "Corroborated identity for Julian Thorne at AeroFreight Technologies. Seniority: Head.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.031Z",
+          "action": "Prospect Discovered",
+          "details": "Discovered via Expansion Signal: 100+ telematics API integrations rolling out. Grounded in https://aerofreight.tech/press/iot-telematics-expansion.",
+          "actor": "system"
+        }
+      ],
+      "createdAt": "2026-10-25T07:54:30.031Z",
+      "updatedAt": "2026-10-25T07:54:30.051Z"
+    },
+    {
+      "id": "prospect_1792914870007_s3670",
+      "campaignId": "camp_fintech_q4_2026",
+      "icpId": "icp_fintech_enterprise",
+      "name": "Tariq Al-Mansoor",
+      "role": "VP of Engineering",
+      "company": "StrataMesh Networks",
+      "domain": "stratamesh.io",
+      "location": "Austin, TX, USA",
+      "linkedinUrl": "https://linkedin.com/in/tariq-al-mansoor-infra",
+      "email": "tariq@stratamesh.io",
+      "stage": "rejected",
+      "unifiedStatus": "rejected",
+      "discoverySource": "Public talk at Cloud Native Con 2026",
+      "discoveryTimestamp": "2026-10-25T07:54:30.007Z",
+      "verified": true,
+      "fitScore": 68,
+      "buyingSignalScore": 25,
+      "confidenceScore": 30,
+      "companyData": {
+        "id": "comp_prospect_1792914870007_s3670",
+        "name": "StrataMesh Networks",
+        "domain": "stratamesh.io",
+        "website": "https://stratamesh.io",
+        "industry": "Cloud Infrastructure / Networking",
+        "headquarters": "Austin, TX, USA",
+        "employeeCount": "250",
+        "estimatedRevenue": "$35M ARR",
+        "businessModel": "B2B SaaS / Infrastructure API",
+        "whatTheyDo": "StrataMesh Networks builds enterprise solutions in Cloud Infrastructure / Networking.",
+        "productsAndServices": [
+          "StrataMesh Networks Core Engine",
+          "StrataMesh Networks Platform API"
+        ],
+        "targetCustomers": [
+          "Enterprise Customers",
+          "Mid-market Platforms"
+        ],
+        "strategicPriorities": [
+          "Platform modernization and scaling throughput"
+        ],
+        "growthSignals": [
+          "Expanding engineering teams and infrastructure investment"
+        ],
+        "operationalChallenges": [
+          "Managing data latency and transaction throughput at scale"
+        ],
+        "knownTechStack": [
+          "PostgreSQL",
+          "Kubernetes",
+          "Cloud Infrastructure",
+          "Event Streaming"
+        ],
+        "competitors": [
+          "Industry Competitor A",
+          "Industry Competitor B"
+        ],
+        "offeringBenefitFit": "Accelerates throughput and eliminates distributed latency bottlenecks.",
+        "verifiedAt": "2026-10-25T07:54:30.007Z"
+      },
+      "personData": {
+        "id": "person_prospect_1792914870007_s3670",
+        "fullName": "Tariq Al-Mansoor",
+        "currentRole": "VP of Engineering",
+        "company": "StrataMesh Networks",
+        "companyDomain": "stratamesh.io",
+        "location": "Austin, TX, USA",
+        "linkedinUrl": "https://linkedin.com/in/tariq-al-mansoor-infra",
+        "email": "tariq@stratamesh.io",
+        "department": "Core Infrastructure",
+        "seniority": "VP",
+        "publicBio": "VP of Engineering leading platform architecture at StrataMesh Networks.",
+        "pastExperience": [
+          "Senior Engineering Leader at high-growth software firms (2018-2023)"
+        ],
+        "responsibilities": [
+          "Engineering leadership and technical architecture for StrataMesh Networks",
+          "Vendor evaluation and infrastructure tooling adoption"
+        ],
+        "publicContentAndTalks": [],
+        "publicTopics": [
+          "Distributed systems",
+          "Infrastructure resilience",
+          "Engineering scaling"
+        ],
+        "problemOwnership": "Platform latency, infrastructure cost-efficiency, and system reliability.",
+        "whyThisPerson": "As VP of Engineering, directly owns technology decisions for mission-critical infrastructure.",
+        "verifiedAt": "2026-10-25T07:54:30.007Z"
+      },
+      "industryData": {
+        "industry": "Cloud Infrastructure / Networking",
+        "keyTrends": [
+          "Sub-second latency expectations across enterprise B2B workflows"
+        ],
+        "competitivePressures": [
+          "Rapid feature velocity from competitive venture-backed entrants"
+        ],
+        "regulatoryOrTechShifts": [
+          "Increasing focus on data sovereignty and zero-downtime reliability"
+        ],
+        "implicationsForRole": "Demands continuous pipeline modernization while maintaining five-nines availability.",
+        "sources": [
+          "https://stratamesh.io/blog/zero-trust-mesh-latency"
+        ]
+      },
+      "claims": [
+        {
+          "id": "claim_1792914870007_1",
+          "claim": "StrataMesh Networks is an active enterprise entity in Cloud Infrastructure / Networking.",
+          "claimType": "fact",
+          "sourceUrl": "https://stratamesh.io/blog/zero-trust-mesh-latency",
+          "sourceTitle": "StrataMesh Networks Corporate Overview",
+          "publisher": "StrataMesh Networks",
+          "publishedDate": "2026-08-01",
+          "retrievedDate": "2026-10-25",
+          "excerpt": "Authored technical paper on zero-downtime service mesh rollouts under peak workloads.",
+          "confidence": "high",
+          "relevance": "Verifies company presence and operations.",
+          "potentialOutreachApplication": "Foundational entity grounding."
+        }
+      ],
+      "signals": [
+        {
+          "id": "sig_1792914870007_1",
+          "type": "expansion",
+          "description": "Published technical benchmark on service mesh latency mitigation.",
+          "evidence": "Corroborated via primary source: https://stratamesh.io/blog/zero-trust-mesh-latency",
+          "sourceUrl": "https://stratamesh.io/blog/zero-trust-mesh-latency",
+          "date": "2026-08-15",
+          "confidence": "high",
+          "relevanceToOffering": "Provides relevant conversational anchor."
+        }
+      ],
+      "qualification": {
+        "overallScore": 68,
+        "isQualified": false,
+        "dimensionScores": {
+          "icpFit": 65,
+          "decisionMakerRelevance": 100,
+          "buyingSignalStrength": 25,
+          "evidenceQuality": 30,
+          "recency": 85
+        },
+        "criteriaEvaluation": [
+          {
+            "criterion": "Target Industry (FinTech, Financial Services, Banking Technology, Payments)",
+            "category": "required",
+            "status": "contradicted",
+            "evidenceNotes": "Company operates in Cloud Infrastructure / Networking."
+          },
+          {
+            "criterion": "Company Size: 150–3000 employees",
+            "category": "preferred",
+            "status": "satisfied",
+            "evidenceNotes": "Verified employee count 250 fits within target [150-3000]."
+          },
+          {
+            "criterion": "Operating Geography (North America, United States, United Kingdom, European Union)",
+            "category": "preferred",
+            "status": "contradicted",
+            "evidenceNotes": "Headquartered in Austin, TX, USA."
+          },
+          {
+            "criterion": "Target Leadership Role (VP of Engineering, Head of Infrastructure, CTO)",
+            "category": "required",
+            "status": "satisfied",
+            "evidenceNotes": "Current title: VP of Engineering."
+          },
+          {
+            "criterion": "Seniority Level: C-Level, VP, Head",
+            "category": "required",
+            "status": "satisfied",
+            "evidenceNotes": "Assessed seniority: VP."
+          },
+          {
+            "criterion": "Required: Operates mission-critical transaction or payment reconciliation pipelines",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          },
+          {
+            "criterion": "Required: Has dedicated engineering/infrastructure organization",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          }
+        ],
+        "summaryExplanation": "Fit score (68/100) falls below threshold of 70. Core leadership relevance confirmed, but company attributes or buying triggers require corroboration.",
+        "riskFactors": []
+      },
+      "drafts": [],
+      "outreachStatus": "none",
+      "activityLog": [
+        {
+          "timestamp": "2026-10-25T07:54:30.028Z",
+          "action": "Outreach Guardrail Enforced",
+          "details": "Prospect scored 68% which is below the threshold of 70%. Outreach generation withheld until explicit manual override.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.028Z",
+          "action": "Stage E & F: Qualified and Scored",
+          "details": "Overall Fit Score: 68/100 (Qualified: NO). Criteria evaluated: 7.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.025Z",
+          "action": "Stage D: Industry Analysis Completed",
+          "details": "Synthesized market pressures and regulatory vectors for Cloud Infrastructure / Networking.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.021Z",
+          "action": "Stage C: Person Intelligence Completed",
+          "details": "Mapped executive scope, public talks, and problem ownership for Tariq Al-Mansoor.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.018Z",
+          "action": "Stage B: Company Intelligence Completed",
+          "details": "Analyzed StrataMesh Networks operating model, tech stack, and strategic priorities.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.014Z",
+          "action": "Stage A: Identity Verified",
+          "details": "Corroborated identity for Tariq Al-Mansoor at StrataMesh Networks. Seniority: VP.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:30.007Z",
+          "action": "Prospect Discovered",
+          "details": "Discovered via Public talk at Cloud Native Con 2026. Grounded in https://stratamesh.io/blog/zero-trust-mesh-latency.",
+          "actor": "system"
+        }
+      ],
+      "createdAt": "2026-10-25T07:54:30.007Z",
+      "updatedAt": "2026-10-25T07:54:30.028Z"
+    },
+    {
+      "id": "prospect_1792914854674_h2su8",
+      "campaignId": "camp_fintech_q4_2026",
+      "icpId": "icp_fintech_enterprise",
+      "name": "Sophia Sterling",
+      "role": "VP of Data & AI Platform",
+      "company": "InsurIQ Analytics",
+      "domain": "insuriq.io",
+      "location": "Chicago, IL, USA",
+      "linkedinUrl": "https://linkedin.com/in/sophia-sterling-insuriq",
+      "email": "s.sterling@insuriq.io",
+      "stage": "rejected",
+      "unifiedStatus": "rejected",
+      "discoverySource": "Company-first discovery (Enterprise claims automation)",
+      "discoveryTimestamp": "2026-10-25T07:54:14.674Z",
+      "verified": true,
+      "fitScore": 58,
+      "buyingSignalScore": 25,
+      "confidenceScore": 30,
+      "companyData": {
+        "id": "comp_prospect_1792914854674_h2su8",
+        "name": "InsurIQ Analytics",
+        "domain": "insuriq.io",
+        "website": "https://insuriq.io",
+        "industry": "InsurTech / AI Analytics",
+        "headquarters": "Chicago, IL, USA",
+        "employeeCount": "250",
+        "estimatedRevenue": "$35M ARR",
+        "businessModel": "B2B SaaS / Infrastructure API",
+        "whatTheyDo": "InsurIQ Analytics builds enterprise solutions in InsurTech / AI Analytics.",
+        "productsAndServices": [
+          "InsurIQ Analytics Core Engine",
+          "InsurIQ Analytics Platform API"
+        ],
+        "targetCustomers": [
+          "Enterprise Customers",
+          "Mid-market Platforms"
+        ],
+        "strategicPriorities": [
+          "Platform modernization and scaling throughput"
+        ],
+        "growthSignals": [
+          "Expanding engineering teams and infrastructure investment"
+        ],
+        "operationalChallenges": [
+          "Managing data latency and transaction throughput at scale"
+        ],
+        "knownTechStack": [
+          "PostgreSQL",
+          "Kubernetes",
+          "Cloud Infrastructure",
+          "Event Streaming"
+        ],
+        "competitors": [
+          "Industry Competitor A",
+          "Industry Competitor B"
+        ],
+        "offeringBenefitFit": "Accelerates throughput and eliminates distributed latency bottlenecks.",
+        "verifiedAt": "2026-10-25T07:54:14.674Z"
+      },
+      "personData": {
+        "id": "person_prospect_1792914854674_h2su8",
+        "fullName": "Sophia Sterling",
+        "currentRole": "VP of Data & AI Platform",
+        "company": "InsurIQ Analytics",
+        "companyDomain": "insuriq.io",
+        "location": "Chicago, IL, USA",
+        "linkedinUrl": "https://linkedin.com/in/sophia-sterling-insuriq",
+        "email": "s.sterling@insuriq.io",
+        "department": "Data & Machine Learning",
+        "seniority": "VP",
+        "publicBio": "VP of Data & AI Platform leading platform architecture at InsurIQ Analytics.",
+        "pastExperience": [
+          "Senior Engineering Leader at high-growth software firms (2018-2023)"
+        ],
+        "responsibilities": [
+          "Engineering leadership and technical architecture for InsurIQ Analytics",
+          "Vendor evaluation and infrastructure tooling adoption"
+        ],
+        "publicContentAndTalks": [],
+        "publicTopics": [
+          "Distributed systems",
+          "Infrastructure resilience",
+          "Engineering scaling"
+        ],
+        "problemOwnership": "Platform latency, infrastructure cost-efficiency, and system reliability.",
+        "whyThisPerson": "As VP of Data & AI Platform, directly owns technology decisions for mission-critical infrastructure.",
+        "verifiedAt": "2026-10-25T07:54:14.674Z"
+      },
+      "industryData": {
+        "industry": "InsurTech / AI Analytics",
+        "keyTrends": [
+          "Sub-second latency expectations across enterprise B2B workflows"
+        ],
+        "competitivePressures": [
+          "Rapid feature velocity from competitive venture-backed entrants"
+        ],
+        "regulatoryOrTechShifts": [
+          "Increasing focus on data sovereignty and zero-downtime reliability"
+        ],
+        "implicationsForRole": "Demands continuous pipeline modernization while maintaining five-nines availability.",
+        "sources": [
+          "https://insuriq.io/careers/lead-data-engineer"
+        ]
+      },
+      "claims": [
+        {
+          "id": "claim_1792914854674_1",
+          "claim": "InsurIQ Analytics is an active enterprise entity in InsurTech / AI Analytics.",
+          "claimType": "fact",
+          "sourceUrl": "https://insuriq.io/careers/lead-data-engineer",
+          "sourceTitle": "InsurIQ Analytics Corporate Overview",
+          "publisher": "InsurIQ Analytics",
+          "publishedDate": "2026-08-01",
+          "retrievedDate": "2026-10-25",
+          "excerpt": "Spearheading automated fraud triage models for Tier-1 insurance carriers.",
+          "confidence": "high",
+          "relevance": "Verifies company presence and operations.",
+          "potentialOutreachApplication": "Foundational entity grounding."
+        }
+      ],
+      "signals": [
+        {
+          "id": "sig_1792914854674_1",
+          "type": "expansion",
+          "description": "Actively recruiting 4+ Senior Machine Learning Infrastructure Engineers.",
+          "evidence": "Corroborated via primary source: https://insuriq.io/careers/lead-data-engineer",
+          "sourceUrl": "https://insuriq.io/careers/lead-data-engineer",
+          "date": "2026-08-15",
+          "confidence": "high",
+          "relevanceToOffering": "Provides relevant conversational anchor."
+        }
+      ],
+      "qualification": {
+        "overallScore": 58,
+        "isQualified": false,
+        "dimensionScores": {
+          "icpFit": 65,
+          "decisionMakerRelevance": 65,
+          "buyingSignalStrength": 25,
+          "evidenceQuality": 30,
+          "recency": 85
+        },
+        "criteriaEvaluation": [
+          {
+            "criterion": "Target Industry (FinTech, Financial Services, Banking Technology, Payments)",
+            "category": "required",
+            "status": "contradicted",
+            "evidenceNotes": "Company operates in InsurTech / AI Analytics."
+          },
+          {
+            "criterion": "Company Size: 150–3000 employees",
+            "category": "preferred",
+            "status": "satisfied",
+            "evidenceNotes": "Verified employee count 250 fits within target [150-3000]."
+          },
+          {
+            "criterion": "Operating Geography (North America, United States, United Kingdom, European Union)",
+            "category": "preferred",
+            "status": "contradicted",
+            "evidenceNotes": "Headquartered in Chicago, IL, USA."
+          },
+          {
+            "criterion": "Target Leadership Role (VP of Engineering, Head of Infrastructure, CTO)",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Current title: VP of Data & AI Platform."
+          },
+          {
+            "criterion": "Seniority Level: C-Level, VP, Head",
+            "category": "required",
+            "status": "satisfied",
+            "evidenceNotes": "Assessed seniority: VP."
+          },
+          {
+            "criterion": "Required: Operates mission-critical transaction or payment reconciliation pipelines",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          },
+          {
+            "criterion": "Required: Has dedicated engineering/infrastructure organization",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          }
+        ],
+        "summaryExplanation": "Fit score (58/100) falls below threshold of 70. Core leadership relevance confirmed, but company attributes or buying triggers require corroboration.",
+        "riskFactors": []
+      },
+      "drafts": [],
+      "outreachStatus": "none",
+      "activityLog": [
+        {
+          "timestamp": "2026-10-25T07:54:14.689Z",
+          "action": "Outreach Guardrail Enforced",
+          "details": "Prospect scored 58% which is below the threshold of 70%. Outreach generation withheld until explicit manual override.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.689Z",
+          "action": "Stage E & F: Qualified and Scored",
+          "details": "Overall Fit Score: 58/100 (Qualified: NO). Criteria evaluated: 7.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.686Z",
+          "action": "Stage D: Industry Analysis Completed",
+          "details": "Synthesized market pressures and regulatory vectors for InsurTech / AI Analytics.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.684Z",
+          "action": "Stage C: Person Intelligence Completed",
+          "details": "Mapped executive scope, public talks, and problem ownership for Sophia Sterling.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.681Z",
+          "action": "Stage B: Company Intelligence Completed",
+          "details": "Analyzed InsurIQ Analytics operating model, tech stack, and strategic priorities.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.678Z",
+          "action": "Stage A: Identity Verified",
+          "details": "Corroborated identity for Sophia Sterling at InsurIQ Analytics. Seniority: VP.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.674Z",
+          "action": "Prospect Discovered",
+          "details": "Discovered via Company-first discovery (Enterprise claims automation). Grounded in https://insuriq.io/careers/lead-data-engineer.",
+          "actor": "system"
+        }
+      ],
+      "createdAt": "2026-10-25T07:54:14.674Z",
+      "updatedAt": "2026-10-25T07:54:14.689Z"
+    },
+    {
+      "id": "prospect_1792914854654_0uu4k",
+      "campaignId": "camp_fintech_q4_2026",
+      "icpId": "icp_fintech_enterprise",
+      "name": "Henrik Lindqvist",
+      "role": "Chief Technology Officer",
+      "company": "NordicPay Systems",
+      "domain": "nordicpay.se",
+      "location": "Stockholm, Sweden",
+      "linkedinUrl": "https://linkedin.com/in/henrik-lindqvist-nordicpay",
+      "email": "henrik@nordicpay.se",
+      "stage": "ready_for_review",
+      "unifiedStatus": "ready_for_outreach",
+      "discoverySource": "ICP-driven discovery (European open banking compliance & FedNow/SEPA expansion)",
+      "discoveryTimestamp": "2026-10-25T07:54:14.654Z",
+      "verified": true,
+      "fitScore": 77,
+      "buyingSignalScore": 25,
+      "confidenceScore": 30,
+      "companyData": {
+        "id": "comp_prospect_1792914854654_0uu4k",
+        "name": "NordicPay Systems",
+        "domain": "nordicpay.se",
+        "website": "https://nordicpay.se",
+        "industry": "FinTech / Banking Technology",
+        "headquarters": "Stockholm, Sweden",
+        "employeeCount": "250",
+        "estimatedRevenue": "$35M ARR",
+        "businessModel": "B2B SaaS / Infrastructure API",
+        "whatTheyDo": "NordicPay Systems builds enterprise solutions in FinTech / Banking Technology.",
+        "productsAndServices": [
+          "NordicPay Systems Core Engine",
+          "NordicPay Systems Platform API"
+        ],
+        "targetCustomers": [
+          "Enterprise Customers",
+          "Mid-market Platforms"
+        ],
+        "strategicPriorities": [
+          "Platform modernization and scaling throughput"
+        ],
+        "growthSignals": [
+          "Expanding engineering teams and infrastructure investment"
+        ],
+        "operationalChallenges": [
+          "Managing data latency and transaction throughput at scale"
+        ],
+        "knownTechStack": [
+          "PostgreSQL",
+          "Kubernetes",
+          "Cloud Infrastructure",
+          "Event Streaming"
+        ],
+        "competitors": [
+          "Industry Competitor A",
+          "Industry Competitor B"
+        ],
+        "offeringBenefitFit": "Accelerates throughput and eliminates distributed latency bottlenecks.",
+        "verifiedAt": "2026-10-25T07:54:14.654Z"
+      },
+      "personData": {
+        "id": "person_prospect_1792914854654_0uu4k",
+        "fullName": "Henrik Lindqvist",
+        "currentRole": "Chief Technology Officer",
+        "company": "NordicPay Systems",
+        "companyDomain": "nordicpay.se",
+        "location": "Stockholm, Sweden",
+        "linkedinUrl": "https://linkedin.com/in/henrik-lindqvist-nordicpay",
+        "email": "henrik@nordicpay.se",
+        "department": "Core Architecture",
+        "seniority": "C-Level",
+        "publicBio": "Chief Technology Officer leading platform architecture at NordicPay Systems.",
+        "pastExperience": [
+          "Senior Engineering Leader at high-growth software firms (2018-2023)"
+        ],
+        "responsibilities": [
+          "Engineering leadership and technical architecture for NordicPay Systems",
+          "Vendor evaluation and infrastructure tooling adoption"
+        ],
+        "publicContentAndTalks": [],
+        "publicTopics": [
+          "Distributed systems",
+          "Infrastructure resilience",
+          "Engineering scaling"
+        ],
+        "problemOwnership": "Platform latency, infrastructure cost-efficiency, and system reliability.",
+        "whyThisPerson": "As Chief Technology Officer, directly owns technology decisions for mission-critical infrastructure.",
+        "verifiedAt": "2026-10-25T07:54:14.654Z"
+      },
+      "industryData": {
+        "industry": "FinTech / Banking Technology",
+        "keyTrends": [
+          "Sub-second latency expectations across enterprise B2B workflows"
+        ],
+        "competitivePressures": [
+          "Rapid feature velocity from competitive venture-backed entrants"
+        ],
+        "regulatoryOrTechShifts": [
+          "Increasing focus on data sovereignty and zero-downtime reliability"
+        ],
+        "implicationsForRole": "Demands continuous pipeline modernization while maintaining five-nines availability.",
+        "sources": [
+          "https://nordicpay.se/news/sepa-instant-migration"
+        ]
+      },
+      "claims": [
+        {
+          "id": "claim_1792914854654_1",
+          "claim": "NordicPay Systems is an active enterprise entity in FinTech / Banking Technology.",
+          "claimType": "fact",
+          "sourceUrl": "https://nordicpay.se/news/sepa-instant-migration",
+          "sourceTitle": "NordicPay Systems Corporate Overview",
+          "publisher": "NordicPay Systems",
+          "publishedDate": "2026-08-01",
+          "retrievedDate": "2026-10-25",
+          "excerpt": "Direct authority over SEPA instant payment real-time compliance ledger.",
+          "confidence": "high",
+          "relevance": "Verifies company presence and operations.",
+          "potentialOutreachApplication": "Foundational entity grounding."
+        }
+      ],
+      "signals": [
+        {
+          "id": "sig_1792914854654_1",
+          "type": "expansion",
+          "description": "SEPA Instant Credit Transfer compliance deadline implementation.",
+          "evidence": "Corroborated via primary source: https://nordicpay.se/news/sepa-instant-migration",
+          "sourceUrl": "https://nordicpay.se/news/sepa-instant-migration",
+          "date": "2026-08-15",
+          "confidence": "high",
+          "relevanceToOffering": "Provides relevant conversational anchor."
+        }
+      ],
+      "qualification": {
+        "overallScore": 77,
+        "isQualified": true,
+        "dimensionScores": {
+          "icpFit": 90,
+          "decisionMakerRelevance": 100,
+          "buyingSignalStrength": 25,
+          "evidenceQuality": 30,
+          "recency": 85
+        },
+        "criteriaEvaluation": [
+          {
+            "criterion": "Target Industry (FinTech, Financial Services, Banking Technology, Payments)",
+            "category": "required",
+            "status": "satisfied",
+            "evidenceNotes": "Company operates in FinTech / Banking Technology."
+          },
+          {
+            "criterion": "Company Size: 150–3000 employees",
+            "category": "preferred",
+            "status": "satisfied",
+            "evidenceNotes": "Verified employee count 250 fits within target [150-3000]."
+          },
+          {
+            "criterion": "Operating Geography (North America, United States, United Kingdom, European Union)",
+            "category": "preferred",
+            "status": "contradicted",
+            "evidenceNotes": "Headquartered in Stockholm, Sweden."
+          },
+          {
+            "criterion": "Target Leadership Role (VP of Engineering, Head of Infrastructure, CTO)",
+            "category": "required",
+            "status": "satisfied",
+            "evidenceNotes": "Current title: Chief Technology Officer."
+          },
+          {
+            "criterion": "Seniority Level: C-Level, VP, Head",
+            "category": "required",
+            "status": "satisfied",
+            "evidenceNotes": "Assessed seniority: C-Level."
+          },
+          {
+            "criterion": "Required: Operates mission-critical transaction or payment reconciliation pipelines",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          },
+          {
+            "criterion": "Required: Has dedicated engineering/infrastructure organization",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          }
+        ],
+        "summaryExplanation": "Strong strategic match (77/100). Satisfies target industry requirements with verified executive influence in Core Architecture. 1 credible buying signal(s) documented with primary source citations.",
+        "riskFactors": []
+      },
+      "drafts": [
+        {
+          "id": "draft_prospect_1792914854654_0uu4k_connect",
+          "prospectId": "prospect_1792914854654_0uu4k",
+          "channel": "linkedin_connect",
+          "approach": "insight_led",
+          "content": "Henrik — tracked NordicPay Systems's work in FinTech / Banking Technology. We benchmark sub-15ms streaming latency for platforms at your scale. Open to exchanging technical notes?",
+          "characterCount": 179,
+          "maxAllowedCharacters": 300,
+          "isWithinLimit": true,
+          "angleExplanation": "Anchors on NordicPay Systems's scale in FinTech / Banking Technology.",
+          "supportingEvidence": "NordicPay Systems is an active enterprise entity in FinTech / Banking Technology.",
+          "whyRelevant": "Matches Chief Technology Officer's focus on platform throughput.",
+          "intendedTone": "Peer-to-peer technical inquiry.",
+          "assumptionsFlagged": [
+            "Assumes candidate values peer engineering benchmarking."
+          ],
+          "approvalStatus": "pending_review",
+          "version": 1,
+          "history": []
+        },
+        {
+          "id": "draft_prospect_1792914854654_0uu4k_email",
+          "prospectId": "prospect_1792914854654_0uu4k",
+          "channel": "email",
+          "approach": "problem_led",
+          "subjectLine": "NordicPay Systems throughput & streaming latency benchmark",
+          "content": "Hi Henrik,\n\nI noticed NordicPay Systems's expansion in FinTech / Banking Technology and the engineering focus on pipeline throughput.\n\nWhen distributed platforms process high-concurrency transactions, a recurring bottleneck is partition skew triggering unexpected downstream delays.\n\nWe engineered an adaptive streaming verification layer that isolates partition hotspots without requiring teams to rewrite their consumer topologies.\n\nWould you be open to comparing benchmarks on how other engineering teams have handled this as throughput scales?\n\nBest regards,\nAlex Mercer",
+          "characterCount": 574,
+          "maxAllowedCharacters": 2200,
+          "isWithinLimit": true,
+          "angleExplanation": "Directly addresses partition skew and throughput bottlenecks.",
+          "supportingEvidence": "Direct authority over SEPA instant payment real-time compliance ledger.",
+          "whyRelevant": "Connects their active engineering focus to a concrete architecture solution.",
+          "intendedTone": "Strategic, technical, consultative.",
+          "assumptionsFlagged": [
+            "Assumes team is actively scaling real-time ingestion."
+          ],
+          "approvalStatus": "pending_review",
+          "version": 1,
+          "history": []
+        }
+      ],
+      "outreachStatus": "draft_ready",
+      "activityLog": [
+        {
+          "timestamp": "2026-10-25T07:54:14.672Z",
+          "action": "Outreach Materials Synthesized",
+          "details": "Generated 3 canonical LinkedIn observation options, personalized email draft (henrik@nordicpay.se), and multi-channel review queue.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.667Z",
+          "action": "Stage E & F: Qualified and Scored",
+          "details": "Overall Fit Score: 77/100 (Qualified: YES). Criteria evaluated: 7.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.664Z",
+          "action": "Stage D: Industry Analysis Completed",
+          "details": "Synthesized market pressures and regulatory vectors for FinTech / Banking Technology.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.662Z",
+          "action": "Stage C: Person Intelligence Completed",
+          "details": "Mapped executive scope, public talks, and problem ownership for Henrik Lindqvist.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.660Z",
+          "action": "Stage B: Company Intelligence Completed",
+          "details": "Analyzed NordicPay Systems operating model, tech stack, and strategic priorities.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.658Z",
+          "action": "Stage A: Identity Verified",
+          "details": "Corroborated identity for Henrik Lindqvist at NordicPay Systems. Seniority: C-Level.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.654Z",
+          "action": "Prospect Discovered",
+          "details": "Discovered via ICP-driven discovery (European open banking compliance & FedNow/SEPA expansion). Grounded in https://nordicpay.se/news/sepa-instant-migration.",
+          "actor": "system"
+        }
+      ],
+      "createdAt": "2026-10-25T07:54:14.654Z",
+      "updatedAt": "2026-10-25T07:54:14.672Z",
+      "selectedDraftId": "draft_prospect_1792914854654_0uu4k_connect",
+      "linkedinObservations": [
+        {
+          "id": "li_opt_prospect_1792914854654_0uu4k_0_1792914854671",
+          "optionType": "Option A — Direct",
+          "observation": "distributed payment systems, transaction reconciliation, and financial engineering",
+          "completeMessage": "Hi Henrik, I noticed your work at the intersection of distributed payment systems, transaction reconciliation, and financial engineering. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "NordicPay Systems is an active enterprise entity in FinTech / Banking Technology.",
+          "sourcesUsed": [
+            {
+              "title": "NordicPay Systems Corporate Overview",
+              "url": "https://nordicpay.se/news/sepa-instant-migration"
+            }
+          ],
+          "isSelected": true
+        },
+        {
+          "id": "li_opt_prospect_1792914854654_0uu4k_1_1792914854671",
+          "optionType": "Option B — Strategic",
+          "observation": "fintech infrastructure, real-time streaming settlement, and regulatory compliance",
+          "completeMessage": "Hi Henrik, I noticed your work at the intersection of fintech infrastructure, real-time streaming settlement, and regulatory compliance. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "Platform modernization and scaling throughput",
+          "sourcesUsed": [
+            {
+              "title": "NordicPay Systems Corporate Overview",
+              "url": "https://nordicpay.se/news/sepa-instant-migration"
+            }
+          ],
+          "isSelected": false
+        },
+        {
+          "id": "li_opt_prospect_1792914854654_0uu4k_2_1792914854671",
+          "optionType": "Option C — Distinctive",
+          "observation": "low-latency distributed ledgers, transaction security, and cross-border payment rails",
+          "completeMessage": "Hi Henrik, I noticed your work at the intersection of low-latency distributed ledgers, transaction security, and cross-border payment rails. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "SEPA Instant Credit Transfer compliance deadline implementation.",
+          "sourcesUsed": [
+            {
+              "title": "NordicPay Systems Corporate Overview",
+              "url": "https://nordicpay.se/news/sepa-instant-migration"
+            }
+          ],
+          "isSelected": false
+        }
+      ],
+      "selectedLinkedInOption": "li_opt_prospect_1792914854654_0uu4k_0_1792914854671",
+      "gmailDraft": {
+        "recipientEmail": "henrik@nordicpay.se",
+        "subject": "NordicPay Systems / platform architecture notes",
+        "body": "Hi Henrik,\n\nI noticed NordicPay Systems's work in FinTech / Banking Technology and your engineering team's focus on platform reliability.\n\nWhen organizations scale data-intensive pipelines, recurring partition hotspots and latency spikes often create friction between ingestion and downstream analytics.\n\nWe built an adaptive streaming verification layer designed to isolate concurrency bottlenecks without requiring topology rewrites.\n\nWould you be open to a brief exchange on how peer engineering teams have addressed this as throughput scales?\n\nBest regards,\nAlex Mercer",
+        "createdAt": "2026-10-25T07:54:14.672Z",
+        "status": "local_draft"
+      }
+    },
+    {
+      "id": "prospect_1792914854637_nwk8i",
+      "campaignId": "camp_fintech_q4_2026",
+      "icpId": "icp_fintech_enterprise",
+      "name": "Kavita Sundaram",
+      "role": "VP of Platform Engineering",
+      "company": "Moneta Cloud Payments",
+      "domain": "monetacloud.com",
+      "location": "San Francisco, CA, USA",
+      "linkedinUrl": "https://linkedin.com/in/kavita-sundaram-moneta",
+      "email": "k.sundaram@monetacloud.com",
+      "stage": "rejected",
+      "unifiedStatus": "rejected",
+      "discoverySource": "Signal-driven discovery (Hiring Staff Streaming Engineers after $30M Series B)",
+      "discoveryTimestamp": "2026-10-25T07:54:14.638Z",
+      "verified": true,
+      "fitScore": 66,
+      "buyingSignalScore": 25,
+      "confidenceScore": 30,
+      "companyData": {
+        "id": "comp_prospect_1792914854637_nwk8i",
+        "name": "Moneta Cloud Payments",
+        "domain": "monetacloud.com",
+        "website": "https://monetacloud.com",
+        "industry": "FinTech / Payments Infrastructure",
+        "headquarters": "San Francisco, CA, USA",
+        "employeeCount": "250",
+        "estimatedRevenue": "$35M ARR",
+        "businessModel": "B2B SaaS / Infrastructure API",
+        "whatTheyDo": "Moneta Cloud Payments builds enterprise solutions in FinTech / Payments Infrastructure.",
+        "productsAndServices": [
+          "Moneta Cloud Payments Core Engine",
+          "Moneta Cloud Payments Platform API"
+        ],
+        "targetCustomers": [
+          "Enterprise Customers",
+          "Mid-market Platforms"
+        ],
+        "strategicPriorities": [
+          "Platform modernization and scaling throughput"
+        ],
+        "growthSignals": [
+          "Expanding engineering teams and infrastructure investment"
+        ],
+        "operationalChallenges": [
+          "Managing data latency and transaction throughput at scale"
+        ],
+        "knownTechStack": [
+          "PostgreSQL",
+          "Kubernetes",
+          "Cloud Infrastructure",
+          "Event Streaming"
+        ],
+        "competitors": [
+          "Industry Competitor A",
+          "Industry Competitor B"
+        ],
+        "offeringBenefitFit": "Accelerates throughput and eliminates distributed latency bottlenecks.",
+        "verifiedAt": "2026-10-25T07:54:14.637Z"
+      },
+      "personData": {
+        "id": "person_prospect_1792914854637_nwk8i",
+        "fullName": "Kavita Sundaram",
+        "currentRole": "VP of Platform Engineering",
+        "company": "Moneta Cloud Payments",
+        "companyDomain": "monetacloud.com",
+        "location": "San Francisco, CA, USA",
+        "linkedinUrl": "https://linkedin.com/in/kavita-sundaram-moneta",
+        "email": "k.sundaram@monetacloud.com",
+        "department": "Platform Engineering",
+        "seniority": "VP",
+        "publicBio": "VP of Platform Engineering leading platform architecture at Moneta Cloud Payments.",
+        "pastExperience": [
+          "Senior Engineering Leader at high-growth software firms (2018-2023)"
+        ],
+        "responsibilities": [
+          "Engineering leadership and technical architecture for Moneta Cloud Payments",
+          "Vendor evaluation and infrastructure tooling adoption"
+        ],
+        "publicContentAndTalks": [],
+        "publicTopics": [
+          "Distributed systems",
+          "Infrastructure resilience",
+          "Engineering scaling"
+        ],
+        "problemOwnership": "Platform latency, infrastructure cost-efficiency, and system reliability.",
+        "whyThisPerson": "As VP of Platform Engineering, directly owns technology decisions for mission-critical infrastructure.",
+        "verifiedAt": "2026-10-25T07:54:14.638Z"
+      },
+      "industryData": {
+        "industry": "FinTech / Payments Infrastructure",
+        "keyTrends": [
+          "Sub-second latency expectations across enterprise B2B workflows"
+        ],
+        "competitivePressures": [
+          "Rapid feature velocity from competitive venture-backed entrants"
+        ],
+        "regulatoryOrTechShifts": [
+          "Increasing focus on data sovereignty and zero-downtime reliability"
+        ],
+        "implicationsForRole": "Demands continuous pipeline modernization while maintaining five-nines availability.",
+        "sources": [
+          "https://monetacloud.com/press/series-b-settlement"
+        ]
+      },
+      "claims": [
+        {
+          "id": "claim_1792914854638_1",
+          "claim": "Moneta Cloud Payments is an active enterprise entity in FinTech / Payments Infrastructure.",
+          "claimType": "fact",
+          "sourceUrl": "https://monetacloud.com/press/series-b-settlement",
+          "sourceTitle": "Moneta Cloud Payments Corporate Overview",
+          "publisher": "Moneta Cloud Payments",
+          "publishedDate": "2026-08-01",
+          "retrievedDate": "2026-10-25",
+          "excerpt": "Oversees high-concurrency payment gateway routing and Kafka event streams.",
+          "confidence": "high",
+          "relevance": "Verifies company presence and operations.",
+          "potentialOutreachApplication": "Foundational entity grounding."
+        }
+      ],
+      "signals": [
+        {
+          "id": "sig_1792914854638_1",
+          "type": "expansion",
+          "description": "Series B funding round dedicated to low-latency settlement architecture.",
+          "evidence": "Corroborated via primary source: https://monetacloud.com/press/series-b-settlement",
+          "sourceUrl": "https://monetacloud.com/press/series-b-settlement",
+          "date": "2026-08-15",
+          "confidence": "high",
+          "relevanceToOffering": "Provides relevant conversational anchor."
+        }
+      ],
+      "qualification": {
+        "overallScore": 66,
+        "isQualified": false,
+        "dimensionScores": {
+          "icpFit": 90,
+          "decisionMakerRelevance": 65,
+          "buyingSignalStrength": 25,
+          "evidenceQuality": 30,
+          "recency": 85
+        },
+        "criteriaEvaluation": [
+          {
+            "criterion": "Target Industry (FinTech, Financial Services, Banking Technology, Payments)",
+            "category": "required",
+            "status": "satisfied",
+            "evidenceNotes": "Company operates in FinTech / Payments Infrastructure."
+          },
+          {
+            "criterion": "Company Size: 150–3000 employees",
+            "category": "preferred",
+            "status": "satisfied",
+            "evidenceNotes": "Verified employee count 250 fits within target [150-3000]."
+          },
+          {
+            "criterion": "Operating Geography (North America, United States, United Kingdom, European Union)",
+            "category": "preferred",
+            "status": "contradicted",
+            "evidenceNotes": "Headquartered in San Francisco, CA, USA."
+          },
+          {
+            "criterion": "Target Leadership Role (VP of Engineering, Head of Infrastructure, CTO)",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Current title: VP of Platform Engineering."
+          },
+          {
+            "criterion": "Seniority Level: C-Level, VP, Head",
+            "category": "required",
+            "status": "satisfied",
+            "evidenceNotes": "Assessed seniority: VP."
+          },
+          {
+            "criterion": "Required: Operates mission-critical transaction or payment reconciliation pipelines",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          },
+          {
+            "criterion": "Required: Has dedicated engineering/infrastructure organization",
+            "category": "required",
+            "status": "uncertain",
+            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
+          }
+        ],
+        "summaryExplanation": "Fit score (66/100) falls below threshold of 70. Core leadership relevance confirmed, but company attributes or buying triggers require corroboration.",
+        "riskFactors": []
+      },
+      "drafts": [],
+      "outreachStatus": "none",
+      "activityLog": [
+        {
+          "timestamp": "2026-10-25T07:54:14.652Z",
+          "action": "Outreach Guardrail Enforced",
+          "details": "Prospect scored 66% which is below the threshold of 70%. Outreach generation withheld until explicit manual override.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.652Z",
+          "action": "Stage E & F: Qualified and Scored",
+          "details": "Overall Fit Score: 66/100 (Qualified: NO). Criteria evaluated: 7.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.650Z",
+          "action": "Stage D: Industry Analysis Completed",
+          "details": "Synthesized market pressures and regulatory vectors for FinTech / Payments Infrastructure.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.648Z",
+          "action": "Stage C: Person Intelligence Completed",
+          "details": "Mapped executive scope, public talks, and problem ownership for Kavita Sundaram.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.645Z",
+          "action": "Stage B: Company Intelligence Completed",
+          "details": "Analyzed Moneta Cloud Payments operating model, tech stack, and strategic priorities.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.643Z",
+          "action": "Stage A: Identity Verified",
+          "details": "Corroborated identity for Kavita Sundaram at Moneta Cloud Payments. Seniority: VP.",
+          "actor": "system"
+        },
+        {
+          "timestamp": "2026-10-25T07:54:14.638Z",
+          "action": "Prospect Discovered",
+          "details": "Discovered via Signal-driven discovery (Hiring Staff Streaming Engineers after $30M Series B). Grounded in https://monetacloud.com/press/series-b-settlement.",
+          "actor": "system"
+        }
+      ],
+      "createdAt": "2026-10-25T07:54:14.638Z",
+      "updatedAt": "2026-10-25T07:54:14.652Z"
+    },
     {
       "id": "prospect_apex_marcus",
       "campaignId": "camp_fintech_q4_2026",
@@ -575,7 +1869,60 @@
         }
       ],
       "createdAt": "2026-10-21T14:15:00Z",
-      "updatedAt": "2026-10-22T09:14:00Z"
+      "updatedAt": "2026-10-22T09:14:00Z",
+      "unifiedStatus": "ready_for_outreach",
+      "linkedinObservations": [
+        {
+          "id": "li_opt_prospect_apex_marcus_0",
+          "optionType": "Option A — Direct",
+          "observation": "distributed payment systems, transaction reconciliation, and financial engineering",
+          "completeMessage": "Hi Marcus, I noticed your work at the intersection of distributed payment systems, transaction reconciliation, and financial engineering. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "Apex Payments processes over $5.2B in annualized transaction volume across 1,200 merchants.",
+          "sourcesUsed": [
+            {
+              "title": "Apex Payments Inc Official",
+              "url": "https://apexpayments.com"
+            }
+          ],
+          "isSelected": true
+        },
+        {
+          "id": "li_opt_prospect_apex_marcus_1",
+          "optionType": "Option B — Strategic",
+          "observation": "fintech infrastructure, real-time streaming settlement, and regulatory compliance",
+          "completeMessage": "Hi Marcus, I noticed your work at the intersection of fintech infrastructure, real-time streaming settlement, and regulatory compliance. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "Migrating core reconciliation from nightly batch to sub-second streaming",
+          "sourcesUsed": [
+            {
+              "title": "Apex Payments Inc Strategy",
+              "url": "https://apexpayments.com"
+            }
+          ],
+          "isSelected": false
+        },
+        {
+          "id": "li_opt_prospect_apex_marcus_2",
+          "optionType": "Option C — Distinctive",
+          "observation": "low-latency distributed ledgers, transaction security, and cross-border payment rails",
+          "completeMessage": "Hi Marcus, I noticed your work at the intersection of low-latency distributed ledgers, transaction security, and cross-border payment rails. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "$45M Series C funding announced in Q3 2026 dedicated to next-generation real-time settlement.",
+          "sourcesUsed": [
+            {
+              "title": "Apex Payments Inc Signals",
+              "url": "https://apexpayments.com"
+            }
+          ],
+          "isSelected": false
+        }
+      ],
+      "selectedLinkedInOption": "li_opt_prospect_apex_marcus_0",
+      "gmailDraft": {
+        "recipientEmail": "m.vance@apexpayments.com",
+        "subject": "Apex Payments Inc / platform architecture & latency",
+        "body": "Hi Marcus,\n\nI noticed Apex Payments Inc's work in FinTech / Payments Infrastructure and your engineering team's focus on throughput.\n\nWhen scaling distributed systems, recurring partition hotspots often trigger latency bottlenecks across transaction pipelines.\n\nWe engineered an adaptive streaming verification layer to isolate hotspots without requiring topology rewrites.\n\nWould you be open to comparing benchmarks on how peer engineering teams have addressed this?\n\nBest regards,\nAlex Mercer",
+        "createdAt": "2026-10-25T07:54:07.162Z",
+        "status": "local_draft"
+      }
     },
     {
       "id": "prospect_novatax_elena",
@@ -838,7 +2185,60 @@
         }
       ],
       "createdAt": "2026-10-22T10:10:00Z",
-      "updatedAt": "2026-10-22T10:25:00Z"
+      "updatedAt": "2026-10-22T10:25:00Z",
+      "unifiedStatus": "ready_for_outreach",
+      "linkedinObservations": [
+        {
+          "id": "li_opt_prospect_novatax_elena_0",
+          "optionType": "Option A — Direct",
+          "observation": "distributed payment systems, transaction reconciliation, and financial engineering",
+          "completeMessage": "Hi Elena, I noticed your work at the intersection of distributed payment systems, transaction reconciliation, and financial engineering. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "NovaTax Cloud serves over 200 European enterprise merchants with $28M ARR.",
+          "sourcesUsed": [
+            {
+              "title": "NovaTax Cloud Official",
+              "url": "https://novataxcloud.io"
+            }
+          ],
+          "isSelected": true
+        },
+        {
+          "id": "li_opt_prospect_novatax_elena_1",
+          "optionType": "Option B — Strategic",
+          "observation": "fintech infrastructure, real-time streaming settlement, and regulatory compliance",
+          "completeMessage": "Hi Elena, I noticed your work at the intersection of fintech infrastructure, real-time streaming settlement, and regulatory compliance. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "Preparing for EU ViDA (VAT in the Digital Age) continuous real-time reporting mandates",
+          "sourcesUsed": [
+            {
+              "title": "NovaTax Cloud Strategy",
+              "url": "https://novataxcloud.io"
+            }
+          ],
+          "isSelected": false
+        },
+        {
+          "id": "li_opt_prospect_novatax_elena_2",
+          "optionType": "Option C — Distinctive",
+          "observation": "low-latency distributed ledgers, transaction security, and cross-border payment rails",
+          "completeMessage": "Hi Elena, I noticed your work at the intersection of low-latency distributed ledgers, transaction security, and cross-border payment rails. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "EU ViDA compliance enforcement timeline approaching for European clients.",
+          "sourcesUsed": [
+            {
+              "title": "NovaTax Cloud Signals",
+              "url": "https://novataxcloud.io"
+            }
+          ],
+          "isSelected": false
+        }
+      ],
+      "selectedLinkedInOption": "li_opt_prospect_novatax_elena_0",
+      "gmailDraft": {
+        "recipientEmail": "elena.rostova@novataxcloud.io",
+        "subject": "NovaTax Cloud / platform architecture & latency",
+        "body": "Hi Elena,\n\nI noticed NovaTax Cloud's work in FinTech / RegTech & Corporate Tax and your engineering team's focus on throughput.\n\nWhen scaling distributed systems, recurring partition hotspots often trigger latency bottlenecks across transaction pipelines.\n\nWe engineered an adaptive streaming verification layer to isolate hotspots without requiring topology rewrites.\n\nWould you be open to comparing benchmarks on how peer engineering teams have addressed this?\n\nBest regards,\nAlex Mercer",
+        "createdAt": "2026-10-25T07:54:07.162Z",
+        "status": "local_draft"
+      }
     },
     {
       "id": "prospect_synapse_devon",
@@ -1083,10 +2483,167 @@
         }
       ],
       "createdAt": "2026-10-22T15:00:00Z",
-      "updatedAt": "2026-10-22T15:15:00Z"
+      "updatedAt": "2026-10-22T15:15:00Z",
+      "unifiedStatus": "ready_for_outreach",
+      "linkedinObservations": [
+        {
+          "id": "li_opt_prospect_synapse_devon_0",
+          "optionType": "Option A — Direct",
+          "observation": "clinical health informatics, diagnostic AI, and regulatory compliance",
+          "completeMessage": "Hi Dr., I noticed your work at the intersection of clinical health informatics, diagnostic AI, and regulatory compliance. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "Synapse Clinical Health connects to 40+ acute care hospital systems across New England.",
+          "sourcesUsed": [
+            {
+              "title": "Synapse Clinical Health Official",
+              "url": "https://synapsehealth.co"
+            }
+          ],
+          "isSelected": true
+        },
+        {
+          "id": "li_opt_prospect_synapse_devon_1",
+          "optionType": "Option B — Strategic",
+          "observation": "healthcare data interoperability, patient care workflows, and enterprise health tech",
+          "completeMessage": "Hi Dr., I noticed your work at the intersection of healthcare data interoperability, patient care workflows, and enterprise health tech. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "Scaling FHIR Bulk Data export ingestion pipelines",
+          "sourcesUsed": [
+            {
+              "title": "Synapse Clinical Health Strategy",
+              "url": "https://synapsehealth.co"
+            }
+          ],
+          "isSelected": false
+        },
+        {
+          "id": "li_opt_prospect_synapse_devon_2",
+          "optionType": "Option C — Distinctive",
+          "observation": "HIPAA-compliant cloud architectures, clinical AI integration, and provider efficiency",
+          "completeMessage": "Hi Dr., I noticed your work at the intersection of HIPAA-compliant cloud architectures, clinical AI integration, and provider efficiency. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+          "supportingEvidence": "New 3-year partnership signed with Mass General Brigham affiliate hospital network.",
+          "sourcesUsed": [
+            {
+              "title": "Synapse Clinical Health Signals",
+              "url": "https://synapsehealth.co"
+            }
+          ],
+          "isSelected": false
+        }
+      ],
+      "selectedLinkedInOption": "li_opt_prospect_synapse_devon_0",
+      "gmailDraft": {
+        "recipientEmail": "d.patel@synapsehealth.co",
+        "subject": "Synapse Clinical Health / platform architecture & latency",
+        "body": "Hi Dr.,\n\nI noticed Synapse Clinical Health's work in HealthTech / Clinical Decision Support and your engineering team's focus on throughput.\n\nWhen scaling distributed systems, recurring partition hotspots often trigger latency bottlenecks across transaction pipelines.\n\nWe engineered an adaptive streaming verification layer to isolate hotspots without requiring topology rewrites.\n\nWould you be open to comparing benchmarks on how peer engineering teams have addressed this?\n\nBest regards,\nAlex Mercer",
+        "createdAt": "2026-10-25T07:54:07.162Z",
+        "status": "local_draft"
+      }
     }
   ],
-  "jobs": [],
+  "jobs": [
+    {
+      "id": "job_prospect_1792914870031_4f6v0",
+      "prospectId": "prospect_1792914870031_4f6v0",
+      "campaignId": "camp_fintech_q4_2026",
+      "prospectName": "Julian Thorne",
+      "companyName": "AeroFreight Technologies",
+      "status": "completed",
+      "currentStage": "rejected",
+      "progress": 100,
+      "stagesCompleted": [
+        "verifying",
+        "researching_company",
+        "researching_person",
+        "industry_analysis",
+        "qualifying"
+      ],
+      "retries": 0,
+      "startedAt": "2026-10-25T07:54:30.032Z",
+      "completedAt": "2026-10-25T07:54:30.053Z"
+    },
+    {
+      "id": "job_prospect_1792914870007_s3670",
+      "prospectId": "prospect_1792914870007_s3670",
+      "campaignId": "camp_fintech_q4_2026",
+      "prospectName": "Tariq Al-Mansoor",
+      "companyName": "StrataMesh Networks",
+      "status": "completed",
+      "currentStage": "rejected",
+      "progress": 100,
+      "stagesCompleted": [
+        "verifying",
+        "researching_company",
+        "researching_person",
+        "industry_analysis",
+        "qualifying"
+      ],
+      "retries": 0,
+      "startedAt": "2026-10-25T07:54:30.008Z",
+      "completedAt": "2026-10-25T07:54:30.029Z"
+    },
+    {
+      "id": "job_prospect_1792914854674_h2su8",
+      "prospectId": "prospect_1792914854674_h2su8",
+      "campaignId": "camp_fintech_q4_2026",
+      "prospectName": "Sophia Sterling",
+      "companyName": "InsurIQ Analytics",
+      "status": "completed",
+      "currentStage": "rejected",
+      "progress": 100,
+      "stagesCompleted": [
+        "verifying",
+        "researching_company",
+        "researching_person",
+        "industry_analysis",
+        "qualifying"
+      ],
+      "retries": 0,
+      "startedAt": "2026-10-25T07:54:14.675Z",
+      "completedAt": "2026-10-25T07:54:14.690Z"
+    },
+    {
+      "id": "job_prospect_1792914854654_0uu4k",
+      "prospectId": "prospect_1792914854654_0uu4k",
+      "campaignId": "camp_fintech_q4_2026",
+      "prospectName": "Henrik Lindqvist",
+      "companyName": "NordicPay Systems",
+      "status": "completed",
+      "currentStage": "ready_for_review",
+      "progress": 100,
+      "stagesCompleted": [
+        "discovering",
+        "verifying",
+        "researching_company",
+        "researching_person",
+        "industry_analysis",
+        "qualifying",
+        "drafting",
+        "ready_for_review"
+      ],
+      "retries": 0,
+      "startedAt": "2026-10-25T07:54:14.655Z",
+      "completedAt": "2026-10-25T07:54:14.673Z"
+    },
+    {
+      "id": "job_prospect_1792914854637_nwk8i",
+      "prospectId": "prospect_1792914854637_nwk8i",
+      "campaignId": "camp_fintech_q4_2026",
+      "prospectName": "Kavita Sundaram",
+      "companyName": "Moneta Cloud Payments",
+      "status": "completed",
+      "currentStage": "rejected",
+      "progress": 100,
+      "stagesCompleted": [
+        "verifying",
+        "researching_company",
+        "researching_person",
+        "industry_analysis",
+        "qualifying"
+      ],
+      "retries": 0,
+      "startedAt": "2026-10-25T07:54:14.639Z",
+      "completedAt": "2026-10-25T07:54:14.653Z"
+    }
+  ],
   "settings": {
     "activeProvider": "native",
     "geminiModel": "",
@@ -1100,10 +2657,10 @@
     "researchDepth": "deep_investigative",
     "rateLimitPerMinute": 60,
     "usage": {
-      "promptTokens": 45200,
-      "completionTokens": 19800,
-      "totalRuns": 38,
-      "estimatedCostUsd": 0
+      "promptTokens": 52172,
+      "completionTokens": 25374,
+      "totalRuns": 66,
+      "estimatedCostUsd": 0.0029268
     }
   },
   "chats": [
