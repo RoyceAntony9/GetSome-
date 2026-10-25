@@ -2,6 +2,8 @@ import { db } from './db';
 import { generateStructuredJson } from './aiProvider';
 import { calculateQualification } from '../services/scoring';
 import { generateOutreachDrafts } from './outreachEngine';
+import { generateLinkedInObservations } from './linkedinEngine';
+import { generatePersonalizedEmailDraft } from './gmailService';
 import {
   Prospect,
   CompanyIntelligence,
@@ -10,6 +12,7 @@ import {
   ResearchClaim,
   BuyingSignal,
   ProspectStage,
+  UnifiedProspectStatus,
 } from '../types/index';
 
 export async function runResearchPipeline(prospectId: string): Promise<Prospect | null> {
@@ -40,6 +43,7 @@ export async function runResearchPipeline(prospectId: string): Promise<Prospect 
     // STAGE A: Identity Verification
     // ----------------------------------------------------
     prospect.stage = 'verifying';
+    prospect.unifiedStatus = 'research_in_progress';
     db.saveProspect(prospect);
 
     const stageAPrompt = `Investigate identity verification for B2B executive candidate:
@@ -121,83 +125,73 @@ Return JSON:
 
     const stageBRes = await generateStructuredJson<Partial<CompanyIntelligence>>(
       stageBPrompt,
-      { systemInstruction: 'You are an elite corporate intelligence analyst. Produce factual, grounded business insights without marketing fluff.' },
+      {},
       () => ({
-        whatTheyDo: `${prospect!.company} provides mission-critical enterprise services in ${prospect!.companyData.industry}.`,
-        productsAndServices: [`${prospect!.company} Core Platform`, 'Enterprise API Suite'],
-        targetCustomers: ['Enterprise Customers', 'High-Growth Tech Firms'],
-        strategicPriorities: ['Modernizing core data processing pipeline', 'Expanding engineering capacity'],
-        growthSignals: ['Recent expansion of product tier and engineering recruitment'],
-        operationalChallenges: ['Managing data pipeline throughput and latency during peak demand surges'],
-        knownTechStack: ['PostgreSQL', 'Kubernetes', 'Cloud Infrastructure'],
-        competitors: ['Market leaders'],
-        offeringBenefitFit: 'Accelerates throughput and eliminates database contention.',
+        whatTheyDo: prospect!.companyData.whatTheyDo || `${prospect!.company} provides enterprise software solutions.`,
+        productsAndServices: prospect!.companyData.productsAndServices || ['Enterprise Core Platform'],
+        targetCustomers: ['Enterprise Customers', 'Mid-market Platforms'],
+        strategicPriorities: ['Platform modernization and scaling throughput'],
+        growthSignals: ['Expanding engineering teams and infrastructure investment'],
+        operationalChallenges: ['Managing data latency and transaction throughput at scale'],
+        knownTechStack: prospect!.companyData.knownTechStack || ['PostgreSQL', 'Kubernetes', 'Cloud Infrastructure'],
+        competitors: ['Industry Competitor A', 'Industry Competitor B'],
+        offeringBenefitFit: 'Accelerates throughput and eliminates distributed latency bottlenecks.',
       })
     );
 
     Object.assign(prospect.companyData, stageBRes);
-    appendLog('Stage B: Company Intelligence Completed', `Analyzed products, competitors, tech stack, and strategic priorities for ${prospect.company}.`);
+    appendLog('Stage B: Company Intelligence Completed', `Analyzed ${prospect.company} operating model, tech stack, and strategic priorities.`);
 
     db.updateJobStatus(jobId, {
       currentStage: 'researching_person',
-      progress: 48,
+      progress: 50,
       stagesCompleted: ['verifying', 'researching_company'],
     });
 
     // ----------------------------------------------------
-    // STAGE C: Person-Level Intelligence
+    // STAGE C: Person Intelligence
     // ----------------------------------------------------
     prospect.stage = 'researching_person';
     db.saveProspect(prospect);
 
-    const stageCPrompt = `Research executive prospect as an individual professional:
-Name: ${prospect.name}
+    const stageCPrompt = `Synthesize professional intelligence and problem ownership for:
+Executive: ${prospect.name}
 Role: ${prospect.role}
 Company: ${prospect.company}
-Department: ${prospect.personData.department}
-
-Investigate:
-1. Scope of influence & budget ownership
-2. Public talks, articles, podcast interviews, or technical papers
-3. Publicly expressed priorities, challenges, or architectural views
-4. Problem ownership: Why this person should be contacted rather than another executive.
+Company Tech Stack: ${prospect.companyData.knownTechStack?.join(', ') || 'Cloud, distributed systems'}
 
 Return JSON:
 {
-  "responsibilities": ["Primary architectural responsibility", "Team leadership and tooling sign-off"],
-  "publicTopics": ["Topic 1", "Topic 2", "Topic 3"],
-  "problemOwnership": "Concrete statement of why this person owns the problem",
-  "whyThisPerson": "Why this specific executive should receive outreach",
+  "responsibilities": ["Primary executive responsibility 1", "Team and budget ownership 2"],
+  "publicTopics": ["Topic they speak or write about 1", "Technical theme 2"],
+  "problemOwnership": "Specific technical/business problems falling under this person's purview",
+  "whyThisPerson": "Why this specific decision maker is the exact counterpart for our offering",
   "publicContentAndTalks": [
     {
-      "title": "Title of public address, article, or keynote",
+      "title": "Representative talk or article title",
       "type": "talk",
-      "url": "https://${prospect.domain}/press/keynote",
-      "date": "2026-06-15",
-      "excerpt": "Specific substantive quote or technical argument they made in public"
+      "url": "https://${prospect.domain}/news/talk",
+      "excerpt": "Key insight from their public discourse"
     }
   ]
 }`;
 
     const stageCRes = await generateStructuredJson<Partial<PersonIntelligence>>(
       stageCPrompt,
-      { systemInstruction: 'Investigate executive influence, public statements, and problem ownership.' },
+      {},
       () => ({
-        responsibilities: ['Overseeing infrastructure scalability and vendor tool procurement'],
-        publicTopics: ['Platform Architecture', 'High Availability', 'Engineering Velocity'],
-        problemOwnership: `Direct responsibility over infrastructure reliability at ${prospect!.company}.`,
-        whyThisPerson: `Primary decision maker for backend platform decisions and engineering budget.`,
-        publicContentAndTalks: prospect!.personData.publicContentAndTalks || [],
+        responsibilities: [
+          `Engineering leadership and technical architecture for ${prospect!.company}`,
+          'Vendor evaluation and infrastructure tooling adoption',
+        ],
+        publicTopics: ['Distributed systems', 'Infrastructure resilience', 'Engineering scaling'],
+        problemOwnership: 'Platform latency, infrastructure cost-efficiency, and system reliability.',
+        whyThisPerson: `As ${prospect!.role}, directly owns technology decisions for mission-critical infrastructure.`,
+        publicContentAndTalks: [],
       })
     );
 
-    if (stageCRes.responsibilities) prospect.personData.responsibilities = stageCRes.responsibilities;
-    if (stageCRes.publicTopics) prospect.personData.publicTopics = stageCRes.publicTopics;
-    if (stageCRes.problemOwnership) prospect.personData.problemOwnership = stageCRes.problemOwnership;
-    if (stageCRes.whyThisPerson) prospect.personData.whyThisPerson = stageCRes.whyThisPerson;
-    if (stageCRes.publicContentAndTalks?.length) {
-      prospect.personData.publicContentAndTalks = stageCRes.publicContentAndTalks;
-    }
+    Object.assign(prospect.personData, stageCRes);
     appendLog('Stage C: Person Intelligence Completed', `Mapped executive scope, public talks, and problem ownership for ${prospect.name}.`);
 
     db.updateJobStatus(jobId, {
@@ -246,7 +240,7 @@ Return JSON:
     });
 
     // ----------------------------------------------------
-    // STAGE E & F: Opportunity Signals & Structured Claims
+    // STAGE E & F: Opportunity Signals, Structured Claims & Transparent Qualification
     // ----------------------------------------------------
     prospect.stage = 'qualifying';
     db.saveProspect(prospect);
@@ -297,32 +291,82 @@ Return JSON:
       prospect.confidenceScore = prospect.qualification.dimensionScores.evidenceQuality;
     }
 
+    const isQualified = prospect.manualOverride?.isOverridden
+      ? true
+      : prospect.qualification.isQualified;
+
     appendLog(
       'Stage E & F: Qualified and Scored',
-      `Overall Fit Score: ${prospect.fitScore}/100 (Qualified: ${prospect.qualification.isQualified ? 'YES' : 'NO'}). Claims cataloged: ${prospect.claims.length}.`
+      `Overall Fit Score: ${prospect.fitScore}/100 (Qualified: ${isQualified ? 'YES' : 'NO'}). Criteria evaluated: ${prospect.qualification.criteriaEvaluation.length}.`
     );
 
+    // If NOT qualified and not overridden, enforce rule: DO NOT generate outreach drafts automatically!
+    if (!isQualified) {
+      prospect.stage = 'rejected';
+      prospect.unifiedStatus = 'rejected';
+      prospect.outreachStatus = 'none';
+      appendLog(
+        'Outreach Guardrail Enforced',
+        `Prospect scored ${prospect.fitScore}% which is below the threshold of ${icp?.minScoreThreshold || 70}%. Outreach generation withheld until explicit manual override.`
+      );
+      db.saveProspect(prospect);
+
+      db.updateJobStatus(jobId, {
+        status: 'completed',
+        currentStage: 'rejected',
+        progress: 100,
+        completedAt: new Date().toISOString(),
+        stagesCompleted: ['verifying', 'researching_company', 'researching_person', 'industry_analysis', 'qualifying'],
+      });
+
+      return prospect;
+    }
+
     // ----------------------------------------------------
-    // STAGE G: Generate Hyperpersonalized Outreach Drafts
+    // STAGE G: Generate Outreach (LinkedIn Canonical 3-Options + Gmail Draft + Multi-channel)
     // ----------------------------------------------------
     prospect.stage = 'drafting';
+    prospect.unifiedStatus = 'research_in_progress';
     db.saveProspect(prospect);
 
     db.updateJobStatus(jobId, {
       currentStage: 'drafting',
-      progress: 92,
+      progress: 90,
       stagesCompleted: ['verifying', 'researching_company', 'researching_person', 'industry_analysis', 'qualifying'],
     });
 
+    // 1. Generate multi-channel drafts
     const drafts = await generateOutreachDrafts(prospect, campaign, icp);
     prospect.drafts = drafts;
     if (drafts.length > 0 && !prospect.selectedDraftId) {
       prospect.selectedDraftId = drafts[0].id;
     }
 
+    // 2. Generate canonical LinkedIn 3-option observations
+    const liOptions = await generateLinkedInObservations(prospect);
+    prospect.linkedinObservations = liOptions;
+    if (liOptions.length > 0) {
+      prospect.selectedLinkedInOption = liOptions[0].id;
+    }
+
+    // 3. Generate personalized Gmail Draft ready for manual review & Gmail saving
+    const emailDraft = await generatePersonalizedEmailDraft(prospect, campaign);
+    prospect.gmailDraft = {
+      recipientEmail: prospect.email,
+      subject: emailDraft.subject,
+      body: emailDraft.body,
+      createdAt: new Date().toISOString(),
+      status: 'local_draft',
+    };
+
     prospect.stage = 'ready_for_review';
+    prospect.unifiedStatus = 'ready_for_outreach';
     prospect.outreachStatus = 'draft_ready';
-    appendLog('Outreach Drafts Generated', `Created ${drafts.length} individualized drafts across multiple channels and personalization angles.`);
+
+    appendLog(
+      'Outreach Materials Synthesized',
+      `Generated 3 canonical LinkedIn observation options, personalized email draft (${prospect.email}), and multi-channel review queue.`
+    );
 
     db.saveProspect(prospect);
 

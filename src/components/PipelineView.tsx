@@ -5,11 +5,11 @@ import {
   Campaign,
   ResearchJob,
   ProspectStage,
+  UnifiedProspectStatus,
 } from '../types/index';
 import {
   Search,
   Filter,
-  ArrowRight,
   ExternalLink,
   Sparkles,
   CheckCircle2,
@@ -17,11 +17,15 @@ import {
   Clock,
   Play,
   RotateCw,
-  FileText,
   Download,
   Building,
   MapPin,
   TrendingUp,
+  SlidersHorizontal,
+  Linkedin,
+  Mail,
+  ChevronRight,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface PipelineViewProps {
@@ -51,26 +55,10 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
 }) => {
   const [search, setSearch] = useState('');
   const [selectedIcp, setSelectedIcp] = useState<string>('all');
-  const [selectedStage, setSelectedStage] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [minScore, setMinScore] = useState<number>(0);
 
-  // Compute metrics from actual persisted data
-  const totalCount = prospects.length;
-  const underResearchCount = prospects.filter(p =>
-    ['discovering', 'verifying', 'researching_company', 'researching_person', 'industry_analysis', 'qualifying', 'drafting'].includes(p.stage)
-  ).length;
-  const qualifiedCount = prospects.filter(p => p.qualification?.isQualified).length;
-  const awaitingReviewCount = prospects.filter(p =>
-    p.drafts?.some(d => d.approvalStatus === 'pending_review')
-  ).length;
-  const approvedCount = prospects.reduce(
-    (acc, p) => acc + (p.drafts?.filter(d => d.approvalStatus === 'approved').length || 0),
-    0
-  );
-  const sentCount = prospects.filter(p =>
-    ['sent_manually', 'replied', 'converted'].includes(p.outreachStatus)
-  ).length;
+  const activeJobs = jobs.filter(j => j.status === 'running' || j.status === 'queued');
 
   const filteredProspects = prospects.filter(p => {
     if (search) {
@@ -84,419 +72,317 @@ export const PipelineView: React.FC<PipelineViewProps> = ({
       if (!match) return false;
     }
     if (selectedIcp !== 'all' && p.icpId !== selectedIcp) return false;
-    if (selectedStage !== 'all' && p.stage !== selectedStage) return false;
-    if (selectedStatus !== 'all' && p.outreachStatus !== selectedStatus) return false;
+    if (selectedStatus !== 'all' && (p.unifiedStatus !== selectedStatus && p.stage !== selectedStatus)) return false;
     if (p.fitScore < minScore) return false;
     return true;
   });
 
-  const activeJobs = jobs.filter(j => j.status === 'running' || j.status === 'queued');
+  const getStatusBadge = (p: Prospect) => {
+    if (p.manualOverride?.isOverridden) {
+      return (
+        <span className="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 text-[10px] font-bold flex items-center gap-1 w-fit">
+          <ShieldCheck className="w-3 h-3 text-purple-700" />
+          Override Approved
+        </span>
+      );
+    }
+
+    if (p.unifiedStatus === 'manually_sent' || p.outreachStatus === 'sent_manually') {
+      return (
+        <span className="px-2.5 py-0.5 rounded-full bg-slate-900 text-[#d4f34a] text-[10px] font-bold flex items-center gap-1 w-fit">
+          <CheckCircle2 className="w-3 h-3 text-[#d4f34a]" />
+          Manually Sent
+        </span>
+      );
+    }
+
+    if (p.gmailDraft?.status === 'saved_to_gmail') {
+      return (
+        <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-1 w-fit">
+          <Mail className="w-3 h-3 text-emerald-600" />
+          In Gmail Drafts
+        </span>
+      );
+    }
+
+    if (p.unifiedStatus === 'ready_for_outreach' || p.stage === 'ready_for_review') {
+      return (
+        <span className="px-2.5 py-0.5 rounded-full bg-[#d4f34a] text-slate-950 text-[10px] font-bold flex items-center gap-1 w-fit">
+          <Sparkles className="w-3 h-3 text-slate-950" />
+          Ready for Outreach
+        </span>
+      );
+    }
+
+    if (p.stage === 'rejected' || p.unifiedStatus === 'rejected') {
+      return (
+        <span className="px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 text-[10px] font-semibold w-fit">
+          Disqualified
+        </span>
+      );
+    }
+
+    if (['verifying', 'researching_company', 'researching_person', 'industry_analysis', 'qualifying', 'drafting'].includes(p.stage)) {
+      return (
+        <span className="px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 text-[10px] font-semibold flex items-center gap-1 w-fit">
+          <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
+          {p.stage.replace('_', ' ')}
+        </span>
+      );
+    }
+
+    return (
+      <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[10px] font-semibold w-fit">
+        {p.unifiedStatus || p.stage}
+      </span>
+    );
+  };
 
   return (
     <div className="space-y-6">
-      {/* Active Jobs Notification Banner if any */}
+      {/* Active Jobs Banner */}
       {activeJobs.length > 0 && (
-        <div className="bg-slate-900 border border-cyan-800/70 rounded-xl p-4 flex items-center justify-between shadow-lg">
+        <div className="bg-white rounded-3xl p-5 border border-sky-200 shadow-sm flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-cyan-400 animate-ping" />
+            <div className="w-8 h-8 rounded-full bg-sky-100 text-sky-700 flex items-center justify-center font-bold text-xs">
+              <span className="w-2.5 h-2.5 rounded-full bg-sky-500 animate-ping" />
+            </div>
             <div>
-              <p className="text-sm font-semibold text-white">
-                Autonomous Research Engine Active ({activeJobs.length} in queue)
+              <p className="text-xs font-bold text-slate-900">
+                Autonomous Deep Research in Progress ({activeJobs.length} active)
               </p>
-              <p className="text-xs text-slate-400">
-                Processing: {activeJobs.map(j => `${j.prospectName} (${j.currentStage})`).join(', ')}
+              <p className="text-[11px] text-slate-500">
+                Gathering primary source evidence, tech stack fingerprints, and qualification scoring.
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-cyan-400 tabular-nums">
-              Stage: {activeJobs[0]?.currentStage} ({activeJobs[0]?.progress}%)
-            </span>
-          </div>
+          <span className="text-xs font-mono font-bold text-sky-700 bg-sky-50 px-3 py-1 rounded-xl">
+            Stage: {activeJobs[0].currentStage} ({activeJobs[0].progress}%)
+          </span>
         </div>
       )}
 
-      {/* KPI Scannable Metrics Strip */}
-      <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <p className="text-xs font-medium text-slate-400">Discovered Prospects</p>
-          <p className="text-2xl font-bold text-white font-mono tabular-nums mt-1">{totalCount}</p>
-          <p className="text-xs text-slate-500 mt-1">Verified sources</p>
-        </div>
-
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <p className="text-xs font-medium text-slate-400">Under Investigation</p>
-          <p className="text-2xl font-bold text-sky-400 font-mono tabular-nums mt-1">{underResearchCount}</p>
-          <p className="text-xs text-slate-500 mt-1">Stages A-F in progress</p>
-        </div>
-
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <p className="text-xs font-medium text-slate-400">Qualified Fit</p>
-          <p className="text-2xl font-bold text-emerald-400 font-mono tabular-nums mt-1">{qualifiedCount}</p>
-          <p className="text-xs text-slate-500 mt-1">Passed ICP threshold</p>
-        </div>
-
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <p className="text-xs font-medium text-slate-400">Drafts Awaiting Review</p>
-          <p className="text-2xl font-bold text-amber-400 font-mono tabular-nums mt-1">{awaitingReviewCount}</p>
-          <p className="text-xs text-slate-500 mt-1">Ready for human approval</p>
-        </div>
-
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <p className="text-xs font-medium text-slate-400">Approved Drafts</p>
-          <p className="text-2xl font-bold text-cyan-400 font-mono tabular-nums mt-1">{approvedCount}</p>
-          <p className="text-xs text-slate-500 mt-1">Verified & compliant</p>
-        </div>
-
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-          <p className="text-xs font-medium text-slate-400">Outreach Dispatched</p>
-          <p className="text-2xl font-bold text-purple-400 font-mono tabular-nums mt-1">{sentCount}</p>
-          <p className="text-xs text-slate-500 mt-1">Manual delivery tracked</p>
-        </div>
-      </div>
-
-      {/* Filter and Control Bar */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
-        <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search by prospect name, company, title, domain, or technology..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-10 pr-4 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
-            />
+      {/* Main Container Card */}
+      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
+        {/* Top Controls Bar */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+              Prospect Pipeline & Deep Dossiers
+            </h2>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Showing {filteredProspects.length} verified B2B decision-makers across target sectors.
+            </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2.5">
             <button
               onClick={() => onExportApproved('csv')}
-              className="px-3 py-2 text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-colors flex items-center gap-1.5 whitespace-nowrap"
-              title="Download CSV export of approved outreach drafts"
+              className="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs flex items-center gap-1.5 transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
-              <span>Export Approved (CSV)</span>
+              Export CSV
             </button>
 
             <button
               onClick={onLaunchDiscovery}
-              className="px-3.5 py-2 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors flex items-center gap-1.5 whitespace-nowrap"
+              className="px-4 py-2 rounded-xl bg-[#d4f34a] hover:bg-[#c4e33d] text-slate-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Discover Prospects</span>
+              Discover Prospects
             </button>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-slate-800/80 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-slate-500">Target ICP:</span>
+        {/* Filter Toolbar */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+          {/* Search Input */}
+          <div className="relative">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search executive, company, domain..."
+              className="w-full text-xs pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
+            />
+          </div>
+
+          {/* ICP Selector */}
+          <div>
             <select
               value={selectedIcp}
               onChange={(e) => setSelectedIcp(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-md px-2.5 py-1 text-slate-300 focus:outline-none focus:border-cyan-500"
+              className="w-full text-xs font-semibold p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
             >
-              <option value="all">All Targeting Profiles ({icps.length})</option>
-              {icps.map(i => (
-                <option key={i.id} value={i.id}>{i.name}</option>
+              <option value="all">All ICP Target Profiles</option>
+              {icps.map((i) => (
+                <option key={i.id} value={i.id}>
+                  {i.name}
+                </option>
               ))}
             </select>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-slate-500">Research Stage:</span>
-            <select
-              value={selectedStage}
-              onChange={(e) => setSelectedStage(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-md px-2.5 py-1 text-slate-300 focus:outline-none focus:border-cyan-500"
-            >
-              <option value="all">All Stages</option>
-              <option value="ready_for_review">Ready for Review</option>
-              <option value="queued">Queued / Discovered</option>
-              <option value="verifying">Verifying</option>
-              <option value="qualifying">Qualifying</option>
-              <option value="drafting">Drafting</option>
-              <option value="failed">Interrupted / Failed</option>
-            </select>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="text-slate-500">Outreach Status:</span>
+          {/* Status Filter */}
+          <div>
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-md px-2.5 py-1 text-slate-300 focus:outline-none focus:border-cyan-500"
+              className="w-full text-xs font-semibold p-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900"
             >
-              <option value="all">All Statuses</option>
-              <option value="draft_ready">Draft Ready</option>
-              <option value="approved">Approved</option>
-              <option value="sent_manually">Sent</option>
-              <option value="replied">Replied</option>
+              <option value="all">All Workflow States</option>
+              <option value="ready_for_outreach">Ready for Outreach</option>
+              <option value="email_draft_saved_to_gmail">In Gmail Drafts</option>
+              <option value="linkedin_message_prepared">LinkedIn Prepared</option>
+              <option value="manually_sent">Manually Sent</option>
+              <option value="rejected">Disqualified</option>
             </select>
           </div>
 
-          <div className="flex items-center gap-2 ml-auto">
-            <span className="text-slate-500">Min Fit Score:</span>
+          {/* Min Score Slider */}
+          <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-50 border border-slate-200">
+            <span className="text-[11px] text-slate-500 font-medium whitespace-nowrap">Min Score:</span>
             <input
               type="range"
-              min="0"
-              max="95"
-              step="5"
+              min={0}
+              max={95}
+              step={5}
               value={minScore}
               onChange={(e) => setMinScore(Number(e.target.value))}
-              className="w-24 accent-cyan-400"
+              className="w-full accent-slate-900"
             />
-            <span className="font-mono text-cyan-400 tabular-nums font-semibold w-8 text-right">
-              {minScore}%
-            </span>
+            <span className="text-xs font-bold text-slate-900 w-8 text-right">{minScore}%</span>
           </div>
         </div>
-      </div>
 
-      {/* Prospect Table */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm">
-        <div className="px-5 py-3 border-b border-slate-800 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span>Showing</span>
-            <span className="font-mono text-white font-semibold tabular-nums">{filteredProspects.length}</span>
-            <span>of</span>
-            <span className="font-mono text-white font-semibold tabular-nums">{prospects.length}</span>
-            <span>researched prospects</span>
-          </div>
-          <span className="text-xs text-slate-500 font-mono">
-            Source Grounding: 100% Primary Citable
-          </span>
-        </div>
-
-        {filteredProspects.length === 0 ? (
-          <div className="p-12 text-center space-y-3">
-            <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center mx-auto text-slate-400">
-              <Search className="w-6 h-6" />
-            </div>
-            <h3 className="text-base font-semibold text-white">No prospects match filter criteria</h3>
-            <p className="text-xs text-slate-400 max-w-md mx-auto">
-              Try adjusting your search terms, minimum score slider, or launch an automated discovery run to identify new qualified decision-makers.
-            </p>
-            <button
-              onClick={onLaunchDiscovery}
-              className="mt-2 px-4 py-2 text-xs font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg transition-colors inline-flex items-center gap-2"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Launch Discovery Run</span>
-            </button>
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="bg-slate-950/60 border-b border-slate-800 text-slate-400 font-medium tracking-wide">
-                  <th className="py-3 px-4">Prospect & Role</th>
-                  <th className="py-3 px-4">Company & Market</th>
-                  <th className="py-3 px-4">ICP Fit Score</th>
-                  <th className="py-3 px-4">Top Buying Signal</th>
-                  <th className="py-3 px-4">Investigation Stage</th>
-                  <th className="py-3 px-4">Outreach Status</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/60">
-                {filteredProspects.map((p) => {
-                  const job = jobs.find(j => j.prospectId === p.id);
-                  const isRunning = job && job.status === 'running';
-                  const hasApprovedDraft = p.drafts?.some(d => d.approvalStatus === 'approved');
-                  const topSignal = p.signals?.[0];
-
-                  return (
-                    <tr
-                      key={p.id}
-                      className="hover:bg-slate-800/40 transition-colors group cursor-pointer"
-                      onClick={() => onSelectProspect(p)}
-                    >
-                      {/* Name & Role */}
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-gradient-to-tr from-slate-800 to-slate-700 border border-slate-700 flex items-center justify-center text-slate-200 font-semibold font-mono text-xs shrink-0">
-                            {p.name.split(' ').map(n => n[0]).join('')}
-                          </div>
-                          <div className="min-w-0">
-                            <p className="font-semibold text-slate-100 group-hover:text-cyan-400 transition-colors flex items-center gap-1.5 truncate">
-                              <span>{p.name}</span>
-                              {p.verified && (
-                                <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" title="Verified identity" />
-                              )}
-                            </p>
-                            <p className="text-slate-400 truncate">{p.role}</p>
-                            <p className="text-slate-500 font-mono text-[11px] truncate">{p.location}</p>
-                          </div>
+        {/* Prospect Table */}
+        <div className="overflow-x-auto pt-2">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                <th className="py-3 px-3">Decision Maker</th>
+                <th className="py-3 px-3">Organization & Domain</th>
+                <th className="py-3 px-3">ICP Fit Score</th>
+                <th className="py-3 px-3">Primary Evidence Citation</th>
+                <th className="py-3 px-3">Workflow State</th>
+                <th className="py-3 px-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {filteredProspects.map((prospect) => {
+                const claim = prospect.claims?.[0];
+                return (
+                  <tr
+                    key={prospect.id}
+                    onClick={() => onSelectProspect(prospect)}
+                    className="hover:bg-slate-50/80 cursor-pointer transition-colors group"
+                  >
+                    {/* Executive */}
+                    <td className="py-3.5 px-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-full bg-slate-100 font-bold text-slate-700 flex items-center justify-center text-xs shadow-xs">
+                          {prospect.name.split(' ').map(n => n[0]).join('')}
                         </div>
-                      </td>
-
-                      {/* Company & Domain */}
-                      <td className="py-3.5 px-4">
-                        <div className="space-y-0.5">
-                          <p className="font-medium text-slate-200 truncate flex items-center gap-1.5">
-                            <Building className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                            <span>{p.company}</span>
+                        <div>
+                          <p className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                            {prospect.name}
                           </p>
-                          <a
-                            href={`https://${p.domain}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="text-cyan-400/80 hover:text-cyan-300 font-mono text-[11px] flex items-center gap-1 truncate"
-                          >
-                            <span>{p.domain}</span>
-                            <ExternalLink className="w-2.5 h-2.5 shrink-0" />
-                          </a>
-                          <p className="text-slate-500 text-[11px] truncate">
-                            {p.companyData?.industry || 'B2B Software'}
-                          </p>
+                          <p className="text-[11px] text-slate-500">{prospect.role}</p>
+                          <p className="text-[10px] text-slate-400 font-mono">{prospect.email}</p>
                         </div>
-                      </td>
+                      </div>
+                    </td>
 
-                      {/* ICP Fit Score */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2 font-mono">
-                            <span
-                              className={`text-sm font-bold tabular-nums ${
-                                p.fitScore >= 80
-                                  ? 'text-emerald-400'
-                                  : p.fitScore >= 70
-                                  ? 'text-cyan-400'
-                                  : 'text-amber-400'
-                              }`}
-                            >
-                              {p.fitScore}%
-                            </span>
-                            <span className="text-[11px] text-slate-500">
-                              {p.qualification?.isQualified ? 'Qualified' : 'Review'}
-                            </span>
-                          </div>
-                          <div className="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                            <div
-                              className={`h-full rounded-full ${
-                                p.fitScore >= 80
-                                  ? 'bg-emerald-400'
-                                  : p.fitScore >= 70
-                                  ? 'bg-cyan-400'
-                                  : 'bg-amber-400'
-                              }`}
-                              style={{ width: `${p.fitScore}%` }}
-                            />
-                          </div>
-                          <p className="text-[10px] text-slate-500 font-mono">
-                            DM Rel: {p.qualification?.dimensionScores.decisionMakerRelevance || 85}%
-                          </p>
-                        </div>
-                      </td>
+                    {/* Company */}
+                    <td className="py-3.5 px-3">
+                      <p className="font-semibold text-slate-800">{prospect.company}</p>
+                      <p className="text-[11px] text-slate-500 font-mono">{prospect.domain}</p>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium inline-block mt-0.5">
+                        {prospect.companyData?.industry || 'B2B Software'}
+                      </span>
+                    </td>
 
-                      {/* Top Buying Signal */}
-                      <td className="py-3.5 px-4 max-w-xs">
-                        {topSignal ? (
-                          <div className="space-y-1">
-                            <div className="flex items-center gap-1.5 text-slate-300 font-medium">
-                              <TrendingUp className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
-                              <span className="truncate">{topSignal.description}</span>
-                            </div>
-                            <p className="text-[11px] text-slate-500 line-clamp-1">
-                              {topSignal.evidence}
-                            </p>
-                          </div>
-                        ) : (
-                          <span className="text-slate-500 italic">Analysis in progress</span>
-                        )}
-                      </td>
-
-                      {/* Stage */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
-                        {isRunning ? (
-                          <div className="flex items-center gap-2 text-cyan-400 font-mono text-xs">
-                            <RotateCw className="w-3.5 h-3.5 animate-spin" />
-                            <span>{job.currentStage} ({job.progress}%)</span>
-                          </div>
-                        ) : p.stage === 'ready_for_review' ? (
-                          <span className="text-emerald-400 font-medium flex items-center gap-1">
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                            <span>Ready for Review</span>
-                          </span>
-                        ) : p.stage === 'queued' ? (
-                          <span className="text-slate-400 flex items-center gap-1 font-mono">
-                            <Clock className="w-3.5 h-3.5 text-slate-500" />
-                            <span>Queued</span>
-                          </span>
-                        ) : p.stage === 'failed' ? (
-                          <span className="text-rose-400 flex items-center gap-1">
-                            <AlertCircle className="w-3.5 h-3.5" />
-                            <span>Interrupted</span>
-                          </span>
-                        ) : (
-                          <span className="text-sky-400 font-mono capitalize">
-                            {p.stage.replace('_', ' ')}
-                          </span>
-                        )}
-                      </td>
-
-                      {/* Outreach Status */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
-                        {hasApprovedDraft ? (
-                          <span className="text-cyan-300 font-medium">
-                            Approved ({p.drafts.filter(d => d.approvalStatus === 'approved').length})
-                          </span>
-                        ) : p.outreachStatus === 'sent_manually' ? (
-                          <span className="text-purple-400 font-medium">Sent Manually</span>
-                        ) : p.drafts && p.drafts.length > 0 ? (
-                          <span className="text-amber-400 font-medium">
-                            {p.drafts.length} Drafts Ready
-                          </span>
-                        ) : (
-                          <span className="text-slate-500">No Drafts</span>
-                        )}
-                      </td>
-
-                      {/* Actions */}
-                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                        <div
-                          className="flex items-center justify-end gap-2"
-                          onClick={(e) => e.stopPropagation()}
+                    {/* Fit Score */}
+                    <td className="py-3.5 px-3">
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={`px-2.5 py-1 rounded-full font-bold text-xs ${
+                            prospect.fitScore >= 80
+                              ? 'bg-[#d4f34a] text-slate-950'
+                              : prospect.fitScore >= 70
+                              ? 'bg-sky-100 text-sky-800'
+                              : 'bg-slate-100 text-slate-600'
+                          }`}
                         >
-                          {p.stage === 'queued' || p.stage === 'failed' ? (
-                            <button
-                              onClick={() => onRunResearch(p.id)}
-                              className="px-2.5 py-1.5 text-xs font-medium text-cyan-300 bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-800 rounded-md transition-colors flex items-center gap-1"
-                              title="Execute 6-stage research pipeline"
+                          {prospect.fitScore}%
+                        </span>
+                        {prospect.qualification?.isQualified && (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                        )}
+                      </div>
+                    </td>
+
+                    {/* Primary Evidence Citation */}
+                    <td className="py-3.5 px-3 max-w-sm">
+                      {claim ? (
+                        <div>
+                          <p className="text-[11px] text-slate-700 italic line-clamp-1">
+                            "{claim.claim}"
+                          </p>
+                          {claim.sourceUrl && (
+                            <a
+                              href={claim.sourceUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-[10px] text-sky-600 hover:underline flex items-center gap-1 mt-0.5 truncate"
                             >
-                              <Play className="w-3 h-3" />
-                              <span>Investigate</span>
-                            </button>
-                          ) : p.drafts && p.drafts.length > 0 ? (
-                            <button
-                              onClick={() => onOpenDraftReview(p)}
-                              className="px-2.5 py-1.5 text-xs font-medium text-amber-300 bg-amber-950/60 hover:bg-amber-900/80 border border-amber-800/80 rounded-md transition-colors flex items-center gap-1"
-                              title="Review and approve personalized outreach drafts"
-                            >
-                              <FileText className="w-3 h-3" />
-                              <span>Review Drafts</span>
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => onSelectProspect(p)}
-                              className="px-2.5 py-1.5 text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 rounded-md transition-colors flex items-center gap-1"
-                            >
-                              <span>Dossier</span>
-                              <ArrowRight className="w-3 h-3" />
-                            </button>
+                              <ExternalLink className="w-2.5 h-2.5" />
+                              {claim.sourceTitle || claim.publisher || prospect.company}
+                            </a>
                           )}
                         </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
+                      ) : (
+                        <span className="text-slate-400 italic text-[11px]">Unresearched entity</span>
+                      )}
+                    </td>
+
+                    {/* State */}
+                    <td className="py-3.5 px-3">
+                      {getStatusBadge(prospect)}
+                    </td>
+
+                    {/* Actions */}
+                    <td className="py-3.5 px-3 text-right">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectProspect(prospect);
+                          }}
+                          className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[11px] transition-colors"
+                        >
+                          Dossier
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onRunResearch(prospect.id);
+                          }}
+                          title="Run 6-stage deep investigation"
+                          className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+                        >
+                          <Play className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

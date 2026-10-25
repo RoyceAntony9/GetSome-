@@ -5,46 +5,76 @@ import {
   Campaign,
   ResearchJob,
   AISettings,
-  OutreachDraft,
 } from './types/index';
-import { TopNav, ActiveTab } from './components/TopNav';
+import { Sidebar, NavigationTab } from './components/Sidebar';
+import { OverviewDashboard } from './components/OverviewDashboard';
 import { PipelineView } from './components/PipelineView';
 import { ProspectDossier } from './components/ProspectDossier';
-import { DraftReviewModal } from './components/DraftReviewModal';
-import { ICPBuilder } from './components/ICPBuilder';
+import { LinkedInWorkspace } from './components/LinkedInWorkspace';
+import { GmailDraftsView } from './components/GmailDraftsView';
 import { CampaignManager } from './components/CampaignManager';
+import { ICPBuilder } from './components/ICPBuilder';
+import { ChatCopilot } from './components/ChatCopilot';
+import { IntegrationsView } from './components/IntegrationsView';
 import { DiscoveryModal } from './components/DiscoveryModal';
-import { SettingsModal } from './components/SettingsModal';
-import { RotateCw, CheckCircle2, AlertCircle } from 'lucide-react';
+import {
+  Search,
+  Bell,
+  Sparkles,
+  CheckCircle2,
+  AlertCircle,
+  Menu,
+  X,
+  ExternalLink,
+} from 'lucide-react';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>('pipeline');
+  const [activeTab, setActiveTab] = useState<NavigationTab>('overview');
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [icps, setIcps] = useState<ICPProfile[]>([]);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [jobs, setJobs] = useState<ResearchJob[]>([]);
   const [settings, setSettings] = useState<AISettings | null>(null);
+  const [stats, setStats] = useState<any>({
+    totalProspects: 0,
+    underResearch: 0,
+    qualified: 0,
+    highPriority: 0,
+    readyForOutreach: 0,
+    draftsAwaitingReview: 0,
+    approvedDrafts: 0,
+    gmailDraftsCount: 0,
+    gmailSavedCount: 0,
+    linkedinPreparedCount: 0,
+    sentOutreach: 0,
+    activeJobs: 0,
+    campaignsCount: 0,
+    campaignsActiveCount: 0,
+    icpsCount: 0,
+    gmailConnected: false,
+    gmailEmail: '',
+  });
 
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
-  const [reviewProspect, setReviewProspect] = useState<Prospect | null>(null);
   const [isDiscoveryOpen, setIsDiscoveryOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'error' } | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const showToast = (message: string, type: 'success' | 'info' | 'error' = 'success') => {
     setToast({ message, type });
-    setTimeout(() => setToast(null), 3000);
+    setTimeout(() => setToast(null), 3500);
   };
 
   const loadAllData = useCallback(async () => {
     try {
-      const [pRes, iRes, cRes, jRes, sRes] = await Promise.all([
+      const [pRes, iRes, cRes, jRes, sRes, stRes] = await Promise.all([
         fetch('/api/prospects').then(r => r.json()),
         fetch('/api/icps').then(r => r.json()),
         fetch('/api/campaigns').then(r => r.json()),
         fetch('/api/jobs').then(r => r.json()),
         fetch('/api/settings').then(r => r.json()),
+        fetch('/api/stats').then(r => r.json()),
       ]);
 
       setProspects(pRes || []);
@@ -52,26 +82,23 @@ export function App() {
       setCampaigns(cRes || []);
       setJobs(jRes || []);
       setSettings(sRes || null);
+      if (stRes) setStats(stRes);
 
       // Keep active view refreshed if selecting a prospect
       if (selectedProspect) {
         const refreshed = (pRes || []).find((p: Prospect) => p.id === selectedProspect.id);
         if (refreshed) setSelectedProspect(refreshed);
       }
-      if (reviewProspect) {
-        const refreshed = (pRes || []).find((p: Prospect) => p.id === reviewProspect.id);
-        if (refreshed) setReviewProspect(refreshed);
-      }
     } catch (err) {
       console.error('Failed to load application data:', err);
     } finally {
       setIsLoading(false);
     }
-  }, [selectedProspect?.id, reviewProspect?.id]);
+  }, [selectedProspect?.id]);
 
   useEffect(() => {
     loadAllData();
-  }, []);
+  }, [loadAllData]);
 
   // Poll for background research jobs if any are active
   useEffect(() => {
@@ -79,19 +106,19 @@ export function App() {
     if (!hasActiveJob) return;
 
     const interval = setInterval(() => {
-      fetch('/api/jobs')
-        .then(r => r.json())
-        .then(updatedJobs => {
+      Promise.all([
+        fetch('/api/jobs').then(r => r.json()),
+        fetch('/api/prospects').then(r => r.json()),
+        fetch('/api/stats').then(r => r.json()),
+      ])
+        .then(([updatedJobs, updatedProspects, updatedStats]) => {
           setJobs(updatedJobs || []);
-          fetch('/api/prospects')
-            .then(r => r.json())
-            .then(updatedProspects => {
-              setProspects(updatedProspects || []);
-              if (selectedProspect) {
-                const refreshed = updatedProspects.find((p: Prospect) => p.id === selectedProspect.id);
-                if (refreshed) setSelectedProspect(refreshed);
-              }
-            });
+          setProspects(updatedProspects || []);
+          if (updatedStats) setStats(updatedStats);
+          if (selectedProspect) {
+            const refreshed = (updatedProspects || []).find((p: Prospect) => p.id === selectedProspect.id);
+            if (refreshed) setSelectedProspect(refreshed);
+          }
         })
         .catch(console.error);
     }, 2500);
@@ -138,193 +165,359 @@ export function App() {
     return data.count || 0;
   };
 
-  const handleUpdateDraft = async (draftId: string, updates: Partial<OutreachDraft>) => {
-    const res = await fetch(`/api/outreach/drafts/${draftId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updates),
-    });
-    if (res.ok) {
-      showToast('Draft updated and validated successfully.', 'success');
-      await loadAllData();
-    }
-  };
-
-  const handleRegenerateDraft = async (draftId: string, customInstruction: string) => {
-    const res = await fetch(`/api/outreach/regenerate/${draftId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ customInstruction }),
-    });
-    if (res.ok) {
-      showToast('Message revised and re-analyzed.', 'success');
-      await loadAllData();
-    }
-  };
-
-  const handleMarkSentManually = async (prospectId: string) => {
-    const res = await fetch(`/api/outreach/manual-send/${prospectId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: 'sent_manually', note: 'Dispatched manually via LinkedIn/Email' }),
-    });
-    if (res.ok) {
-      showToast('Recorded outreach dispatch event.', 'success');
-      await loadAllData();
-    }
-  };
-
-  const handleExportApproved = (format: 'csv' | 'json') => {
-    window.location.href = `/api/outreach/export?format=${format}`;
-    showToast('Downloading approved outreach export...', 'info');
-  };
-
-  const handleSaveICP = async (icp: ICPProfile) => {
-    const res = await fetch('/api/icps', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(icp),
-    });
-    if (res.ok) {
-      showToast(`Targeting profile "${icp.name}" saved.`, 'success');
-      await loadAllData();
-    }
-  };
-
-  const handleDeleteICP = async (id: string) => {
-    await fetch(`/api/icps/${id}`, { method: 'DELETE' });
-    showToast('ICP profile deleted.', 'info');
-    await loadAllData();
-  };
-
   const handleSaveCampaign = async (campaign: Campaign) => {
-    const res = await fetch('/api/campaigns', {
-      method: 'POST',
+    const isNew = !campaigns.some(c => c.id === campaign.id);
+    const method = isNew ? 'POST' : 'PUT';
+    const url = isNew ? '/api/campaigns' : `/api/campaigns/${campaign.id}`;
+
+    await fetch(url, {
+      method,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(campaign),
     });
-    if (res.ok) {
-      showToast(`Campaign "${campaign.name}" saved.`, 'success');
-      await loadAllData();
-    }
+    await loadAllData();
+    showToast(`Campaign "${campaign.name}" saved successfully.`, 'success');
   };
 
   const handleDeleteCampaign = async (id: string) => {
     await fetch(`/api/campaigns/${id}`, { method: 'DELETE' });
-    showToast('Campaign deleted.', 'info');
     await loadAllData();
+    showToast('Campaign deleted.', 'info');
+  };
+
+  const handleDuplicateCampaign = async (id: string) => {
+    await fetch(`/api/campaigns/${id}/duplicate`, { method: 'POST' });
+    await loadAllData();
+    showToast('Campaign duplicated.', 'success');
+  };
+
+  const handleSaveICP = async (icp: ICPProfile) => {
+    const isNew = !icps.some(i => i.id === icp.id);
+    const method = isNew ? 'POST' : 'PUT';
+    const url = isNew ? '/api/icps' : `/api/icps/${icp.id}`;
+
+    await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(icp),
+    });
+    await loadAllData();
+    showToast(`ICP Profile "${icp.name}" updated.`, 'success');
+  };
+
+  const handleDeleteICP = async (id: string) => {
+    await fetch(`/api/icps/${id}`, { method: 'DELETE' });
+    await loadAllData();
+    showToast('ICP Profile deleted.', 'info');
   };
 
   const handleSaveSettings = async (newSettings: Partial<AISettings>) => {
-    const res = await fetch('/api/settings', {
+    await fetch('/api/settings', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newSettings),
     });
-    if (res.ok) {
-      showToast('AI engine settings updated.', 'success');
-      await loadAllData();
-    }
+    await loadAllData();
+    showToast('AI Settings updated.', 'success');
   };
 
   const handleResetSeedData = async () => {
-    const res = await fetch('/api/db/seed', { method: 'POST' });
-    if (res.ok) {
-      showToast('Database reset to clean verified B2B seed data.', 'success');
-      await loadAllData();
-      setSelectedProspect(null);
-      setReviewProspect(null);
+    await fetch('/api/db/seed', { method: 'POST' });
+    setSelectedProspect(null);
+    await loadAllData();
+    showToast('Database reset to clean verified B2B dataset.', 'info');
+  };
+
+  const handleExportApproved = (format: 'csv' | 'json') => {
+    window.open(`/api/outreach/export?format=${format}&includeAll=true`, '_blank');
+  };
+
+  const getPageTitle = () => {
+    if (selectedProspect) return 'Prospect Intelligence Dossier';
+    switch (activeTab) {
+      case 'overview': return 'Overview Dashboard';
+      case 'pipeline': return 'Prospect Pipeline';
+      case 'campaigns': return 'Campaign Management';
+      case 'icp_builder': return 'ICP Target Profiles';
+      case 'linkedin': return 'LinkedIn Canonical Outreach';
+      case 'gmail': return 'Gmail Email Drafts';
+      case 'copilot': return 'Copilot Intel [Live Search]';
+      case 'settings': return 'Integrations & AI Architecture';
+      default: return 'GetSome';
     }
   };
 
-  const activeJobsCount = jobs.filter(j => j.status === 'running' || j.status === 'queued').length;
+  const getPageSubtitle = () => {
+    if (selectedProspect) return `Deep technical and commercial intelligence for ${selectedProspect.name} (${selectedProspect.company})`;
+    switch (activeTab) {
+      case 'overview': return 'See all your B2B prospect intelligence and outreach activities here';
+      case 'pipeline': return 'Verified enterprise decision-makers across target industry verticals';
+      case 'campaigns': return 'Configure targeting rules across 12 major sectors and 60+ sub-industry presets';
+      case 'icp_builder': return 'Define multi-criteria qualification algorithms, firmographics, and disqualifiers';
+      case 'linkedin': return 'Canonical inquisitive connection requests with 3 distinct evidence-backed observations';
+      case 'gmail': return 'Save personalized emails directly into your authentic Gmail account Drafts folder';
+      case 'copilot': return 'Real-time corporate intelligence grounded in live Google Search results';
+      case 'settings': return 'Google Workspace OAuth status, Gemini models, and telemetry settings';
+      default: return '';
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Top Navigation */}
-      <TopNav
-        activeTab={activeTab}
-        onSelectTab={(tab) => {
-          if (tab === 'settings') {
-            setIsSettingsOpen(true);
-          } else {
+    <div className="min-h-screen bg-[#f4f5f7] flex text-slate-800 antialiased font-sans">
+      {/* Persistent Left Sidebar (Desktop) */}
+      <div className="hidden lg:block">
+        <Sidebar
+          activeTab={activeTab}
+          onSelectTab={(tab) => {
             setActiveTab(tab);
             setSelectedProspect(null);
-          }
-        }}
-        onOpenDiscovery={() => setIsDiscoveryOpen(true)}
-        onResetSeed={handleResetSeedData}
-        activeJobsCount={activeJobsCount}
-      />
+          }}
+          stats={stats}
+          gmailConnected={Boolean(stats.gmailConnected)}
+          onOpenDiscovery={() => setIsDiscoveryOpen(true)}
+        />
+      </div>
 
-      {/* Toast notification */}
-      {toast && (
-        <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2.5 px-4 py-2.5 bg-slate-900 border border-cyan-800 text-white rounded-xl shadow-2xl text-xs font-medium animate-in fade-in slide-in-from-bottom-2">
-          {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />}
-          {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />}
-          {toast.type === 'info' && <RotateCw className="w-4 h-4 text-cyan-400 shrink-0 animate-spin" />}
-          <span>{toast.message}</span>
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden flex">
+          <div className="fixed inset-0 bg-black/40" onClick={() => setMobileMenuOpen(false)} />
+          <div className="relative z-10 w-72 bg-white h-full shadow-2xl flex flex-col">
+            <div className="p-4 flex items-center justify-between border-b border-slate-100">
+              <span className="font-bold text-slate-900 text-base">GetSome Menu</span>
+              <button onClick={() => setMobileMenuOpen(false)} className="p-1 rounded-lg hover:bg-slate-100">
+                <X className="w-5 h-5 text-slate-600" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              <Sidebar
+                activeTab={activeTab}
+                onSelectTab={(tab) => {
+                  setActiveTab(tab);
+                  setSelectedProspect(null);
+                  setMobileMenuOpen(false);
+                }}
+                stats={stats}
+                gmailConnected={Boolean(stats.gmailConnected)}
+                onOpenDiscovery={() => {
+                  setIsDiscoveryOpen(true);
+                  setMobileMenuOpen(false);
+                }}
+              />
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Main Viewport */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8">
-        {isLoading ? (
-          <div className="h-96 flex flex-col items-center justify-center space-y-3">
-            <RotateCw className="w-6 h-6 text-cyan-400 animate-spin" />
-            <p className="text-xs text-slate-400 font-mono">Initializing GetSome Intelligence Database...</p>
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-y-auto min-h-screen">
+        {/* Top Header matching reference screenshot */}
+        <header className="bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-6 py-4 sticky top-0 z-10 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="lg:hidden p-2 rounded-xl bg-slate-100 text-slate-700"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            <div>
+              <div className="flex items-center gap-2.5">
+                <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+                  {getPageTitle()}
+                </h1>
+                {stats.activeJobs > 0 && (
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    {stats.activeJobs} Researching
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-slate-400 mt-0.5 hidden sm:block">
+                {getPageSubtitle()}
+              </p>
+            </div>
           </div>
-        ) : selectedProspect ? (
-          <ProspectDossier
-            prospect={selectedProspect}
-            icp={icps.find(i => i.id === selectedProspect.icpId)}
-            campaign={campaigns.find(c => c.id === selectedProspect.campaignId)}
-            onBack={() => setSelectedProspect(null)}
-            onOpenDraftReview={() => setReviewProspect(selectedProspect)}
-            onRunResearch={() => handleRunResearch(selectedProspect.id)}
-          />
-        ) : activeTab === 'pipeline' ? (
-          <PipelineView
-            prospects={prospects}
-            icps={icps}
-            campaigns={campaigns}
-            jobs={jobs}
-            onSelectProspect={(p) => setSelectedProspect(p)}
-            onOpenDraftReview={(p) => setReviewProspect(p)}
-            onRunResearch={(id) => handleRunResearch(id)}
-            onResumeJob={(jobId) => handleResumeJob(jobId)}
-            onLaunchDiscovery={() => setIsDiscoveryOpen(true)}
-            onExportApproved={handleExportApproved}
-          />
-        ) : activeTab === 'icp_builder' ? (
-          <ICPBuilder
-            icps={icps}
-            onSaveICP={handleSaveICP}
-            onDeleteICP={handleDeleteICP}
-          />
-        ) : activeTab === 'campaigns' ? (
-          <CampaignManager
-            campaigns={campaigns}
-            icps={icps}
-            onSaveCampaign={handleSaveCampaign}
-            onDeleteCampaign={handleDeleteCampaign}
-            onSelectCampaignForDiscovery={(campaignId) => {
-              setIsDiscoveryOpen(true);
-            }}
-          />
-        ) : null}
-      </main>
 
-      {/* Outreach Draft Review Modal */}
-      {reviewProspect && (
-        <DraftReviewModal
-          prospect={reviewProspect}
-          onClose={() => setReviewProspect(null)}
-          onUpdateDraft={handleUpdateDraft}
-          onRegenerateDraft={handleRegenerateDraft}
-          onMarkSentManually={handleMarkSentManually}
-        />
-      )}
+          {/* Right Header Controls matching reference */}
+          <div className="flex items-center gap-3">
+            {/* Quick search input */}
+            <div className="relative hidden md:block">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+              <input
+                type="text"
+                placeholder="Search prospects..."
+                onFocus={() => {
+                  if (activeTab !== 'pipeline') {
+                    setActiveTab('pipeline');
+                    setSelectedProspect(null);
+                  }
+                }}
+                className="w-48 text-xs pl-8 pr-3 py-2 rounded-full bg-slate-100 border border-transparent focus:bg-white focus:border-slate-300 focus:outline-none transition-all"
+              />
+            </div>
+
+            {/* Notification bell */}
+            <button
+              onClick={() => showToast('All autonomous research pipelines operating normally.', 'info')}
+              className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors relative"
+            >
+              <Bell className="w-4 h-4" />
+              {stats.readyForOutreach > 0 && (
+                <span className="w-2 h-2 rounded-full bg-[#d4f34a] absolute top-1.5 right-1.5 ring-2 ring-white" />
+              )}
+            </button>
+
+            {/* User Profile Pill matching reference */}
+            <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200">
+              <div className="w-8 h-8 rounded-full bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center ring-1 ring-slate-300">
+                PR
+              </div>
+              <div className="hidden sm:block text-left">
+                <span className="text-[10px] text-slate-400 block leading-none">Welcome back</span>
+                <span className="text-xs font-bold text-slate-900 leading-tight">Percy Royce</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Page Content Body */}
+        <main className="flex-1 p-6 max-w-7xl w-full mx-auto space-y-6">
+          {/* Detailed Prospect Dossier View */}
+          {selectedProspect ? (
+            <ProspectDossier
+              prospect={selectedProspect}
+              icp={icps.find(i => i.id === selectedProspect.icpId)}
+              campaign={campaigns.find(c => c.id === selectedProspect.campaignId)}
+              onBack={() => setSelectedProspect(null)}
+              onOpenDraftReview={() => {
+                setActiveTab('linkedin');
+                setSelectedProspect(null);
+              }}
+              onRunResearch={() => handleRunResearch(selectedProspect.id)}
+              onConsultCopilot={() => {
+                setActiveTab('copilot');
+              }}
+              onUpdateProspect={(updated) => {
+                setSelectedProspect(updated);
+                setProspects(prev => prev.map(p => p.id === updated.id ? updated : p));
+              }}
+              showToast={showToast}
+            />
+          ) : (
+            <>
+              {activeTab === 'overview' && (
+                <OverviewDashboard
+                  stats={stats}
+                  prospects={prospects}
+                  campaigns={campaigns}
+                  icps={icps}
+                  onSelectProspect={(p) => setSelectedProspect(p)}
+                  onNavigateTab={(tab) => setActiveTab(tab)}
+                  onOpenDiscovery={() => setIsDiscoveryOpen(true)}
+                />
+              )}
+
+              {activeTab === 'pipeline' && (
+                <PipelineView
+                  prospects={prospects}
+                  icps={icps}
+                  campaigns={campaigns}
+                  jobs={jobs}
+                  onSelectProspect={(p) => setSelectedProspect(p)}
+                  onOpenDraftReview={(p) => {
+                    setSelectedProspect(p);
+                  }}
+                  onRunResearch={handleRunResearch}
+                  onResumeJob={handleResumeJob}
+                  onLaunchDiscovery={() => setIsDiscoveryOpen(true)}
+                  onExportApproved={handleExportApproved}
+                />
+              )}
+
+              {activeTab === 'linkedin' && (
+                <LinkedInWorkspace
+                  prospects={prospects}
+                  onUpdateProspect={(updated) => {
+                    setProspects(prev => prev.map(p => p.id === updated.id ? updated : p));
+                  }}
+                  onRefreshAll={loadAllData}
+                />
+              )}
+
+              {activeTab === 'gmail' && (
+                <GmailDraftsView
+                  prospects={prospects}
+                  gmailConnected={Boolean(stats.gmailConnected)}
+                  gmailEmail={stats.gmailEmail}
+                  onUpdateProspect={(updated) => {
+                    setProspects(prev => prev.map(p => p.id === updated.id ? updated : p));
+                  }}
+                  onRefreshAll={loadAllData}
+                  showToast={showToast}
+                />
+              )}
+
+              {activeTab === 'campaigns' && (
+                <CampaignManager
+                  campaigns={campaigns}
+                  icps={icps}
+                  onSaveCampaign={handleSaveCampaign}
+                  onDeleteCampaign={handleDeleteCampaign}
+                  onDuplicateCampaign={handleDuplicateCampaign}
+                  onSelectCampaignForDiscovery={(cId) => {
+                    setIsDiscoveryOpen(true);
+                  }}
+                />
+              )}
+
+              {activeTab === 'icp_builder' && (
+                <ICPBuilder
+                  icps={icps}
+                  onSaveICP={handleSaveICP}
+                  onDeleteICP={handleDeleteICP}
+                />
+              )}
+
+              {activeTab === 'copilot' && (
+                <ChatCopilot
+                  prospects={prospects}
+                  initialProspectId={selectedProspect?.id}
+                />
+              )}
+
+              {activeTab === 'settings' && (
+                <IntegrationsView
+                  settings={settings || {
+                    activeProvider: 'gemini',
+                    geminiModel: 'gemini-3.8-flash',
+                    ollamaEndpoint: '',
+                    ollamaModel: '',
+                    taskModels: {
+                      queryGeneration: 'gemini-3.1-flash-lite',
+                      reasoningAndQual: 'gemini-3.8-flash',
+                      outreachWriting: 'gemini-3.8-flash',
+                    },
+                    researchDepth: 'deep_investigative',
+                    rateLimitPerMinute: 60,
+                    usage: {
+                      promptTokens: 45200,
+                      completionTokens: 19800,
+                      totalRuns: 38,
+                      estimatedCostUsd: 0.089,
+                    },
+                  }}
+                  gmailConnected={Boolean(stats.gmailConnected)}
+                  gmailEmail={stats.gmailEmail}
+                  onSaveSettings={handleSaveSettings}
+                  onResetSeedData={handleResetSeedData}
+                  onRefreshAll={loadAllData}
+                  showToast={showToast}
+                />
+              )}
+            </>
+          )}
+        </main>
+      </div>
 
       {/* Discovery Modal */}
       {isDiscoveryOpen && (
@@ -336,14 +529,14 @@ export function App() {
         />
       )}
 
-      {/* AI Settings Modal */}
-      {isSettingsOpen && settings && (
-        <SettingsModal
-          settings={settings}
-          onSaveSettings={handleSaveSettings}
-          onResetSeedData={handleResetSeedData}
-          onClose={() => setIsSettingsOpen(false)}
-        />
+      {/* Toast Notification */}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-50 max-w-md bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl border border-slate-800 flex items-center gap-3 animate-fade-in text-xs font-semibold">
+          {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-[#d4f34a] shrink-0" />}
+          {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />}
+          {toast.type === 'info' && <Sparkles className="w-4 h-4 text-sky-400 shrink-0" />}
+          <span>{toast.message}</span>
+        </div>
       )}
     </div>
   );

@@ -7,7 +7,11 @@ import {
   ResearchJob,
   AISettings,
   OutreachDraft,
+  ChatSession,
+  LinkedInTemplateVersion,
+  UnifiedProspectStatus,
 } from '../types/index';
+import { CANONICAL_LINKEDIN_TEMPLATE, assembleLinkedInMessage } from '../constants/linkedinTemplate';
 
 const DATA_DIR = path.resolve(process.cwd(), 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
@@ -18,25 +22,27 @@ export interface DatabaseSchema {
   prospects: Prospect[];
   jobs: ResearchJob[];
   settings: AISettings;
+  chats: ChatSession[];
+  linkedinTemplates?: LinkedInTemplateVersion[];
 }
 
 const DEFAULT_SETTINGS: AISettings = {
   activeProvider: 'gemini',
-  geminiModel: 'gemini-2.5-flash',
+  geminiModel: 'gemini-3.8-flash',
   ollamaEndpoint: 'http://localhost:11434',
   ollamaModel: 'llama3:8b',
   taskModels: {
-    queryGeneration: 'gemini-2.5-flash',
-    reasoningAndQual: 'gemini-2.5-flash',
-    outreachWriting: 'gemini-2.5-flash',
+    queryGeneration: 'gemini-3.1-flash-lite',
+    reasoningAndQual: 'gemini-3.8-flash',
+    outreachWriting: 'gemini-3.8-flash',
   },
   researchDepth: 'deep_investigative',
   rateLimitPerMinute: 60,
   usage: {
-    promptTokens: 42800,
-    completionTokens: 18450,
-    totalRuns: 34,
-    estimatedCostUsd: 0.082,
+    promptTokens: 45200,
+    completionTokens: 19800,
+    totalRuns: 38,
+    estimatedCostUsd: 0.089,
   },
 };
 
@@ -983,6 +989,78 @@ Alex Mercer`,
   },
 ];
 
+const SEED_CHATS: ChatSession[] = [
+  {
+    id: 'chat_fintech_strategist',
+    title: 'FinTech Angle & Objection Strategy',
+    roleId: 'strategist',
+    model: 'gemini-3.8-flash',
+    systemInstruction: 'You are an elite B2B sales development strategist for the GetSome prospecting platform. You advise on outreach strategies, evaluate prospect qualification against configured ICPs, critique message angles (insight-led, problem-led, curiosity-led), and suggest effective objection handling.',
+    messages: [
+      {
+        id: 'msg_1',
+        role: 'user',
+        content: 'How should we approach Marcus Vance at Apex Payments regarding their Kafka partition skew challenges without sounding like a generic vendor?',
+        timestamp: '2026-10-23T09:00:00Z',
+      },
+      {
+        id: 'msg_2',
+        role: 'model',
+        content: `Marcus Vance is deeply technical (former Director at Block and author of the QCon keynote on the "collateral float tax in batch reconciliation").
+
+To connect authentically as an engineering peer rather than a vendor:
+1. **Lead with his specific diagnosis:** Reference his observation that off-the-shelf Kafka partitions skew when sudden merchant transaction bursts hit.
+2. **Pose an architectural trade-off:** Ask whether his Settlement Core team is evaluating deterministic state-store buffering (RocksDB) or coordinator locks.
+3. **Offer low-friction proof:** Offer to share our 3-page latency benchmark memo rather than requesting a demo call right away.
+
+This positions your outreach as peer-to-peer technical exchange rather than a pitch.`,
+        timestamp: '2026-10-23T09:00:15Z',
+        modelUsed: 'gemini-3.8-flash',
+      },
+    ],
+    createdAt: '2026-10-23T08:50:00Z',
+    updatedAt: '2026-10-23T09:00:15Z',
+  },
+  {
+    id: 'chat_live_researcher',
+    title: 'Live Market & Intelligence Scout',
+    roleId: 'researcher',
+    model: 'gemini-3.8-flash',
+    systemInstruction: 'You are an investigative business development researcher for GetSome. You leverage real-time Google Search data to discover recent company funding, leadership changes, regulatory directives, and technology migrations. Always cite specific sources with URLs.',
+    messages: [
+      {
+        id: 'msg_res_1',
+        role: 'user',
+        content: 'Check for the latest regulatory compliance pressures affecting European corporate tax and payments in 2026.',
+        timestamp: '2026-10-23T09:15:00Z',
+      },
+      {
+        id: 'msg_res_2',
+        role: 'model',
+        content: `Based on live regulatory tracking and European Commission documentation:
+
+1. **EU ViDA (VAT in the Digital Age):** The mandatory transition to real-time digital reporting for cross-border transactions is moving into high gear across member states. This turns tax calculation into a synchronous, sub-20ms checkout latency dependency.
+2. **B2B E-Invoicing Mandates:** Continuous Transaction Controls (CTC) are rolling out across France, Germany, and Spain via PEPPOL-certified access points.
+3. **Implications for CTOs:** Leaders like Elena Rostova at NovaTax Cloud must guarantee sub-50ms API response times without risking calculation inaccuracies.`,
+        timestamp: '2026-10-23T09:15:20Z',
+        modelUsed: 'gemini-3.8-flash (Search Grounded)',
+        groundingSources: [
+          {
+            title: 'European Commission ViDA Implementation Framework',
+            url: 'https://taxation-customs.ec.europa.eu/vat-digital-age',
+          },
+          {
+            title: 'techUK Insights: Surviving Continuous Transaction Controls',
+            url: 'https://techuk.org/insights/surviving-vida-tax-engineering',
+          },
+        ],
+      },
+    ],
+    createdAt: '2026-10-23T09:10:00Z',
+    updatedAt: '2026-10-23T09:15:20Z',
+  },
+];
+
 class Database {
   private data: DatabaseSchema;
 
@@ -998,12 +1076,115 @@ class Database {
       if (fs.existsSync(DB_FILE)) {
         const raw = fs.readFileSync(DB_FILE, 'utf-8');
         const parsed = JSON.parse(raw);
+
+        // Migrate prospects to include unifiedStatus, linkedinObservations, and gmailDraft
+        const prospects: Prospect[] = (parsed.prospects || SEED_PROSPECTS).map((p: Prospect) => {
+          let uStatus: UnifiedProspectStatus = p.unifiedStatus;
+          if (!uStatus) {
+            if (p.outreachStatus === 'sent_manually' || p.outreachStatus === 'replied') {
+              uStatus = 'manually_sent';
+            } else if (p.stage === 'ready_for_review' || p.stage === 'approved') {
+              uStatus = 'ready_for_outreach';
+            } else if (p.stage === 'rejected') {
+              uStatus = 'rejected';
+            } else if (['verifying', 'researching_company', 'researching_person', 'industry_analysis', 'qualifying', 'drafting'].includes(p.stage)) {
+              uStatus = 'research_in_progress';
+            } else {
+              uStatus = 'discovered';
+            }
+          }
+
+          // Populate canonical LinkedIn observation alternatives if missing
+          let liOpts = p.linkedinObservations;
+          if (!liOpts || liOpts.length === 0) {
+            const firstName = p.name ? p.name.split(' ')[0] : 'there';
+            const ind = (p.companyData?.industry || '').toLowerCase();
+            let obsA = 'platform architecture, high-throughput systems, and operational scaling';
+            let obsB = 'enterprise infrastructure, digital modernization, and developer velocity';
+            let obsC = 'mission-critical cloud data pipelines, reliability engineering, and system resilience';
+
+            if (ind.includes('health') || ind.includes('clinical') || ind.includes('bio')) {
+              obsA = 'clinical health informatics, diagnostic AI, and regulatory compliance';
+              obsB = 'healthcare data interoperability, patient care workflows, and enterprise health tech';
+              obsC = 'HIPAA-compliant cloud architectures, clinical AI integration, and provider efficiency';
+            } else if (ind.includes('fintech') || ind.includes('bank') || ind.includes('pay')) {
+              obsA = 'distributed payment systems, transaction reconciliation, and financial engineering';
+              obsB = 'fintech infrastructure, real-time streaming settlement, and regulatory compliance';
+              obsC = 'low-latency distributed ledgers, transaction security, and cross-border payment rails';
+            } else if (ind.includes('defence') || ind.includes('defense') || ind.includes('aero')) {
+              obsA = 'defence innovation, emerging technology, and government acquisition';
+              obsB = 'defence technology, commercialization, and public-sector procurement';
+              obsC = 'connecting emerging defence capabilities with government acquisition and real-world deployment';
+            }
+
+            liOpts = [
+              {
+                id: `li_opt_${p.id}_0`,
+                optionType: 'Option A — Direct',
+                observation: obsA,
+                completeMessage: assembleLinkedInMessage(firstName, obsA, CANONICAL_LINKEDIN_TEMPLATE),
+                supportingEvidence: p.claims?.[0]?.claim || `${p.company} operations in ${p.companyData?.industry}`,
+                sourcesUsed: [{ title: `${p.company} Official`, url: `https://${p.domain}` }],
+                isSelected: true,
+              },
+              {
+                id: `li_opt_${p.id}_1`,
+                optionType: 'Option B — Strategic',
+                observation: obsB,
+                completeMessage: assembleLinkedInMessage(firstName, obsB, CANONICAL_LINKEDIN_TEMPLATE),
+                supportingEvidence: p.companyData?.strategicPriorities?.[0] || 'Scaling core platform operations',
+                sourcesUsed: [{ title: `${p.company} Strategy`, url: `https://${p.domain}` }],
+                isSelected: false,
+              },
+              {
+                id: `li_opt_${p.id}_2`,
+                optionType: 'Option C — Distinctive',
+                observation: obsC,
+                completeMessage: assembleLinkedInMessage(firstName, obsC, CANONICAL_LINKEDIN_TEMPLATE),
+                supportingEvidence: p.signals?.[0]?.description || 'Active modernization initiative',
+                sourcesUsed: [{ title: `${p.company} Signals`, url: `https://${p.domain}` }],
+                isSelected: false,
+              },
+            ];
+          }
+
+          // Populate Gmail draft if missing
+          let gmailDraft = p.gmailDraft;
+          if (!gmailDraft && p.email) {
+            const firstName = p.name ? p.name.split(' ')[0] : 'there';
+            gmailDraft = {
+              recipientEmail: p.email,
+              subject: `${p.company} / platform architecture & latency`,
+              body: `Hi ${firstName},\n\nI noticed ${p.company}'s work in ${p.companyData?.industry || 'enterprise tech'} and your engineering team's focus on throughput.\n\nWhen scaling distributed systems, recurring partition hotspots often trigger latency bottlenecks across transaction pipelines.\n\nWe engineered an adaptive streaming verification layer to isolate hotspots without requiring topology rewrites.\n\nWould you be open to comparing benchmarks on how peer engineering teams have addressed this?\n\nBest regards,\nAlex Mercer`,
+              createdAt: new Date().toISOString(),
+              status: 'local_draft',
+            };
+          }
+
+          return {
+            ...p,
+            unifiedStatus: uStatus,
+            linkedinObservations: liOpts,
+            selectedLinkedInOption: p.selectedLinkedInOption || liOpts[0]?.id,
+            gmailDraft,
+          };
+        });
+
+        const campaigns: Campaign[] = (parsed.campaigns || SEED_CAMPAIGNS).map((c: Campaign) => ({
+          ...c,
+          status: c.status || 'active',
+          targetSubIndustries: c.targetSubIndustries || [],
+          customIndustries: c.customIndustries || [],
+        }));
+
         return {
           icps: parsed.icps || SEED_ICPS,
-          campaigns: parsed.campaigns || SEED_CAMPAIGNS,
-          prospects: parsed.prospects || SEED_PROSPECTS,
+          campaigns,
+          prospects,
           jobs: parsed.jobs || [],
           settings: { ...DEFAULT_SETTINGS, ...(parsed.settings || {}) },
+          chats: parsed.chats || SEED_CHATS,
+          linkedinTemplates: parsed.linkedinTemplates || [CANONICAL_LINKEDIN_TEMPLATE],
         };
       }
     } catch (err) {
@@ -1016,6 +1197,8 @@ class Database {
       prospects: SEED_PROSPECTS,
       jobs: [],
       settings: DEFAULT_SETTINGS,
+      chats: SEED_CHATS,
+      linkedinTemplates: [CANONICAL_LINKEDIN_TEMPLATE],
     };
     this.save(initial);
     return initial;
@@ -1041,6 +1224,7 @@ class Database {
     ).length;
     const qualified = this.data.prospects.filter(p => p.qualification?.isQualified).length;
     const highPriority = this.data.prospects.filter(p => (p.fitScore >= 80 && p.buyingSignalScore >= 80)).length;
+    const readyForOutreach = this.data.prospects.filter(p => p.unifiedStatus === 'ready_for_outreach').length;
     const draftsAwaitingReview = this.data.prospects.filter(p =>
       p.drafts?.some(d => d.approvalStatus === 'pending_review')
     ).length;
@@ -1048,21 +1232,30 @@ class Database {
       (acc, p) => acc + (p.drafts?.filter(d => d.approvalStatus === 'approved').length || 0),
       0
     );
+    const gmailDraftsCount = this.data.prospects.filter(p => Boolean(p.gmailDraft)).length;
+    const gmailSavedCount = this.data.prospects.filter(p => p.gmailDraft?.status === 'saved_to_gmail').length;
+    const linkedinPreparedCount = this.data.prospects.filter(p => Boolean(p.linkedinObservations?.length)).length;
     const sentOutreach = this.data.prospects.filter(p =>
-      ['sent_manually', 'replied', 'converted'].includes(p.outreachStatus)
+      ['sent_manually', 'replied', 'converted'].includes(p.outreachStatus) || p.unifiedStatus === 'manually_sent'
     ).length;
     const activeJobs = this.data.jobs.filter(j => j.status === 'running' || j.status === 'queued').length;
+    const campaignsActiveCount = this.data.campaigns.filter(c => c.status === 'active').length;
 
     return {
       totalProspects,
       underResearch,
       qualified,
       highPriority,
+      readyForOutreach,
       draftsAwaitingReview,
       approvedDrafts,
+      gmailDraftsCount,
+      gmailSavedCount,
+      linkedinPreparedCount,
       sentOutreach,
       activeJobs,
       campaignsCount: this.data.campaigns.length,
+      campaignsActiveCount,
       icpsCount: this.data.icps.length,
     };
   }
@@ -1198,6 +1391,66 @@ class Database {
     this.save();
   }
 
+  public getChats(): ChatSession[] {
+    return [...(this.data.chats || [])];
+  }
+
+  public getChatById(id: string): ChatSession | undefined {
+    return (this.data.chats || []).find(c => c.id === id);
+  }
+
+  public saveChat(chat: ChatSession): ChatSession {
+    if (!this.data.chats) this.data.chats = [];
+    const idx = this.data.chats.findIndex(c => c.id === chat.id);
+    if (idx >= 0) {
+      this.data.chats[idx] = { ...chat, updatedAt: new Date().toISOString() };
+    } else {
+      this.data.chats.unshift({ ...chat, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+    }
+    this.save();
+    return chat;
+  }
+
+  public deleteChat(id: string): boolean {
+    if (!this.data.chats) return false;
+    const before = this.data.chats.length;
+    this.data.chats = this.data.chats.filter(c => c.id !== id);
+    if (this.data.chats.length !== before) {
+      this.save();
+      return true;
+    }
+    return false;
+  }
+
+  public getLinkedInTemplates(): LinkedInTemplateVersion[] {
+    return this.data.linkedinTemplates && this.data.linkedinTemplates.length > 0
+      ? [...this.data.linkedinTemplates]
+      : [CANONICAL_LINKEDIN_TEMPLATE];
+  }
+
+  public getCanonicalLinkedInTemplate(): LinkedInTemplateVersion {
+    const list = this.getLinkedInTemplates();
+    return list.find(t => t.isCanonical) || list[0] || CANONICAL_LINKEDIN_TEMPLATE;
+  }
+
+  public saveLinkedInTemplate(template: LinkedInTemplateVersion): LinkedInTemplateVersion {
+    if (!this.data.linkedinTemplates) this.data.linkedinTemplates = [CANONICAL_LINKEDIN_TEMPLATE];
+    const idx = this.data.linkedinTemplates.findIndex(t => t.id === template.id);
+    if (idx >= 0) {
+      this.data.linkedinTemplates[idx] = { ...template, updatedAt: new Date().toISOString() };
+    } else {
+      this.data.linkedinTemplates.unshift({ ...template, updatedAt: new Date().toISOString() });
+    }
+    this.save();
+    return template;
+  }
+
+  public resetLinkedInTemplate(): LinkedInTemplateVersion {
+    this.data.linkedinTemplates = [{ ...CANONICAL_LINKEDIN_TEMPLATE, updatedAt: new Date().toISOString() }];
+    this.save();
+    return CANONICAL_LINKEDIN_TEMPLATE;
+  }
+
   public resetSeedData(): void {
     this.data = {
       icps: SEED_ICPS,
@@ -1205,6 +1458,8 @@ class Database {
       prospects: SEED_PROSPECTS,
       jobs: [],
       settings: DEFAULT_SETTINGS,
+      chats: SEED_CHATS,
+      linkedinTemplates: [CANONICAL_LINKEDIN_TEMPLATE],
     };
     this.save();
   }

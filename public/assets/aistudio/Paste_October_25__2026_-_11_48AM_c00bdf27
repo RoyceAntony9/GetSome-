@@ -1,0 +1,928 @@
+# GetSome — Comprehensive Product Enhancement, Integration & UI Redesign Specification
+
+## Role and Objective
+
+Act as a senior full-stack engineer, AI systems architect, product designer, and integration engineer working on **GetSome**, an AI-powered B2B prospect intelligence and hyperpersonalized outreach platform.
+
+Your responsibility is to enhance the existing application into a functional, reliable, production-minded prospecting system.
+
+GetSome should enable users to discover relevant companies and decision-makers, research their professional and commercial context, qualify prospects against an Ideal Customer Profile (ICP), identify potential business opportunities, and prepare personalized outreach.
+
+The complete workflow is:
+
+**Campaign creation → ICP configuration → Prospect discovery → Research and qualification → Personalized message generation → Gmail draft creation / LinkedIn message preparation → Human review → Manual sending.**
+
+This specification contains functional requirements first and visual redesign requirements at the very end.
+
+**Implementation order is mandatory:** Complete, integrate, and test all functional changes before beginning the frontend redesign described in the final section.
+
+---
+
+# PART I — EXISTING APPLICATION AUDIT
+
+## 1. Inspect Before Modifying
+
+Before writing code:
+
+- Inspect the complete existing repository and application structure.
+- Identify the frontend framework, backend architecture, database, authentication system, background-job infrastructure, model providers, and external integrations.
+- Review existing campaign, prospect, research, qualification, and outreach functionality.
+- Identify broken workflows, duplicated logic, placeholder features, and existing technical debt that could affect the requested changes.
+- Understand the existing data model and migration strategy.
+- Identify which functionality is already implemented and which features are missing.
+
+Do not assume that every feature needs to be rebuilt.
+
+### Preservation requirements
+
+- Preserve working functionality.
+- Reuse existing components, services, schemas, and integrations where sensible.
+- Avoid introducing a new technology stack unless there is a concrete technical justification.
+- Do not overwrite user data or discard existing campaigns and prospect records.
+- Use backward-compatible database migrations wherever practical.
+- Maintain the current application's working deployment and configuration.
+- Never replace functional features with hardcoded demonstration data.
+
+Produce a concise implementation plan based on the actual repository, then proceed with implementation rather than stopping after the audit.
+
+# PART II — CAMPAIGN MANAGEMENT AND INDUSTRY EXPANSION
+
+## 2. Expand Industry Coverage
+
+The current campaign system contains too few industry options. Expand it into a flexible B2B prospecting system with reusable campaign presets, advanced filters, custom industries, and configurable qualification criteria.
+
+Implement the following industry presets.
+
+### Technology and SaaS
+- Artificial intelligence and machine learning
+- Enterprise software and SaaS
+- Cybersecurity
+- Cloud computing
+- Developer tools
+- IT services
+- Digital transformation
+- Data infrastructure
+
+### Healthcare and Life Sciences
+- Healthtech and digital health
+- Hospitals and healthcare providers
+- Medical devices
+- Pharmaceuticals
+- Biotechnology
+- Healthcare software
+
+### Finance and Fintech
+- Banking and financial services
+- Payments and financial infrastructure
+- Insurance and insurtech
+- Wealth management
+- Financial software
+- Financial operations technology
+
+### Manufacturing and Industrial Technology
+- Industrial automation
+- Robotics and electronics
+- Automotive and mobility
+- Supply chain technology
+- Industrial software
+- Advanced manufacturing
+
+### Professional Services
+- Management consulting
+- Technology consulting
+- Recruitment and talent solutions
+- Legal services
+- Accounting services
+- Business process outsourcing
+
+### Retail and E-commerce
+- D2C brands
+- Online marketplaces
+- Retail technology
+- Consumer goods
+- E-commerce infrastructure
+- Retail operations
+
+### Real Estate and Construction
+- Commercial real estate
+- Property technology
+- Construction technology
+- Infrastructure development
+- Facilities management
+
+### Education and EdTech
+- Universities and higher education
+- Online learning
+- Corporate training
+- Education technology
+- Workforce development
+
+### Logistics and Transportation
+- Freight and logistics
+- Warehousing
+- Fleet management
+- Mobility
+- Supply chain optimization
+
+### Energy and Sustainability
+- Renewable energy
+- Energy technology
+- Climate technology
+- Environmental services
+- Sustainability solutions
+
+### Telecommunications and Media
+- Telecommunications
+- Digital media
+- Advertising technology
+- Marketing technology
+- Communications infrastructure
+
+### Aerospace and Defence
+- Aerospace and aviation
+- Defence technology
+- Drones and robotics
+- Government acquisition
+- Dual-use technology
+- Defence manufacturing
+
+These categories are presets, not limitations. Users must be able to add custom industries, sub-industries, niche markets, and combinations of industries.
+
+## 3. Campaign Creation and Management
+
+Implement complete campaign management functionality.
+
+Users must be able to:
+
+- Create, edit, duplicate, pause, archive, and delete campaigns.
+- Configure campaign names, descriptions, objectives, and target industries.
+- Select multiple industries and sub-industries when appropriate.
+- Define target geographies, regions, and countries.
+- Configure company-size and employee-count ranges.
+- Set revenue ranges and business-model preferences.
+- Target decision-makers by job title, department, function, and seniority.
+- Specify technologies, business characteristics, and relevant buying signals.
+- Exclude companies, industries, locations, existing customers, and previously contacted prospects.
+- Configure research depth and qualification requirements.
+- Save ICPs and filters as reusable presets.
+- Resume paused campaigns without losing existing progress.
+- Track discovered, researched, qualified, rejected, and outreach-ready prospects.
+
+Campaigns must be independent configurations rather than hardcoded versions of a single workflow.
+
+## 4. ICP Builder and Advanced Filters
+
+Create a flexible Ideal Customer Profile builder.
+
+Support:
+
+- Company industry and sub-industry
+- Employee count
+- Revenue range
+- Company geography
+- Company business model
+- Relevant technologies
+- Target job titles
+- Seniority and department
+- Decision-making responsibilities
+- Professional experience where relevant
+- Buying signals
+- Exclusion criteria
+- Custom user-defined attributes
+
+Use sensible defaults and expandable advanced filters.
+
+Persist all campaign configurations in the database and restore them correctly after refreshing the application.
+
+# PART III — PROSPECT DISCOVERY AND INTELLIGENCE
+
+## 5. Prospect Discovery
+
+Enable GetSome to discover relevant companies and decision-makers through authorized search providers, available APIs, and supported data sources.
+
+Discovery must respect campaign filters and ICP requirements.
+
+Support discovery based on:
+
+- Industry and niche
+- Company size and revenue
+- Geography
+- Job title and seniority
+- Technologies used
+- Company initiatives
+- Relevant professional activities
+- Business developments and buying signals
+- Campaign-specific search terms
+
+Implement pagination, deduplication, resumable jobs, and progress tracking.
+
+Do not invent companies, individuals, email addresses, professional histories, or business developments.
+
+## 6. Research and Evidence
+
+For each prospect, gather useful, relevant intelligence:
+
+- Verified identity and current role
+- Company and industry context
+- Company products, services, and markets
+- Business model and relevant commercial objectives
+- Professional background and responsibilities
+- Publicly documented initiatives and developments
+- Relevant industry trends
+- Potential business opportunities
+- Evidence of alignment with the selected ICP
+- Possible reasons for initiating a conversation
+
+### Evidence requirements
+
+Store supporting source URLs, retrieval timestamps, and relevant excerpts or summaries.
+
+Distinguish among:
+
+- Verified facts
+- Reasonable inferences
+- Unverified information
+- Missing information
+
+Every important personalized claim should be traceable to its source.
+
+When reliable evidence is unavailable, mark the information as unknown rather than generating plausible-sounding details.
+
+## 7. Qualification Engine
+
+Implement configurable qualification and transparent scoring.
+
+For every prospect, show:
+
+- Overall qualification score
+- Criterion-level scores
+- ICP alignment
+- Reasons for qualification or rejection
+- Supporting evidence
+- Missing information
+- Recommended next action
+
+Allow manual overrides.
+
+Do not generate outreach for rejected or insufficiently qualified prospects unless the user explicitly overrides the decision.
+
+Avoid presenting an AI-generated score as an objective fact. Explain the factors contributing to the score.
+
+# PART IV — GMAIL INTEGRATION
+
+## 8. Connect GetSome to Gmail
+
+Implement a real Gmail integration using Google's official OAuth 2.0 and Gmail APIs.
+
+The purpose is to generate personalized emails and save them directly into the authenticated Gmail account's Drafts folder.
+
+**GetSome must never send emails automatically.**
+
+### Authentication
+
+Implement:
+
+- A Connect Gmail button
+- Google OAuth 2.0 authorization
+- Secure callback handling
+- Connection and authentication status
+- Token refresh and expiration handling
+- Reconnection and disconnection
+- Clear error messages
+- Secure server-side token storage
+- Encrypted refresh-token storage where appropriate
+
+Request only the permissions necessary for creating and managing drafts. Prefer the narrowest suitable Gmail API scope.
+
+Never expose credentials or tokens in frontend code, browser storage, source control, or logs.
+
+Provide setup instructions for Google Cloud configuration, Gmail API enablement, OAuth consent, redirect URIs, and any required verification.
+
+## 9. Gmail Draft Generation
+
+For every qualified prospect with a verified email address:
+
+1. Retrieve the prospect's research and campaign configuration.
+2. Identify a relevant business angle supported by evidence.
+3. Generate a concise, personalized first-touch email.
+4. Generate a relevant subject line.
+5. Save the email using the Gmail API's draft-creation functionality.
+6. Store the Gmail draft ID and associated prospect and campaign records.
+7. Display the draft in GetSome.
+8. Provide an action to open the draft in Gmail for review.
+
+The draft must exist in the user's real Gmail account, not just in GetSome's local database.
+
+### Draft management
+
+Provide:
+
+- Draft previews
+- Subject and body editing
+- Prospect research alongside the draft
+- Campaign and industry filters
+- Regeneration controls
+- Open in Gmail actions
+- Discard functionality
+- Creation timestamps
+- Clear draft status
+- Error handling and retry controls
+
+Prevent unintended duplicate drafts when jobs are retried or a user revisits the same prospect.
+
+Do not fabricate email addresses. Use verified addresses from authorized sources or addresses explicitly supplied by the user.
+
+### Absolute sending restriction
+
+Do not call the Gmail send endpoint automatically.
+
+AI-generated emails must remain drafts until the user opens Gmail, reviews the content, and sends them manually.
+
+Autonomous research and drafting must never bypass this restriction.
+
+# PART V — LINKEDIN FIRST-TOUCH MESSAGING
+
+## 10. Canonical LinkedIn Message Template
+
+The following is the user's canonical first-touch LinkedIn connection request:
+
+> Hi [First Name], I noticed your work at the intersection of [personalized professional observation]. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.
+
+This template reflects the desired tone: concise, professional, natural, inquisitive, and not overtly sales-oriented.
+
+**The personalized observation is the only section that should change during ordinary generation, apart from replacing the first-name placeholder.**
+
+## 11. Fixed Wording
+
+Preserve the following text exactly and in the same order:
+
+- `Hi [First Name],`
+- `I noticed your work at the intersection of`
+- The personalized professional observation
+- `I’d love to connect and exchange ideas on`
+- `technology commercialization, strategic partnerships, and driving growth in emerging markets.`
+
+The three closing themes must remain fixed:
+
+1. Technology commercialization
+2. Strategic partnerships
+3. Driving growth in emerging markets
+
+Do not replace these themes with alternatives based on industry, campaign, or prospect type.
+
+Do not add a meeting request, product pitch, job request, exaggerated compliment, or unrelated sales proposition.
+
+## 12. Personalized Professional Observation
+
+Research each prospect's actual professional work and identify three relevant professional areas.
+
+The observation should describe the intersection of the prospect's responsibilities, expertise, company activities, industry, or documented professional interests.
+
+Possible areas include:
+
+- Defence innovation
+- Government acquisition
+- Emerging technology
+- Enterprise AI
+- Digital transformation
+- Healthcare innovation
+- Financial infrastructure
+- Industrial automation
+- Technology commercialization
+- International market development
+
+These are examples, not a fixed keyword list.
+
+Choose areas based on the individual prospect's verified information rather than assigning generic keywords to every person in an industry.
+
+Do not invent interests, accomplishments, or professional responsibilities.
+
+## 13. Generate Three Alternative Observations
+
+For each qualified prospect, generate three distinct observation alternatives.
+
+### Option A — Direct
+A concise, factual description of the person's professional focus.
+
+### Option B — Strategic
+A description emphasizing the intersection of their responsibilities, commercial priorities, or industry.
+
+### Option C — Distinctive
+A more specific observation that highlights a meaningful, evidence-backed aspect of their work.
+
+Each option must be genuinely distinct in emphasis without changing the underlying facts.
+
+For example, for a prospect in defence technology:
+
+**Option A**
+
+“I noticed your work at the intersection of defence innovation, emerging technology, and government acquisition.”
+
+**Option B**
+
+“I noticed your work at the intersection of defence technology, commercialization, and public-sector procurement.”
+
+**Option C**
+
+“I noticed your work connecting emerging defence capabilities with government acquisition and real-world deployment.”
+
+These examples are illustrative. Generate the actual observations from the prospect's research.
+
+If there is insufficient evidence to produce three meaningfully distinct observations, provide fewer options rather than inventing details.
+
+## 14. Complete Message Generation
+
+Combine each observation with the exact fixed template.
+
+The interface should display three complete messages so the user can compare them directly.
+
+For each message, display:
+
+- The complete connection request
+- The personalized observation
+- Supporting research evidence
+- The sources used
+- A selection control
+- An edit option
+- A copy-to-clipboard action
+
+Selecting an observation must never modify the fixed closing.
+
+Allow users to mark a message as prepared or manually used, but do not assume that copying or approving a message means it has been sent.
+
+## 15. LinkedIn Template Settings
+
+Create a dedicated template-settings area.
+
+Allow the user to:
+
+- View the canonical template
+- Edit it intentionally
+- Preview personalization
+- Save new template versions
+- Restore a previous version
+- Review the fixed and dynamic sections
+
+Generated messages must never silently rewrite the canonical template.
+
+Do not automatically send LinkedIn connection requests or messages. Use authorized integrations where available and otherwise provide manual copy-and-paste functionality.
+
+Do not rely on unauthorized LinkedIn scraping, browser automation, or unsupported APIs.
+
+# PART VI — UNIFIED WORKFLOW AND DATA MANAGEMENT
+
+## 16. Unified Prospect Records
+
+Connect the campaign, discovery, research, qualification, and outreach systems.
+
+Every prospect should have a unified record containing:
+
+- Identity and company information
+- Industry and sub-industry
+- Campaign membership
+- ICP configuration and qualification score
+- Research findings and supporting evidence
+- Verified contact details, when available
+- Gmail draft ID and status
+- LinkedIn observation alternatives
+- Selected LinkedIn message
+- Outreach preparation status
+- Timestamps and status history
+
+Allow users to move directly from a prospect's research record to email or LinkedIn outreach preparation.
+
+## 17. Status Tracking
+
+Support clearly differentiated states:
+
+- Discovered
+- Research pending
+- Research in progress
+- Researched
+- Qualified
+- Rejected
+- Ready for outreach
+- Email draft generated
+- Email draft saved to Gmail
+- LinkedIn message prepared
+- Reviewed by user
+- Manually sent, if explicitly confirmed or reliably synchronized
+
+Never mark a message as sent simply because it was generated, approved, copied, or saved as a draft.
+
+Keep the status transitions consistent across the interface and database.
+
+## 18. Background Processing and Reliability
+
+Research and campaign operations should support background processing where appropriate.
+
+Implement:
+
+- Job progress tracking
+- Retries for transient failures
+- Idempotent operations
+- Deduplication
+- Rate-limit handling
+- Resumable research tasks
+- Structured error reporting
+- Logging without sensitive data
+- Persistent job status
+- Cancellation or pause controls where practical
+
+Avoid blocking the interface while long-running research or generation tasks execute.
+
+# PART VII — DATABASE, SECURITY, AND ENGINEERING
+
+## 19. Data Model
+
+Inspect the current schema before making changes.
+
+Extend existing models or add appropriate models for:
+
+- Campaigns
+- Industry configurations
+- ICP definitions
+- Saved filters
+- Companies
+- Prospects
+- Research findings
+- Evidence sources
+- Qualification criteria
+- Gmail connections
+- Gmail draft metadata
+- LinkedIn template versions
+- LinkedIn observation alternatives
+- Generated messages
+- Outreach status history
+
+Implement appropriate relationships, indexes, constraints, validation, and access controls.
+
+Preserve existing data through migrations.
+
+## 20. Integration Security
+
+- Keep API keys and OAuth credentials server-side.
+- Validate all incoming data.
+- Protect sensitive integration data.
+- Use secure authentication and authorization.
+- Avoid leaking tokens or personal data in logs.
+- Implement appropriate access controls for prospect and campaign records.
+- Respect external API terms, permissions, and rate limits.
+- Do not introduce unauthorized scraping or automated outreach.
+
+## 21. Testing
+
+Add appropriate automated tests and integration tests for:
+
+- Campaign creation and editing
+- Custom industries and filters
+- ICP persistence
+- Prospect deduplication
+- Qualification logic
+- Evidence-backed research
+- LinkedIn template preservation
+- Generation of three distinct observation alternatives
+- Gmail OAuth and authentication errors
+- Actual Gmail draft creation
+- Draft retry and duplicate prevention
+- Enforcement of the no-automatic-sending restriction
+- Status transitions
+- Database migrations
+- Existing application functionality
+
+Use mocked services for isolated unit tests and real integrations where credentials are available.
+
+Do not claim a real integration has been verified if only a mocked test has passed.
+
+# PART VIII — MANDATORY IMPLEMENTATION ORDER
+
+## 22. Complete All Functional Work First
+
+Implement the project in the following sequence.
+
+### Phase 1: Audit and planning
+Inspect the repository, identify existing functionality, and prepare the implementation plan.
+
+### Phase 2: Campaign system
+Expand industry coverage, implement campaign management, and build the ICP and advanced-filter functionality.
+
+### Phase 3: Prospect intelligence
+Implement or improve discovery, research, source evidence, qualification, and persistent prospect records.
+
+### Phase 4: LinkedIn messaging
+Implement the canonical template, three observation alternatives, evidence display, message comparison, editing, and copying.
+
+### Phase 5: Gmail integration
+Implement OAuth, secure credential handling, real Gmail draft creation, draft management, and error recovery.
+
+### Phase 6: Unified workflow
+Connect campaigns, research, qualification, LinkedIn messages, Gmail drafts, and status tracking.
+
+### Phase 7: Functional verification
+Test the entire workflow, fix integration problems, verify database persistence, and confirm that existing functionality remains intact.
+
+### Mandatory gate before redesign
+
+**Do not begin the visual redesign until all preceding functional phases have been implemented, integrated, and tested to the extent possible in the available environment.**
+
+If external credentials are unavailable, complete the integration code, test what can be tested, and document the exact external setup still required.
+
+Do not confuse missing external configuration with completed production verification.
+
+At this point, the functional version must be stable enough that the visual redesign can proceed without changing the underlying business logic.
+
+---
+
+# PART IX — FINAL PHASE ONLY: FRONTEND VISUAL REDESIGN
+
+## 23. Design Reference
+
+After all functional work and verification above is complete, redesign the frontend using the uploaded dashboard screenshot as the primary visual reference.
+
+The screenshot depicts a clean, modern donor-management dashboard. Reinterpret its visual language for GetSome's B2B prospect intelligence and outreach use case.
+
+**Use the screenshot as a reference for visual hierarchy, color, spacing, card layout, and overall feel—not as a literal dashboard to reproduce.**
+
+Do not build a donor-management interface or copy irrelevant labels, metrics, or features from the reference.
+
+### Design objective
+
+The current GetSome interface feels cluttered. Transform it into a polished, premium, modern SaaS product that is clean, spacious, easy to navigate, and comfortable to use during long prospecting sessions.
+
+The redesigned interface should feel like a coherent product rather than a collection of unrelated panels.
+
+## 24. Visual Language
+
+Use the reference image to guide the following design decisions.
+
+### Color palette
+
+Build a restrained palette around:
+
+- **Bright lime green:** A selective accent for key metrics, progress indicators, important states, and primary visual highlights.
+- **Soft off-white and light grey:** Main backgrounds, page surfaces, and secondary sections.
+- **White:** Cards, navigation surfaces, and content containers.
+- **Dark charcoal:** Primary text, headings, and high-contrast elements.
+- **Muted grey:** Secondary text, borders, helper labels, and inactive controls.
+- **Soft blue:** A secondary accent for selected states, information indicators, charts, and complementary data visualization.
+
+Use lime sparingly. It should provide visual emphasis rather than cover every component.
+
+Keep text readable, ensure sufficient contrast, and do not rely on color alone to communicate status.
+
+Use consistent design tokens for colors, borders, radii, spacing, typography, and elevation.
+
+### Surfaces and cards
+
+Adopt the reference's soft, rounded, layered interface.
+
+- Use clean cards with consistent corner radii.
+- Separate content through whitespace and subtle background changes.
+- Use restrained borders and subtle shadows.
+- Avoid heavy outlines and excessive visual effects.
+- Give important information enough breathing room.
+- Avoid placing every individual value inside its own separate card.
+
+### Typography
+
+Use a clean, modern sans-serif typeface.
+
+Establish a clear hierarchy among:
+
+- Page titles
+- Section headings
+- Primary metrics
+- Card titles
+- Body text
+- Metadata
+- Helper text
+
+Keep typography consistent across all application sections.
+
+### Spacing and density
+
+- Increase whitespace where the current interface feels cramped.
+- Align cards, headers, tables, and controls consistently.
+- Use predictable spacing between sections.
+- Avoid unnecessary dividers and decorative elements.
+- Prevent overly dense tables and overcrowded toolbars.
+- Use progressive disclosure for advanced controls.
+
+### Icons and controls
+
+Use a consistent icon set and visual weight.
+
+Buttons, dropdowns, filters, tabs, and navigation items should feel like parts of the same design system.
+
+Provide clear hover, focus, active, disabled, loading, and error states.
+
+Avoid unnecessary gradients, decorative illustrations, and excessive animation.
+
+## 25. Layout and Navigation
+
+Use a layout inspired by the reference's persistent left sidebar and spacious content area.
+
+### Sidebar
+
+Create a compact, persistent navigation sidebar with clear labels and icons.
+
+Organize navigation around the actual GetSome product:
+
+- Overview
+- Campaigns
+- Prospects
+- Research
+- Outreach
+- Email Drafts
+- Integrations
+- Settings
+
+Adapt these sections to the existing architecture where appropriate. Do not create duplicate navigation entries for existing functionality.
+
+Highlight the active destination clearly.
+
+The sidebar should remain useful without consuming excessive horizontal space. If the existing product already has a strong navigation pattern, adapt it rather than replacing it blindly.
+
+### Main content
+
+The main content area should use a consistent page structure:
+
+1. Page title and concise contextual description
+2. Primary action or relevant controls
+3. A small number of meaningful overview metrics, where appropriate
+4. Main task content
+5. Supporting information or secondary panels
+
+Do not force every page into the same dashboard-card layout. Campaign management, research, prospect tables, and message editing have different interaction needs.
+
+### Header
+
+Use a clean, compact header.
+
+Include only genuinely useful controls such as global search, notifications where implemented, and the user or workspace menu.
+
+Avoid excessive header icons and decorative controls that add no meaningful functionality.
+
+## 26. GetSome Overview Dashboard
+
+Redesign the overview page to communicate the state of the prospecting workflow at a glance.
+
+Possible summary metrics include:
+
+- Active campaigns
+- Prospects discovered
+- Qualified prospects
+- Prospects awaiting outreach
+- Email drafts awaiting review
+
+Use real database values, not fabricated demo metrics.
+
+A limited number of well-designed metric cards should be followed by useful operational information, such as:
+
+- Campaign performance
+- Recent prospect discoveries
+- Research activity
+- Qualification progress
+- Drafts awaiting review
+- Recent errors requiring attention
+
+Use charts only when the underlying data supports a meaningful visualization.
+
+Borrow the reference's combination of spacious metric cards and larger analytical panels, but prioritize GetSome's actual workflows.
+
+## 27. Campaigns Interface
+
+Redesign campaign management to make complex targeting easier to understand.
+
+Each campaign should communicate its name, objective, industry, status, prospect count, qualification progress, and next useful action.
+
+Support:
+
+- Search and filters
+- Clear campaign status
+- Campaign creation
+- Editing and duplication
+- Industry and geography filters
+- Accessible advanced-filter controls
+- Empty states and loading states
+
+Avoid displaying every ICP field directly on the campaign overview.
+
+Use a dedicated campaign detail view for advanced configuration, prospect results, research progress, and outreach activity.
+
+## 28. Prospect and Research Interface
+
+Make prospect research readable and actionable.
+
+Use a clear hierarchy for:
+
+- Prospect identity and role
+- Company context
+- Qualification status and score
+- Key findings
+- Evidence sources
+- Relevant business opportunities
+- Missing information
+- Outreach actions
+
+Keep source evidence accessible without overwhelming the main view.
+
+Where useful, separate the research summary from the supporting evidence through tabs, expandable sections, or a secondary panel.
+
+Do not hide uncertainty or evidence quality behind decorative score badges.
+
+## 29. LinkedIn Messaging Interface
+
+Design the three-option message comparison to make choosing a personalized observation effortless.
+
+Display the three complete messages in a consistent, easy-to-compare format.
+
+Each option should show:
+
+- Option label
+- Complete message
+- Personalized observation highlighted subtly
+- Supporting evidence
+- Select action
+- Edit and copy actions
+
+Keep the fixed closing themes visually consistent across all options.
+
+Avoid oversized cards that force excessive scrolling or hide the message itself.
+
+## 30. Gmail Draft Interface
+
+Design the email draft workspace around review and preparation.
+
+Provide a clear list of drafts and a focused draft-detail view.
+
+Show:
+
+- Recipient
+- Company
+- Campaign
+- Subject
+- Message body
+- Supporting research
+- Draft creation status
+- Open in Gmail action
+
+Keep the draft status unmistakable. The interface must never imply that a draft has been sent.
+
+Editing controls should be comfortable to use and must persist changes appropriately.
+
+## 31. Responsive Design and Accessibility
+
+Ensure the redesigned application works on desktop, tablet, and mobile.
+
+- Use a collapsible sidebar on smaller screens.
+- Avoid horizontal overflow.
+- Make tables responsive or provide appropriate alternate layouts.
+- Ensure controls have usable touch targets.
+- Support keyboard navigation and visible focus states.
+- Use semantic elements and accessible labels.
+- Maintain readable contrast and text sizes.
+- Respect reduced-motion preferences.
+- Provide clear loading, error, and empty states.
+
+## 32. Frontend Implementation Rules
+
+During this final phase:
+
+- Reuse the existing framework and established component architecture.
+- Create reusable design tokens and shared UI components.
+- Avoid duplicating styling across pages.
+- Preserve all backend logic, database relationships, integrations, and workflow behavior.
+- Do not remove functional controls to make the UI look cleaner.
+- Do not replace real data with static sample data.
+- Do not break existing routes, forms, filters, or API integrations.
+- Ensure that every redesigned interaction remains functional.
+- Verify the application at relevant screen sizes.
+- Test the complete workflow again after the visual changes.
+
+The redesign should change how the application looks and feels, not what the established business logic does.
+
+## 33. Final Acceptance Criteria
+
+The project is complete only when:
+
+1. Campaigns support the expanded industry presets and custom configurations.
+2. ICP filters and campaign settings persist correctly.
+3. Prospect discovery, research, qualification, and evidence tracking work as intended.
+4. LinkedIn messages follow the canonical template.
+5. Three alternative observations are generated when supported by evidence.
+6. The fixed LinkedIn closing themes remain unchanged.
+7. Gmail authentication works when configured.
+8. Personalized emails can be saved as real Gmail drafts.
+9. The application never sends emails automatically.
+10. Prospect, campaign, and draft statuses remain consistent.
+11. The visual redesign has been completed only after the functional work.
+12. The redesigned interface is substantially less cluttered and follows the supplied screenshot's visual direction.
+13. Existing functionality continues to work after the redesign.
+14. Missing credentials or unverified external dependencies are documented honestly.
+
+### Final instruction
+
+**Implement the product in the order specified. Functionality first, integrations second, verification third, visual redesign last.**
+
+Do not stop at a plan, mockup, or partial implementation. Make actual code changes, run the available tests, resolve regressions, and report what is complete, what has been tested, and what still requires external configuration.

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Target, Search, Sliders, Layers, Sparkles, Database, Settings } from 'lucide-react';
+import { Target, Search, Sliders, Layers, Sparkles, Database, Settings, Bot } from 'lucide-react';
 
-export type ActiveTab = 'pipeline' | 'icp_builder' | 'campaigns' | 'settings';
+export type ActiveTab = 'pipeline' | 'copilot' | 'icp_builder' | 'campaigns' | 'settings';
 
 interface TopNavProps {
   activeTab: ActiveTab;
@@ -41,7 +41,7 @@ export const TopNav: React.FC<TopNavProps> = ({
       </div>
 
       {/* Zone 2: Clean single-line navigation links */}
-      <nav className="flex items-center gap-6 text-sm font-medium text-slate-400">
+      <nav className="flex items-center gap-5 text-sm font-medium text-slate-400">
         <button
           onClick={() => onSelectTab('pipeline')}
           className={`flex items-center gap-2 hover:text-white transition-colors whitespace-nowrap shrink-0 ${
@@ -50,6 +50,21 @@ export const TopNav: React.FC<TopNavProps> = ({
         >
           <Layers className="w-4 h-4" />
           <span>Prospect Pipeline</span>
+        </button>
+
+        <button
+          onClick={() => onSelectTab('copilot')}
+          className={`flex items-center gap-2 hover:text-white transition-colors whitespace-nowrap shrink-0 ${
+            activeTab === 'copilot' ? 'text-cyan-400 font-semibold' : ''
+          }`}
+        >
+          <Bot className="w-4 h-4 text-cyan-400" />
+          <span className="flex items-center gap-1.5">
+            <span>Copilot Intel</span>
+            <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/80">
+              Live
+            </span>
+          </span>
         </button>
 
         <button
@@ -79,7 +94,7 @@ export const TopNav: React.FC<TopNavProps> = ({
           }`}
         >
           <Settings className="w-4 h-4" />
-          <span>AI Engine & Setup</span>
+          <span>AI Engine</span>
         </button>
       </nav>
 

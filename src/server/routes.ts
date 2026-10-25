@@ -4,20 +4,46 @@ import { executeDiscovery } from './discoveryEngine';
 import { runResearchPipeline } from './researchPipeline';
 import { generateOutreachDrafts, regenerateDraft } from './outreachEngine';
 import { validateOutreachContent } from '../services/channelValidator';
-import { Prospect, OutreachDraft } from '../types/index';
+import { generateGroundedSearchContent, executeChatTurn } from './aiProvider';
+import { generateLinkedInObservations, assembleLinkedInMessage, CANONICAL_LINKEDIN_TEMPLATE } from './linkedinEngine';
+import {
+  saveDraftToGmailAccount,
+  setServerGmailToken,
+  getServerGmailStatus,
+  disconnectServerGmail,
+  generatePersonalizedEmailDraft,
+} from './gmailService';
+import {
+  Prospect,
+  OutreachDraft,
+  ChatSession,
+  ChatMessage,
+  ChatRoleId,
+  Campaign,
+  LinkedInTemplateVersion,
+  UnifiedProspectStatus,
+} from '../types/index';
 
 export const apiRouter = Router();
 
 // Stats overview
 apiRouter.get('/stats', (req, res) => {
   try {
-    res.json(db.getStats());
+    const stats = db.getStats();
+    const gmailStatus = getServerGmailStatus();
+    res.json({
+      ...stats,
+      gmailConnected: gmailStatus.connected,
+      gmailEmail: gmailStatus.email,
+    });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// ICPs
+// ==========================================
+// ICP Profiles CRUD
+// ==========================================
 apiRouter.get('/icps', (req, res) => {
   res.json(db.getICPs());
 });
@@ -55,16 +81,25 @@ apiRouter.delete('/icps/:id', (req, res) => {
   res.json({ success: deleted });
 });
 
-// Campaigns
+// ==========================================
+// Campaigns CRUD & Operations
+// ==========================================
 apiRouter.get('/campaigns', (req, res) => {
   res.json(db.getCampaigns());
 });
 
+apiRouter.get('/campaigns/:id', (req, res) => {
+  const camp = db.getCampaignById(req.params.id);
+  if (!camp) return res.status(404).json({ error: 'Campaign not found' });
+  res.json(camp);
+});
+
 apiRouter.post('/campaigns', (req, res) => {
   try {
-    const newCamp = {
+    const newCamp: Campaign = {
       ...req.body,
       id: req.body.id || `camp_${Date.now()}`,
+      status: req.body.status || 'active',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -82,15 +117,50 @@ apiRouter.put('/campaigns/:id', (req, res) => {
   res.json(updated);
 });
 
+apiRouter.post('/campaigns/:id/duplicate', (req, res) => {
+  const existing = db.getCampaignById(req.params.id);
+  if (!existing) return res.status(404).json({ error: 'Campaign not found' });
+  const duplicated: Campaign = {
+    ...existing,
+    id: `camp_${Date.now()}`,
+    name: `${existing.name} (Copy)`,
+    status: 'draft',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  db.saveCampaign(duplicated);
+  res.json(duplicated);
+});
+
+apiRouter.post('/campaigns/:id/pause', (req, res) => {
+  const existing = db.getCampaignById(req.params.id);
+  if (!existing) return res.status(404).json({ error: 'Campaign not found' });
+  existing.status = 'paused';
+  existing.updatedAt = new Date().toISOString();
+  db.saveCampaign(existing);
+  res.json(existing);
+});
+
+apiRouter.post('/campaigns/:id/resume', (req, res) => {
+  const existing = db.getCampaignById(req.params.id);
+  if (!existing) return res.status(404).json({ error: 'Campaign not found' });
+  existing.status = 'active';
+  existing.updatedAt = new Date().toISOString();
+  db.saveCampaign(existing);
+  res.json(existing);
+});
+
 apiRouter.delete('/campaigns/:id', (req, res) => {
   const deleted = db.deleteCampaign(req.params.id);
   res.json({ success: deleted });
 });
 
-// Prospects
+// ==========================================
+// Prospects & Intelligence
+// ==========================================
 apiRouter.get('/prospects', (req, res) => {
   let prospects = db.getProspects();
-  const { search, campaignId, icpId, stage, minScore, outreachStatus } = req.query;
+  const { search, campaignId, icpId, stage, minScore, outreachStatus, unifiedStatus } = req.query;
 
   if (search && typeof search === 'string') {
     const q = search.toLowerCase();
@@ -114,6 +184,10 @@ apiRouter.get('/prospects', (req, res) => {
 
   if (stage && typeof stage === 'string' && stage !== 'all') {
     prospects = prospects.filter(p => p.stage === stage);
+  }
+
+  if (unifiedStatus && typeof unifiedStatus === 'string' && unifiedStatus !== 'all') {
+    prospects = prospects.filter(p => p.unifiedStatus === unifiedStatus);
   }
 
   if (outreachStatus && typeof outreachStatus === 'string' && outreachStatus !== 'all') {
@@ -156,12 +230,49 @@ apiRouter.delete('/prospects/:id', (req, res) => {
   res.json({ success: deleted });
 });
 
+// Manual Qualification Override
+apiRouter.post('/prospects/:id/override-qualification', (req, res) => {
+  const prospect = db.getProspectById(req.params.id);
+  if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
+
+  const { isOverridden, note, overriddenScore } = req.body;
+  prospect.manualOverride = {
+    isOverridden: Boolean(isOverridden),
+    note: note || 'Manually approved by human reviewer',
+    overriddenScore: overriddenScore ? Number(overriddenScore) : prospect.fitScore,
+    overriddenAt: new Date().toISOString(),
+  };
+
+  if (isOverridden) {
+    prospect.qualification.isQualified = true;
+    if (overriddenScore) prospect.fitScore = Number(overriddenScore);
+    prospect.unifiedStatus = 'ready_for_outreach';
+    prospect.activityLog.unshift({
+      timestamp: new Date().toISOString(),
+      action: 'Qualification Manually Overridden',
+      details: note || 'Prospect manually qualified by operator.',
+      actor: 'user',
+    });
+  } else {
+    prospect.qualification.isQualified = prospect.fitScore >= (db.getICPById(prospect.icpId)?.minScoreThreshold || 70);
+    prospect.activityLog.unshift({
+      timestamp: new Date().toISOString(),
+      action: 'Qualification Override Removed',
+      details: 'Restored automatic algorithmic qualification score.',
+      actor: 'user',
+    });
+  }
+
+  db.saveProspect(prospect);
+  res.json(prospect);
+});
+
 // Discovery
 apiRouter.post('/discovery/run', async (req, res) => {
   try {
     const { campaignId, mode, query, targetCompanyDomain, targetCompanyName, targetSignal, limit } = req.body;
     const discovered = await executeDiscovery({
-      campaignId: campaignId || 'camp_fintech_q4_2026',
+      campaignId: campaignId || db.getCampaigns()[0]?.id || 'camp_fintech_q4_2026',
       mode: mode || 'natural_language',
       query,
       targetCompanyDomain,
@@ -175,22 +286,7 @@ apiRouter.post('/discovery/run', async (req, res) => {
   }
 });
 
-apiRouter.post('/discovery/import-csv', async (req, res) => {
-  try {
-    const { campaignId, csvData } = req.body;
-    if (!csvData) return res.status(400).json({ error: 'csvData is required' });
-    const imported = await executeDiscovery({
-      campaignId: campaignId || 'camp_fintech_q4_2026',
-      mode: 'csv_import',
-      csvData,
-    });
-    res.json({ count: imported.length, prospects: imported });
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Research Jobs & Execution
+// Research Pipeline Execution
 apiRouter.get('/jobs', (req, res) => {
   res.json(db.getJobs());
 });
@@ -198,7 +294,6 @@ apiRouter.get('/jobs', (req, res) => {
 apiRouter.post('/research/run/:prospectId', async (req, res) => {
   try {
     const prospectId = req.params.prospectId;
-    // Launch pipeline execution
     const updated = await runResearchPipeline(prospectId);
     if (!updated) return res.status(404).json({ error: 'Prospect not found' });
     res.json(updated);
@@ -225,7 +320,268 @@ apiRouter.post('/research/cancel/:jobId', (req, res) => {
   res.json(job);
 });
 
-// Outreach Drafting & Review
+// ==========================================
+// PART IV: Gmail Integration Endpoints
+// ==========================================
+apiRouter.get('/gmail/status', (req, res) => {
+  const status = getServerGmailStatus();
+  res.json(status);
+});
+
+apiRouter.post('/gmail/connect', (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    const { email } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ error: 'Bearer token is required in Authorization header' });
+    }
+
+    setServerGmailToken(token, email);
+    res.json({
+      connected: true,
+      email: email || 'authenticated_user@gmail.com',
+      message: 'Gmail Drafts integration authenticated successfully.',
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+apiRouter.post('/gmail/disconnect', (req, res) => {
+  disconnectServerGmail();
+  res.json({ connected: false, message: 'Gmail disconnected.' });
+});
+
+apiRouter.post('/prospects/:id/gmail/generate', async (req, res) => {
+  try {
+    const prospect = db.getProspectById(req.params.id);
+    if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
+
+    const campaign = db.getCampaignById(prospect.campaignId);
+    const draft = await generatePersonalizedEmailDraft(prospect, campaign);
+
+    prospect.gmailDraft = {
+      recipientEmail: prospect.email,
+      subject: draft.subject,
+      body: draft.body,
+      createdAt: new Date().toISOString(),
+      status: 'local_draft',
+    };
+    prospect.unifiedStatus = 'email_draft_generated';
+    db.saveProspect(prospect);
+
+    res.json(prospect.gmailDraft);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+apiRouter.put('/prospects/:id/gmail/draft', (req, res) => {
+  const prospect = db.getProspectById(req.params.id);
+  if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
+
+  const { subject, body, recipientEmail } = req.body;
+  if (!prospect.gmailDraft) {
+    prospect.gmailDraft = {
+      recipientEmail: recipientEmail || prospect.email,
+      subject: subject || `${prospect.company} / collaboration`,
+      body: body || '',
+      createdAt: new Date().toISOString(),
+      status: 'local_draft',
+    };
+  } else {
+    prospect.gmailDraft.subject = subject ?? prospect.gmailDraft.subject;
+    prospect.gmailDraft.body = body ?? prospect.gmailDraft.body;
+    prospect.gmailDraft.recipientEmail = recipientEmail ?? prospect.gmailDraft.recipientEmail;
+  }
+
+  db.saveProspect(prospect);
+  res.json(prospect.gmailDraft);
+});
+
+// SAVE REAL DRAFT TO GMAIL ACCOUNT (ABSOLUTELY NEVER SENDS)
+apiRouter.post('/prospects/:id/gmail/save-to-account', async (req, res) => {
+  try {
+    const prospect = db.getProspectById(req.params.id);
+    if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
+
+    if (!prospect.gmailDraft) {
+      return res.status(400).json({ error: 'No email draft prepared for this prospect.' });
+    }
+
+    const { customToken } = req.body;
+    const recipient = prospect.gmailDraft.recipientEmail || prospect.email;
+    if (!recipient) {
+      return res.status(400).json({ error: 'Recipient email address is required.' });
+    }
+
+    // Call Gmail REST API users.drafts.create
+    const gmailResult = await saveDraftToGmailAccount(
+      recipient,
+      prospect.gmailDraft.subject,
+      prospect.gmailDraft.body,
+      customToken
+    );
+
+    prospect.gmailDraft.draftId = gmailResult.draftId;
+    prospect.gmailDraft.messageId = gmailResult.messageId;
+    prospect.gmailDraft.threadId = gmailResult.threadId;
+    prospect.gmailDraft.savedToGmailAt = new Date().toISOString();
+    prospect.gmailDraft.status = 'saved_to_gmail';
+    prospect.gmailDraft.webUrl = `https://mail.google.com/mail/u/0/#drafts`;
+    prospect.unifiedStatus = 'email_draft_saved_to_gmail';
+
+    prospect.activityLog.unshift({
+      timestamp: new Date().toISOString(),
+      action: 'Saved to Gmail Drafts',
+      details: `Draft successfully created in user's Gmail account (Draft ID: ${gmailResult.draftId}). Ready for manual review and send in Gmail.`,
+      actor: 'user',
+    });
+
+    db.saveProspect(prospect);
+
+    res.json({
+      success: true,
+      draftId: gmailResult.draftId,
+      webUrl: prospect.gmailDraft.webUrl,
+      prospect,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+apiRouter.delete('/prospects/:id/gmail/draft', (req, res) => {
+  const prospect = db.getProspectById(req.params.id);
+  if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
+
+  if (prospect.gmailDraft) {
+    prospect.gmailDraft.status = 'discarded';
+  }
+  db.saveProspect(prospect);
+  res.json({ success: true, message: 'Draft discarded.' });
+});
+
+// ==========================================
+// PART V: LinkedIn Canonical Messaging Endpoints
+// ==========================================
+apiRouter.get('/linkedin/templates', (req, res) => {
+  res.json(db.getLinkedInTemplates());
+});
+
+apiRouter.put('/linkedin/templates/:id', (req, res) => {
+  const updated = db.saveLinkedInTemplate(req.body);
+  res.json(updated);
+});
+
+apiRouter.post('/linkedin/templates/reset', (req, res) => {
+  const reset = db.resetLinkedInTemplate();
+  res.json(reset);
+});
+
+apiRouter.post('/prospects/:id/linkedin/generate', async (req, res) => {
+  try {
+    const prospect = db.getProspectById(req.params.id);
+    if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
+
+    const template = db.getCanonicalLinkedInTemplate();
+    const options = await generateLinkedInObservations(prospect, template);
+
+    prospect.linkedinObservations = options;
+    if (options.length > 0) {
+      prospect.selectedLinkedInOption = options[0].id;
+    }
+    prospect.unifiedStatus = 'linkedin_message_prepared';
+    db.saveProspect(prospect);
+
+    res.json(options);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+apiRouter.post('/prospects/:id/linkedin/select', (req, res) => {
+  const prospect = db.getProspectById(req.params.id);
+  if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
+
+  const { optionId } = req.body;
+  if (!prospect.linkedinObservations) {
+    return res.status(400).json({ error: 'No observations generated.' });
+  }
+
+  prospect.selectedLinkedInOption = optionId;
+  prospect.linkedinObservations = prospect.linkedinObservations.map(o => ({
+    ...o,
+    isSelected: o.id === optionId,
+  }));
+  prospect.unifiedStatus = 'linkedin_message_prepared';
+
+  prospect.activityLog.unshift({
+    timestamp: new Date().toISOString(),
+    action: 'LinkedIn Observation Selected',
+    details: `Selected observation: ${prospect.linkedinObservations.find(o => o.id === optionId)?.optionType}`,
+    actor: 'user',
+  });
+
+  db.saveProspect(prospect);
+  res.json(prospect);
+});
+
+apiRouter.put('/prospects/:id/linkedin/option/:optionId', (req, res) => {
+  const prospect = db.getProspectById(req.params.id);
+  if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
+
+  const { optionId } = req.params;
+  const { observation } = req.body;
+  if (!prospect.linkedinObservations) return res.status(404).json({ error: 'No observations' });
+
+  const template = db.getCanonicalLinkedInTemplate();
+  const firstName = prospect.name.split(' ')[0] || 'there';
+
+  prospect.linkedinObservations = prospect.linkedinObservations.map(o => {
+    if (o.id === optionId) {
+      const full = assembleLinkedInMessage(firstName, observation, template);
+      return {
+        ...o,
+        observation,
+        completeMessage: full,
+      };
+    }
+    return o;
+  });
+
+  db.saveProspect(prospect);
+  res.json(prospect);
+});
+
+// Update Unified Status
+apiRouter.put('/prospects/:id/unified-status', (req, res) => {
+  const prospect = db.getProspectById(req.params.id);
+  if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
+
+  const { status, note } = req.body;
+  prospect.unifiedStatus = status as UnifiedProspectStatus;
+  if (status === 'manually_sent') {
+    prospect.outreachStatus = 'sent_manually';
+    prospect.lastContactedAt = new Date().toISOString();
+  }
+
+  prospect.activityLog.unshift({
+    timestamp: new Date().toISOString(),
+    action: `Status Updated to: ${status}`,
+    details: note || 'Workflow status transition confirmed by operator.',
+    actor: 'user',
+  });
+
+  db.saveProspect(prospect);
+  res.json(prospect);
+});
+
+// ==========================================
+// Existing Outreach Draft Endpoints
+// ==========================================
 apiRouter.post('/outreach/generate/:prospectId', async (req, res) => {
   try {
     const prospect = db.getProspectById(req.params.prospectId);
@@ -330,13 +686,6 @@ apiRouter.put('/outreach/drafts/:draftId', (req, res) => {
         details: `Approved ${updatedDraft.channel} draft for ${targetProspect.name}.`,
         actor: 'user',
       });
-    } else if (updates.approvalStatus === 'rejected') {
-      targetProspect.activityLog.unshift({
-        timestamp: new Date().toISOString(),
-        action: 'Draft Rejected',
-        details: `Reason: ${updates.rejectionReason || 'No reason provided'}`,
-        actor: 'user',
-      });
     }
 
     targetProspect.drafts = targetProspect.drafts.map(d => (d.id === draftId ? updatedDraft : d));
@@ -352,6 +701,7 @@ apiRouter.post('/outreach/manual-send/:prospectId', (req, res) => {
   if (!prospect) return res.status(404).json({ error: 'Prospect not found' });
   const { status, note } = req.body;
   prospect.outreachStatus = status || 'sent_manually';
+  prospect.unifiedStatus = 'manually_sent';
   prospect.outreachNotes = note || prospect.outreachNotes;
   prospect.lastContactedAt = new Date().toISOString();
   prospect.activityLog.unshift({
@@ -422,4 +772,122 @@ apiRouter.put('/settings', (req, res) => {
 apiRouter.post('/db/seed', (req, res) => {
   db.resetSeedData();
   res.json({ success: true, message: 'Database reset to initial curated state.' });
+});
+
+// Gemini Chats & Grounding
+apiRouter.get('/chats', (req, res) => {
+  res.json(db.getChats());
+});
+
+apiRouter.get('/chats/:id', (req, res) => {
+  const chat = db.getChatById(req.params.id);
+  if (!chat) return res.status(404).json({ error: 'Chat session not found' });
+  res.json(chat);
+});
+
+apiRouter.post('/chats', (req, res) => {
+  try {
+    const { title, roleId, model, systemInstruction, initialPrompt } = req.body;
+    const rId: ChatRoleId = roleId || 'strategist';
+
+    let defaultModel = 'gemini-3.8-flash';
+    let defaultSys = 'You are an elite B2B sales intelligence and pipeline strategist.';
+
+    if (rId === 'architect') {
+      defaultModel = 'gemini-4-argon';
+      defaultSys = 'You are a principal enterprise sales engineer and account architect specializing in complex multi-stakeholder enterprise deal strategy.';
+    } else if (rId === 'screener') {
+      defaultModel = 'gemini-3.1-flash-lite';
+      defaultSys = 'You are a rapid B2B SDR screener. Deliver ultra-concise, high-velocity qualification summaries and ICP fit verdicts.';
+    } else if (rId === 'researcher') {
+      defaultModel = 'gemini-3.8-flash';
+      defaultSys = 'You are an autonomous corporate researcher powered by live Google Search grounding. Identify verifiable corporate facts, signals, and executives.';
+    }
+
+    const newChat: ChatSession = {
+      id: `chat_${Date.now()}`,
+      title: title || (initialPrompt ? initialPrompt.slice(0, 36) + '...' : 'New Intel Session'),
+      roleId: rId,
+      model: model || defaultModel,
+      systemInstruction: systemInstruction || defaultSys,
+      messages: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    db.saveChat(newChat);
+    res.json(newChat);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+apiRouter.post('/chats/:id/messages', async (req, res) => {
+  try {
+    const chat = db.getChatById(req.params.id);
+    if (!chat) return res.status(404).json({ error: 'Chat session not found' });
+
+    const { content } = req.body;
+    if (!content || !content.trim()) {
+      return res.status(400).json({ error: 'Message content is required' });
+    }
+
+    const userMessage: ChatMessage = {
+      id: `msg_u_${Date.now()}`,
+      role: 'user',
+      content: content.trim(),
+      timestamp: new Date().toISOString(),
+    };
+
+    chat.messages.push(userMessage);
+
+    const turnResult = await executeChatTurn(chat, content.trim());
+
+    const modelMessage: ChatMessage = {
+      id: `msg_m_${Date.now()}`,
+      role: 'model',
+      content: turnResult.reply,
+      timestamp: new Date().toISOString(),
+      modelUsed: turnResult.modelUsed,
+      groundingSources: turnResult.sources,
+    };
+
+    chat.messages.push(modelMessage);
+
+    if (chat.messages.length === 2 && (chat.title === 'New Intel Session' || chat.title.startsWith('New '))) {
+      chat.title = content.slice(0, 40) + (content.length > 40 ? '...' : '');
+    }
+
+    db.saveChat(chat);
+
+    res.json({
+      userMessage,
+      modelMessage,
+      chat,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+apiRouter.delete('/chats/:id', (req, res) => {
+  const deleted = db.deleteChat(req.params.id);
+  res.json({ success: deleted });
+});
+
+apiRouter.post('/search/grounded', async (req, res) => {
+  try {
+    const { query, model } = req.body;
+    if (!query) return res.status(400).json({ error: 'Query is required' });
+    const result = await generateGroundedSearchContent(query, model || 'gemini-3.8-flash');
+    res.json({
+      query,
+      model: model || 'gemini-3.8-flash',
+      text: result.text,
+      sources: result.sources,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
 });

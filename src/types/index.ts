@@ -5,16 +5,20 @@ export interface ICPProfile {
   name: string;
   description: string;
   targetIndustries: string[];
+  targetSubIndustries?: string[];
   companySizeMin: number;
   companySizeMax: number;
+  revenueRanges?: string[];
   targetGeographies: string[];
   businessModels: string[];
   techStackKeywords: string[];
   targetRoles: string[];
   seniorityLevels: SeniorityLevel[];
+  departments?: string[];
   requiredConditions: string[];
   preferredAttributes: string[];
   exclusionCriteria: string[];
+  customAttributes?: { key: string; value: string }[];
   positiveBuyingSignals: { signal: string; weight: number }[];
   negativeBuyingSignals: { signal: string; weight: number }[];
   minScoreThreshold: number;
@@ -40,14 +44,31 @@ export interface Campaign {
   offeringProposition: string;
   targetGeography: string[];
   targetIndustries: string[];
+  targetSubIndustries?: string[];
+  customIndustries?: string[];
   targetRoles: string[];
+  seniorities?: SeniorityLevel[];
+  departments?: string[];
+  functions?: string[];
+  revenueRanges?: string[];
+  businessModels?: string[];
+  employeeCountMin?: number;
+  employeeCountMax?: number;
   exclusions: string[];
+  buyingSignals?: string[];
   tonePreference: 'Direct & Technical' | 'Strategic & Executive' | 'Consultative & Inquisitive';
   channels: ChannelType[];
   maxDiscoveryVolume: number;
   researchDepth: 'standard' | 'deep_investigative' | 'rapid';
   qualificationThreshold: number;
-  status: 'active' | 'paused' | 'completed' | 'draft';
+  status: 'active' | 'paused' | 'archived' | 'draft';
+  stats?: {
+    discovered: number;
+    researched: number;
+    qualified: number;
+    rejected: number;
+    readyForOutreach: number;
+  };
   createdAt: string;
   updatedAt: string;
 }
@@ -58,6 +79,7 @@ export interface CompanyIntelligence {
   domain: string;
   website: string;
   industry: string;
+  subIndustry?: string;
   headquarters: string;
   employeeCount: string;
   estimatedRevenue: string;
@@ -113,7 +135,7 @@ export interface IndustryIntelligence {
 export interface ResearchClaim {
   id: string;
   claim: string;
-  claimType: 'fact' | 'inference' | 'unknown';
+  claimType: 'fact' | 'inference' | 'unverified' | 'unknown';
   sourceUrl: string;
   sourceTitle: string;
   publisher: string;
@@ -157,6 +179,8 @@ export interface QualificationResult {
   criteriaEvaluation: CriterionEvaluation[];
   summaryExplanation: string;
   riskFactors: string[];
+  missingInformation?: string[];
+  recommendedAction?: 'Proceed with outreach' | 'Verify missing claims' | 'Disqualify prospect';
 }
 
 export interface OutreachDraft {
@@ -201,6 +225,56 @@ export type ProspectStage =
   | 'rejected'
   | 'failed';
 
+export type UnifiedProspectStatus =
+  | 'discovered'
+  | 'research_pending'
+  | 'research_in_progress'
+  | 'researched'
+  | 'qualified'
+  | 'rejected'
+  | 'ready_for_outreach'
+  | 'email_draft_generated'
+  | 'email_draft_saved_to_gmail'
+  | 'linkedin_message_prepared'
+  | 'reviewed_by_user'
+  | 'manually_sent';
+
+export interface LinkedInObservationAlternative {
+  id: string;
+  optionType: 'Option A — Direct' | 'Option B — Strategic' | 'Option C — Distinctive';
+  observation: string;
+  completeMessage: string;
+  supportingEvidence: string;
+  sourcesUsed: { title: string; url: string }[];
+  isSelected?: boolean;
+}
+
+export interface LinkedInTemplateVersion {
+  id: string;
+  name: string;
+  salutation: string;
+  observationLead: string;
+  closingLead: string;
+  closingThemes: string[];
+  rawTemplate: string;
+  isCanonical: boolean;
+  updatedAt: string;
+}
+
+export interface GmailDraftMetadata {
+  draftId?: string;
+  messageId?: string;
+  threadId?: string;
+  recipientEmail: string;
+  subject: string;
+  body: string;
+  createdAt: string;
+  savedToGmailAt?: string;
+  webUrl?: string;
+  status: 'local_draft' | 'saved_to_gmail' | 'discarded';
+  errorMessage?: string;
+}
+
 export interface Prospect {
   id: string;
   campaignId: string;
@@ -213,6 +287,7 @@ export interface Prospect {
   linkedinUrl: string;
   email: string;
   stage: ProspectStage;
+  unifiedStatus: UnifiedProspectStatus;
   discoverySource: string;
   discoveryTimestamp: string;
   verified: boolean;
@@ -225,8 +300,19 @@ export interface Prospect {
   claims: ResearchClaim[];
   signals: BuyingSignal[];
   qualification: QualificationResult;
+  manualOverride?: {
+    isOverridden: boolean;
+    overriddenScore?: number;
+    note?: string;
+    overriddenAt?: string;
+  };
   drafts: OutreachDraft[];
   selectedDraftId?: string;
+  // LinkedIn 3-option canonical messaging
+  linkedinObservations?: LinkedInObservationAlternative[];
+  selectedLinkedInOption?: string;
+  // Gmail integration draft
+  gmailDraft?: GmailDraftMetadata;
   outreachStatus: 'none' | 'draft_ready' | 'approved' | 'sent_manually' | 'bounced' | 'replied' | 'converted';
   outreachNotes?: string;
   lastContactedAt?: string;
@@ -274,4 +360,34 @@ export interface AISettings {
     totalRuns: number;
     estimatedCostUsd: number;
   };
+  gmailConnected?: boolean;
+  gmailUserEmail?: string;
+  gmailConnectedAt?: string;
+}
+
+export interface GroundingSource {
+  title: string;
+  url: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'model' | 'system';
+  content: string;
+  timestamp: string;
+  modelUsed?: string;
+  groundingSources?: GroundingSource[];
+}
+
+export type ChatRoleId = 'strategist' | 'researcher' | 'screener' | 'architect';
+
+export interface ChatSession {
+  id: string;
+  title: string;
+  roleId: ChatRoleId;
+  model: string;
+  systemInstruction: string;
+  messages: ChatMessage[];
+  createdAt: string;
+  updatedAt: string;
 }

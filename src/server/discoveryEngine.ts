@@ -361,6 +361,7 @@ Return JSON:
       linkedinUrl: cand.linkedinUrl,
       email: cand.email,
       stage: 'queued',
+      unifiedStatus: 'discovered',
       discoverySource: cand.discoverySource,
       discoveryTimestamp: new Date().toISOString(),
       verified: true,
