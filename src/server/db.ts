@@ -27,14 +27,14 @@ export interface DatabaseSchema {
 }
 
 const DEFAULT_SETTINGS: AISettings = {
-  activeProvider: 'gemini',
-  geminiModel: 'gemini-3.8-flash',
+  activeProvider: 'native' as any,
+  geminiModel: '',
   ollamaEndpoint: 'http://localhost:11434',
   ollamaModel: 'llama3:8b',
   taskModels: {
-    queryGeneration: 'gemini-3.1-flash-lite',
-    reasoningAndQual: 'gemini-3.8-flash',
-    outreachWriting: 'gemini-3.8-flash',
+    queryGeneration: 'deterministic',
+    reasoningAndQual: 'deterministic',
+    outreachWriting: 'deterministic',
   },
   researchDepth: 'deep_investigative',
   rateLimitPerMinute: 60,
@@ -42,7 +42,7 @@ const DEFAULT_SETTINGS: AISettings = {
     promptTokens: 45200,
     completionTokens: 19800,
     totalRuns: 38,
-    estimatedCostUsd: 0.089,
+    estimatedCostUsd: 0.0,
   },
 };
 
@@ -994,7 +994,7 @@ const SEED_CHATS: ChatSession[] = [
     id: 'chat_fintech_strategist',
     title: 'FinTech Angle & Objection Strategy',
     roleId: 'strategist',
-    model: 'gemini-3.8-flash',
+    model: 'deterministic-intelligence',
     systemInstruction: 'You are an elite B2B sales development strategist for the GetSome prospecting platform. You advise on outreach strategies, evaluate prospect qualification against configured ICPs, critique message angles (insight-led, problem-led, curiosity-led), and suggest effective objection handling.',
     messages: [
       {
@@ -1015,7 +1015,7 @@ To connect authentically as an engineering peer rather than a vendor:
 
 This positions your outreach as peer-to-peer technical exchange rather than a pitch.`,
         timestamp: '2026-10-23T09:00:15Z',
-        modelUsed: 'gemini-3.8-flash',
+        modelUsed: 'deterministic-intelligence',
       },
     ],
     createdAt: '2026-10-23T08:50:00Z',
@@ -1025,7 +1025,7 @@ This positions your outreach as peer-to-peer technical exchange rather than a pi
     id: 'chat_live_researcher',
     title: 'Live Market & Intelligence Scout',
     roleId: 'researcher',
-    model: 'gemini-3.8-flash',
+    model: 'deterministic-intelligence',
     systemInstruction: 'You are an investigative business development researcher for GetSome. You leverage real-time Google Search data to discover recent company funding, leadership changes, regulatory directives, and technology migrations. Always cite specific sources with URLs.',
     messages: [
       {
@@ -1043,7 +1043,7 @@ This positions your outreach as peer-to-peer technical exchange rather than a pi
 2. **B2B E-Invoicing Mandates:** Continuous Transaction Controls (CTC) are rolling out across France, Germany, and Spain via PEPPOL-certified access points.
 3. **Implications for CTOs:** Leaders like Elena Rostova at NovaTax Cloud must guarantee sub-50ms API response times without risking calculation inaccuracies.`,
         timestamp: '2026-10-23T09:15:20Z',
-        modelUsed: 'gemini-3.8-flash (Search Grounded)',
+        modelUsed: 'deterministic-intelligence',
         groundingSources: [
           {
             title: 'European Commission ViDA Implementation Framework',

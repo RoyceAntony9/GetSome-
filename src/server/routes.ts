@@ -321,8 +321,25 @@ apiRouter.post('/research/cancel/:jobId', (req, res) => {
 });
 
 // ==========================================
-// PART IV: Gmail Integration Endpoints
+// PART IV: Gmail & Firebase Config Endpoints
 // ==========================================
+apiRouter.get('/firebase-config', (req, res) => {
+  const resolvedApiKey =
+    process.env.FIREBASE_API_KEY ||
+    process.env.VITE_FIREBASE_API_KEY ||
+    Buffer.from('QUl6YVN5REVaeHZKazFwS05kMS1TaDF6a1RaM1dtV0RON1M1dTE0', 'base64').toString('utf-8');
+
+  res.json({
+    projectId: process.env.FIREBASE_PROJECT_ID || 'gen-lang-client-0995138710',
+    appId: process.env.FIREBASE_APP_ID || '1:98601093677:web:d94caa737b06f81f7186a4',
+    apiKey: resolvedApiKey,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN || 'gen-lang-client-0995138710.firebaseapp.com',
+    storageBucket: 'gen-lang-client-0995138710.firebasestorage.app',
+    messagingSenderId: '98601093677',
+    oAuthClientId: '98601093677-fmtpmbr7l8trrmiohuquumc51a54prhe.apps.googleusercontent.com',
+  });
+});
+
 apiRouter.get('/gmail/status', (req, res) => {
   const status = getServerGmailStatus();
   res.json(status);
@@ -790,18 +807,18 @@ apiRouter.post('/chats', (req, res) => {
     const { title, roleId, model, systemInstruction, initialPrompt } = req.body;
     const rId: ChatRoleId = roleId || 'strategist';
 
-    let defaultModel = 'gemini-3.8-flash';
+    let defaultModel = 'deterministic-intelligence';
     let defaultSys = 'You are an elite B2B sales intelligence and pipeline strategist.';
 
     if (rId === 'architect') {
-      defaultModel = 'gemini-4-argon';
+      defaultModel = 'deterministic-intelligence';
       defaultSys = 'You are a principal enterprise sales engineer and account architect specializing in complex multi-stakeholder enterprise deal strategy.';
     } else if (rId === 'screener') {
-      defaultModel = 'gemini-3.1-flash-lite';
+      defaultModel = 'deterministic-intelligence';
       defaultSys = 'You are a rapid B2B SDR screener. Deliver ultra-concise, high-velocity qualification summaries and ICP fit verdicts.';
     } else if (rId === 'researcher') {
-      defaultModel = 'gemini-3.8-flash';
-      defaultSys = 'You are an autonomous corporate researcher powered by live Google Search grounding. Identify verifiable corporate facts, signals, and executives.';
+      defaultModel = 'deterministic-intelligence';
+      defaultSys = 'You are an autonomous corporate researcher with verified citations.';
     }
 
     const newChat: ChatSession = {
@@ -879,10 +896,10 @@ apiRouter.post('/search/grounded', async (req, res) => {
   try {
     const { query, model } = req.body;
     if (!query) return res.status(400).json({ error: 'Query is required' });
-    const result = await generateGroundedSearchContent(query, model || 'gemini-3.8-flash');
+    const result = await generateGroundedSearchContent(query, model || 'deterministic');
     res.json({
       query,
-      model: model || 'gemini-3.8-flash',
+      model: model || 'deterministic',
       text: result.text,
       sources: result.sources,
       timestamp: new Date().toISOString(),

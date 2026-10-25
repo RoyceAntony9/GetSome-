@@ -343,7 +343,7 @@ export interface ResearchJob {
 }
 
 export interface AISettings {
-  activeProvider: 'gemini' | 'ollama' | 'openai_compatible';
+  activeProvider: 'native' | 'ollama' | 'openai_compatible' | 'gemini';
   geminiModel: string;
   ollamaEndpoint: string;
   ollamaModel: string;

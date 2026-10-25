@@ -21,7 +21,6 @@ export type NavigationTab =
   | 'icp_builder'
   | 'linkedin'
   | 'gmail'
-  | 'copilot'
   | 'settings';
 
 interface SidebarProps {
@@ -87,15 +86,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       badgeColor: 'bg-sky-100 text-sky-800',
     },
     {
-      id: 'copilot' as NavigationTab,
-      label: 'Copilot Intel',
-      icon: Bot,
-      badge: 'Live',
-      badgeColor: 'bg-slate-100 text-slate-700 font-mono text-[10px]',
-    },
-    {
       id: 'settings' as NavigationTab,
-      label: 'Integrations & AI',
+      label: 'Integrations & Setup',
       icon: Settings2,
       badge: gmailConnected ? 'Active' : null,
       badgeColor: 'bg-emerald-100 text-emerald-800 text-[10px]',

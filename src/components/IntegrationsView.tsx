@@ -83,11 +83,11 @@ export const IntegrationsView: React.FC<IntegrationsViewProps> = ({
               <Settings className="w-4 h-4" />
             </div>
             <h2 className="text-xl font-bold text-slate-900 tracking-tight">
-              Integrations & AI Architecture
+              Integrations & Intelligence Setup
             </h2>
           </div>
           <p className="text-xs text-slate-500 mt-1 max-w-2xl">
-            Manage official Google Workspace OAuth connections for Gmail Drafts, AI model configurations, and execution telemetry.
+            Manage official Google Workspace OAuth connection for Gmail Drafts, deterministic intelligence configuration, and data management.
           </p>
         </div>
       </div>
@@ -173,7 +173,7 @@ export const IntegrationsView: React.FC<IntegrationsViewProps> = ({
           </div>
         </div>
 
-        {/* Gemini Engine Telemetry & Settings */}
+        {/* Deterministic Intelligence Engine & System Status */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.03)] space-y-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -181,46 +181,52 @@ export const IntegrationsView: React.FC<IntegrationsViewProps> = ({
                 <Cpu className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 text-base">Gemini Models & Telemetry</h3>
-                <p className="text-xs text-slate-500">Autonomous reasoning and search grounding</p>
+                <h3 className="font-bold text-slate-900 text-base">Deterministic Intelligence Engine</h3>
+                <p className="text-xs text-slate-500">Autonomous research, ICP qualification & synthesis</p>
               </div>
             </div>
             <span className="px-3 py-1 rounded-full bg-[#d4f34a] text-slate-950 font-bold text-xs">
-              Gemini 3.8 Active
+              Zero Key Required
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-              <span className="text-slate-400 block text-[10px] uppercase font-bold">Total Agent Runs:</span>
-              <span className="text-xl font-bold text-slate-900 mt-1 block">
-                {formData.usage?.totalRuns || 38}
+          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2 text-xs">
+            <div className="flex items-center justify-between">
+              <span className="text-slate-600 font-semibold">Engine Architecture:</span>
+              <span className="font-bold text-slate-900">Deterministic & Native Rule-Based</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-600 font-semibold">External AI API Dependency:</span>
+              <span className="font-bold text-emerald-600 flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5" /> None (Zero Gemini Key Needed)
               </span>
             </div>
-            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
-              <span className="text-slate-400 block text-[10px] uppercase font-bold">Estimated Cost:</span>
-              <span className="text-xl font-bold text-slate-900 mt-1 block">
-                ${(formData.usage?.estimatedCostUsd || 0.089).toFixed(3)}
-              </span>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-600 font-semibold">ICP Scoring Model:</span>
+              <span className="font-bold text-slate-900">5-Dimension Transparent Rubric</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-slate-600 font-semibold">Outreach Synthesis:</span>
+              <span className="font-bold text-slate-900">Canonical 3-Option Verified Claim Matching</span>
             </div>
           </div>
 
           <div className="space-y-3">
             <label className="text-xs font-bold text-slate-700 block">
-              Specialized Reasoning Models:
+              Core Platform Capabilities:
             </label>
             <div className="space-y-2 text-xs">
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
-                <span>Live Grounded Research</span>
-                <code className="font-mono text-slate-900 font-bold">gemini-3.8-flash</code>
+                <span>12 Major Industry Presets & 60+ Sub-Industries</span>
+                <span className="font-mono text-slate-900 font-bold">Fully Configurable</span>
               </div>
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
-                <span>Account Strategy & Architecture</span>
-                <code className="font-mono text-slate-900 font-bold">gemini-4-argon</code>
+                <span>LinkedIn Outreach Engine</span>
+                <span className="font-mono text-slate-900 font-bold">3 Canonical Options</span>
               </div>
               <div className="p-3 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
-                <span>High-Velocity ICP Screening</span>
-                <code className="font-mono text-slate-900 font-bold">gemini-3.1-flash-lite</code>
+                <span>Google Workspace Integration</span>
+                <span className="font-mono text-slate-900 font-bold">Gmail Drafts API</span>
               </div>
             </div>
           </div>
@@ -245,7 +251,7 @@ export const IntegrationsView: React.FC<IntegrationsViewProps> = ({
             </button>
 
             <span className="text-[11px] text-slate-400">
-              Auto-saved
+              Deterministic Mode
             </span>
           </div>
         </div>

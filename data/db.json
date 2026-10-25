@@ -238,725 +238,6 @@
   ],
   "prospects": [
     {
-      "id": "prospect_1792775792075_7ljd3",
-      "campaignId": "camp_fintech_q4_2026",
-      "icpId": "icp_fintech_enterprise",
-      "name": "Jeroen van der Valk",
-      "role": "Head of Infrastructure Engineering",
-      "company": "Adyen",
-      "domain": "adyen.com",
-      "location": "Amsterdam, Netherlands",
-      "linkedinUrl": "https://linkedin.com/in/jeroen-van-der-valk",
-      "email": "jeroen.vandervalk@adyen.com",
-      "stage": "ready_for_review",
-      "discoverySource": "LinkedIn Profile & Company Tech Blog",
-      "discoveryTimestamp": "2026-10-23T17:16:32.075Z",
-      "verified": true,
-      "fitScore": 83,
-      "buyingSignalScore": 25,
-      "confidenceScore": 90,
-      "companyData": {
-        "id": "comp_prospect_1792775792075_7ljd3",
-        "name": "Adyen",
-        "domain": "adyen.com",
-        "website": "https://adyen.com",
-        "industry": "FinTech / Payments",
-        "headquarters": "Amsterdam, Netherlands",
-        "employeeCount": "250",
-        "estimatedRevenue": "$35M ARR",
-        "businessModel": "B2B SaaS / Infrastructure API",
-        "whatTheyDo": "Adyen operates an end-to-end global payments platform, providing acquiring, processing, and payout services for businesses. They enable merchants to accept payments across online, mobile, and in-store channels, offering a unified commerce experience, risk management, and data analytics.",
-        "productsAndServices": [
-          "Online Payments (e-commerce, mobile, in-app)",
-          "In-person Payments (POS terminals, unified commerce)",
-          "Issuing (cards, virtual cards, embedded finance)",
-          "Risk Management (fraud prevention, authentication)",
-          "Data & Analytics (transaction insights, reporting)",
-          "Platform Engine (proprietary payment processing infrastructure)"
-        ],
-        "targetCustomers": [
-          "Global enterprises and large corporations",
-          "Omnichannel retailers and e-commerce giants",
-          "Digital businesses and marketplaces",
-          "FinTechs and embedded finance providers"
-        ],
-        "strategicPriorities": [
-          "Global expansion and market penetration (e.g., new licenses, local payment methods)",
-          "Enhancing unified commerce capabilities across all sales channels",
-          "Platform innovation, developer tools, and embedded finance solutions",
-          "Maintaining high performance, reliability, and security of the payment infrastructure",
-          "Navigating and ensuring compliance with diverse global payment regulations"
-        ],
-        "growthSignals": [
-          "Consistent double-digit revenue and processed volume growth reported in financial statements",
-          "Expansion into new geographic markets (e.g., recent LATAM and APAC initiatives)",
-          "Acquisition of new major enterprise clients across various industries",
-          "Continuous development and release of new product features and payment methods",
-          "Strategic partnerships to extend platform capabilities and reach"
-        ],
-        "operationalChallenges": [
-          "Maintaining ultra-low latency and high throughput for billions of global transactions",
-          "Ensuring data consistency and integrity across a globally distributed financial system",
-          "Achieving zero downtime during critical system updates, database migrations, and infrastructure scaling",
-          "Adapting to rapidly evolving payment regulations and compliance requirements across hundreds of jurisdictions",
-          "Continuously enhancing fraud detection and prevention mechanisms against sophisticated threats"
-        ],
-        "knownTechStack": [
-          "Java",
-          "C++",
-          "Go",
-          "PostgreSQL (heavily customized)",
-          "Cassandra",
-          "Kafka",
-          "Kubernetes",
-          "Linux",
-          "Proprietary data centers (with some public cloud utilization)"
-        ],
-        "competitors": [
-          "Stripe",
-          "PayPal (Braintree)",
-          "Worldpay (FIS)",
-          "Fiserv",
-          "Checkout.com",
-          "Square (for specific segments)"
-        ],
-        "offeringBenefitFit": "Our 'High-reliability distributed streaming architecture' directly addresses Adyen's need for extreme uptime, data consistency, and real-time processing across its global network for transaction routing and fraud analysis. The 'zero-downtime database migration' capability is critical for a financial platform handling live transactions, enabling seamless infrastructure updates and schema changes without service interruption. Furthermore, our 'sub-10ms transactional verification engines' directly align with Adyen's core focus on low-latency processing, crucial for improving authorization rates, enhancing user experience, and enabling real-time fraud detection, thereby directly impacting their operational efficiency and merchant satisfaction.",
-        "verifiedAt": "2026-10-23T17:16:32.075Z"
-      },
-      "personData": {
-        "id": "person_prospect_1792775792075_7ljd3",
-        "fullName": "Jeroen van der Valk",
-        "currentRole": "Head of Infrastructure Engineering",
-        "company": "Adyen",
-        "companyDomain": "adyen.com",
-        "location": "Amsterdam, Netherlands",
-        "linkedinUrl": "https://linkedin.com/in/jeroen-van-der-valk",
-        "email": "jeroen.vandervalk@adyen.com",
-        "department": "Platform & Technology",
-        "seniority": "VP",
-        "publicBio": "Seasoned engineering leader with a strong background in building and scaling high-performance infrastructure, distributed systems, cloud technologies, and site reliability engineering. Proven track record at Adyen in various infrastructure engineering roles, culminating in Head of Infrastructure Engineering.",
-        "pastExperience": [
-          "Engineering Manager, Infrastructure at Adyen (2 years)",
-          "Senior Software Engineer, Infrastructure at Adyen (2 years)",
-          "Software Engineer at ING (2 years)"
-        ],
-        "responsibilities": [
-          "Primary architectural responsibility for Adyen's global infrastructure platform.",
-          "Leadership and management of multiple specialized infrastructure teams (SRE, Platform, Network, Data Center Operations, Cloud Infrastructure).",
-          "Strategic direction and execution for scalability, reliability, security, and efficiency of the core payment infrastructure.",
-          "Decision-making authority for infrastructure technology stack, tooling, and operational processes.",
-          "Ensuring the platform supports billions of transactions annually with high availability and low latency."
-        ],
-        "publicContentAndTalks": [
-          {
-            "title": "Scaling Architecture for High Velocity",
-            "type": "talk",
-            "url": "https://www.adyen.com/blog/tech",
-            "date": "2026-06-10",
-            "excerpt": "Oversees global infrastructure, including data platforms, for a leading payment processor handling massive real-time transaction volumes, indicating direct ownership of scaling high-throughput streaming pipelines."
-          }
-        ],
-        "publicTopics": [
-          "Scalability and performance of high-volume, global payment systems.",
-          "Achieving extreme reliability and availability in critical financial infrastructure.",
-          "Implementing robust security and compliance frameworks for payment processing.",
-          "Optimizing infrastructure efficiency and cost management for large-scale distributed systems.",
-          "Adoption of advanced SRE practices and platform engineering principles.",
-          "Managing and evolving hybrid cloud and on-premise data center strategies."
-        ],
-        "problemOwnership": "Jeroen van der Valk is the definitive owner for all aspects related to the design, implementation, operation, and strategic evolution of Adyen's global payment infrastructure. His department is responsible for the foundational systems that ensure Adyen's platform can process billions of transactions reliably, securely, and at scale.",
-        "whyThisPerson": "As the Head of Infrastructure Engineering, Jeroen directly oversees the teams and technologies that build and maintain Adyen's core payment processing backbone. Any outreach concerning infrastructure performance, reliability, scalability, security, or the adoption of new infrastructure technologies should be directed to him, as he holds the ultimate decision-making authority and strategic vision for these critical areas.",
-        "verifiedAt": "2026-10-23T17:16:32.075Z"
-      },
-      "industryData": {
-        "industry": "FinTech / Payments",
-        "keyTrends": [
-          "Accelerated digital transformation and e-commerce growth across all sectors, driving demand for robust online payment infrastructure.",
-          "The imperative for unified commerce, requiring seamless payment experiences across online, in-app, and in-store channels.",
-          "Globalization of commerce, necessitating comprehensive cross-border payment capabilities, multi-currency support, and local payment methods.",
-          "Increased focus on data-driven insights and analytics from payment data to optimize conversion, personalize customer experiences, and enhance fraud detection.",
-          "The rise of embedded finance, where payments become an invisible, integrated part of broader services and platforms."
-        ],
-        "competitivePressures": [
-          "Intense competition from other modern payment platforms (e.g., Stripe, Checkout.com, PayPal/Braintree) offering similar unified, global solutions.",
-          "Modernization efforts by traditional acquirers and legacy payment processors, who are investing heavily in new technology and services.",
-          "Pricing pressure on transaction fees and value-added services due to market saturation and commoditization of basic processing.",
-          "The need to continuously innovate and differentiate against niche vertical-specific payment providers and large enterprises considering in-house solutions.",
-          "Talent acquisition and retention challenges in a highly competitive market for skilled engineers and payment experts."
-        ],
-        "regulatoryOrTechShifts": [
-          "Evolving data privacy regulations (e.g., GDPR, CCPA, LGPD) impacting data handling, storage, and cross-border data flows.",
-          "Strong Customer Authentication (SCA) mandates under PSD2 and similar global initiatives, requiring sophisticated fraud prevention and authentication solutions.",
-          "The proliferation of real-time payment schemes (e.g., FedNow, SEPA Instant, UPI) setting new expectations for transaction speed and settlement.",
-          "Continuous advancements in AI/ML for fraud detection and prevention, requiring ongoing investment to combat sophisticated threats.",
-          "The shift towards cloud-native infrastructure and API-first development, demanding highly flexible, scalable, and easily integrable payment solutions."
-        ],
-        "implicationsForRole": "Executive priorities at Adyen will center on accelerating platform innovation to maintain a competitive edge in unified commerce, AI-driven fraud prevention, and data analytics. There will be a strong focus on global expansion and localization, ensuring compliance with diverse regulatory landscapes while supporting new payment methods and currencies. Strategic investments in security, compliance, and operational resilience are paramount to navigate evolving data privacy and payment regulations. Furthermore, executives must prioritize attracting and retaining top talent, fostering strategic partnerships, and delivering exceptional merchant value through advanced insights and customer-centric services to drive continued growth and market leadership.",
-        "sources": [
-          "https://www.adyen.com/blog/tech"
-        ]
-      },
-      "claims": [
-        {
-          "id": "claim_1792775792075_1",
-          "claim": "Adyen is an active market entity in FinTech / Payments.",
-          "claimType": "fact",
-          "sourceUrl": "https://www.adyen.com/blog/tech",
-          "sourceTitle": "Adyen Corporate Overview",
-          "publisher": "Adyen",
-          "publishedDate": "2026-08-01",
-          "retrievedDate": "2026-10-23",
-          "excerpt": "Oversees global infrastructure, including data platforms, for a leading payment processor handling massive real-time transaction volumes, indicating direct ownership of scaling high-throughput streaming pipelines.",
-          "confidence": "high",
-          "relevance": "Verifies company presence and operations.",
-          "potentialOutreachApplication": "Foundational entity grounding."
-        },
-        {
-          "claim": "Adyen reported a 17% year-on-year net revenue growth in the EMEA region for Q1 2024, a key strategic area overseen by Jeroen van der Valk as Head of Sales EMEA.",
-          "claimType": "fact",
-          "sourceUrl": "https://www.adyen.com/investor-relations/shareholder-letters/q1-2024",
-          "sourceTitle": "Adyen Q1 2024 Shareholder Letter",
-          "publisher": "Adyen",
-          "publishedDate": "2024-05-08",
-          "retrievedDate": "2024-05-28",
-          "excerpt": "EMEA net revenue was €269.8 million, up 17% year-on-year.",
-          "confidence": "high",
-          "relevance": "Jeroen van der Valk is responsible for driving sales and market expansion in the EMEA region. This significant growth indicates successful execution and strategic focus under his leadership, highlighting Adyen's strong performance in a key market.",
-          "potentialOutreachApplication": "Given Adyen's impressive 17% net revenue growth in EMEA in Q1, I imagine your team is focused on sustaining this momentum. We help sales leaders like you optimize [specific sales process] to further accelerate growth in key markets.",
-          "id": "claim_1792775890267_0"
-        },
-        {
-          "claim": "Adyen continues to demonstrate strong momentum in its enterprise segment, with processed volume growing 30% year-on-year in Q4 2023, reflecting its focus on serving large, global merchants with its unified commerce platform.",
-          "claimType": "fact",
-          "sourceUrl": "https://www.adyen.com/investor-relations/shareholder-letters/q4-2023",
-          "sourceTitle": "Adyen Q4 2023 Shareholder Letter",
-          "publisher": "Adyen",
-          "publishedDate": "2024-02-14",
-          "retrievedDate": "2024-05-28",
-          "excerpt": "We continue to see strong momentum in our enterprise segment, with processed volume up 30% year-on-year in Q4 2023.",
-          "confidence": "high",
-          "relevance": "As Head of Sales EMEA, Jeroen van der Valk's team is directly responsible for acquiring and growing relationships with enterprise clients in the region. This metric highlights a core strategic success area for Adyen and his team's contribution to securing large-scale, complex payment solutions.",
-          "potentialOutreachApplication": "Knowing Adyen's impressive 30% year-on-year growth in enterprise processed volume in Q4 2023, it's clear your team excels at securing and expanding relationships with major clients. We specialize in [our solution] which helps enterprise sales teams like yours streamline [specific challenge] to further enhance client acquisition and retention.",
-          "id": "claim_1792775890267_1"
-        }
-      ],
-      "signals": [
-        {
-          "id": "sig_1792775792075_1",
-          "type": "expansion",
-          "description": "Adyen's rapid global expansion and continuous need to scale its payment processing infrastructure, frequently highlighted in investor reports and tech publications.",
-          "evidence": "Corroborated via primary source: https://www.adyen.com/blog/tech",
-          "sourceUrl": "https://www.adyen.com/blog/tech",
-          "date": "2026-08-15",
-          "confidence": "high",
-          "relevanceToOffering": "Provides relevant conversational anchor."
-        }
-      ],
-      "qualification": {
-        "overallScore": 83,
-        "isQualified": true,
-        "dimensionScores": {
-          "icpFit": 90,
-          "decisionMakerRelevance": 100,
-          "buyingSignalStrength": 25,
-          "evidenceQuality": 90,
-          "recency": 85
-        },
-        "criteriaEvaluation": [
-          {
-            "criterion": "Target Industry (FinTech, Financial Services, Banking Technology, Payments)",
-            "category": "required",
-            "status": "satisfied",
-            "evidenceNotes": "Company operates in FinTech / Payments."
-          },
-          {
-            "criterion": "Company Size: 150–3000 employees",
-            "category": "preferred",
-            "status": "satisfied",
-            "evidenceNotes": "Verified employee count 250 fits within target [150-3000]."
-          },
-          {
-            "criterion": "Operating Geography (North America, United States, United Kingdom, European Union)",
-            "category": "preferred",
-            "status": "contradicted",
-            "evidenceNotes": "Headquartered in Amsterdam, Netherlands."
-          },
-          {
-            "criterion": "Target Leadership Role (VP of Engineering, Head of Infrastructure, CTO)",
-            "category": "required",
-            "status": "satisfied",
-            "evidenceNotes": "Current title: Head of Infrastructure Engineering."
-          },
-          {
-            "criterion": "Seniority Level: C-Level, VP, Head",
-            "category": "required",
-            "status": "satisfied",
-            "evidenceNotes": "Assessed seniority: VP."
-          },
-          {
-            "criterion": "Required: Operates mission-critical transaction or payment reconciliation pipelines",
-            "category": "required",
-            "status": "uncertain",
-            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
-          },
-          {
-            "criterion": "Required: Has dedicated engineering/infrastructure organization",
-            "category": "required",
-            "status": "uncertain",
-            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
-          }
-        ],
-        "summaryExplanation": "Strong strategic match (83/100). Satisfies target industry requirements with verified executive influence in Platform & Technology. 1 credible buying signal(s) documented with primary source citations.",
-        "riskFactors": []
-      },
-      "drafts": [
-        {
-          "id": "draft_prospect_1792775792075_7ljd3_linkedin_connect_insight_led_0",
-          "prospectId": "prospect_1792775792075_7ljd3",
-          "channel": "linkedin_connect",
-          "approach": "insight_led",
-          "content": "Jeroen, your 'Scaling Architecture for High Velocity' talk resonated. For Adyen's global payments, how do you balance continuous feature deployment with ensuring absolute data consistency across distributed systems, especially during critical database migrations? Curious about your approach.",
-          "characterCount": 292,
-          "maxAllowedCharacters": 300,
-          "isWithinLimit": true,
-          "angleExplanation": "Leads with a specific, verifiable public talk, immediately connecting to a core engineering challenge (consistency vs. velocity) relevant to Adyen's operations.",
-          "supportingEvidence": "Public talk/post: 'Scaling Architecture for High Velocity' and Operational Challenge: 'Ensuring data consistency and integrity across a globally distributed financial system; Achieving zero downtime during critical system updates, database migrations.'",
-          "whyRelevant": "Directly addresses the core responsibilities of a Head of Infrastructure Engineering at a high-velocity FinTech, focusing on the trade-offs inherent in their daily work.",
-          "intendedTone": "Technical peer inquiry",
-          "assumptionsFlagged": [
-            "Jeroen is directly involved in architectural decisions regarding data consistency and migration strategies.",
-            "The public talk 'Scaling Architecture for High Velocity' is a relevant and authentic reference point for Jeroen."
-          ],
-          "approvalStatus": "pending_review",
-          "version": 1,
-          "history": []
-        },
-        {
-          "id": "draft_prospect_1792775792075_7ljd3_email_problem_led_1",
-          "prospectId": "prospect_1792775792075_7ljd3",
-          "channel": "email",
-          "approach": "problem_led",
-          "subjectLine": "Adyen: Scaling Global Payments Infrastructure",
-          "content": "Jeroen, Adyen's rapid global expansion and continuous need to scale its payment processing infrastructure is a significant engineering feat. Maintaining ultra-low latency and high throughput for billions of global transactions is a constant challenge.\n\nFor a system of Adyen's scale, ensuring zero downtime during critical system updates or database migrations across a globally distributed financial platform presents unique engineering trade-offs.\n\nWe specialize in high-reliability distributed streaming architectures and zero-downtime database migration strategies, particularly for environments requiring sub-10ms transactional verification.\n\nHow are you currently navigating the balance between rapid infrastructure scaling and maintaining absolute data consistency during these critical operational events?",
-          "characterCount": 813,
-          "maxAllowedCharacters": 2200,
-          "isWithinLimit": true,
-          "angleExplanation": "Focuses on the operational friction and engineering trade-offs inherent in Adyen's rapid growth and global scale, directly linking to our value proposition.",
-          "supportingEvidence": "Strongest Buying Signal: 'Adyen's rapid global expansion and continuous need to scale its payment processing infrastructure...' and Operational Challenge: 'Achieving zero downtime during critical system updates, database migrations, and infrastructure scaling; Ensuring data consistency and integrity across a globally distributed financial system.'",
-          "whyRelevant": "Directly addresses the strategic and technical challenges Jeroen faces in his role, impacting Adyen's reliability and market position.",
-          "intendedTone": "Strategic & consultative",
-          "assumptionsFlagged": [
-            "Jeroen's team faces active challenges with zero-downtime database migrations and maintaining consistency at scale.",
-            "Adyen's current solutions for these challenges might involve trade-offs that could be optimized."
-          ],
-          "approvalStatus": "pending_review",
-          "version": 1,
-          "history": []
-        },
-        {
-          "id": "draft_prospect_1792775792075_7ljd3_linkedin_inmail_curiosity_led_2",
-          "prospectId": "prospect_1792775792075_7ljd3",
-          "channel": "linkedin_inmail",
-          "approach": "curiosity_led",
-          "subjectLine": "Adyen's Distributed Architecture: Consistency & Velocity",
-          "content": "Jeroen, your talk on 'Scaling Architecture for High Velocity' for Adyen's global infrastructure caught my attention. Given Adyen's role in processing billions of real-time transactions, the engineering challenges around maintaining data consistency and integrity across a globally distributed financial system are immense.\n\nSpecifically, achieving sub-10ms transactional verification while ensuring strong consistency across geographically dispersed data centers, especially during critical events like database migrations or infrastructure scaling, often involves complex architectural decisions and trade-offs.\n\nWe've observed that many leading FinTechs grapple with balancing the need for extreme velocity with the non-negotiable requirement for absolute data integrity and zero downtime. This often leads to innovative approaches in distributed streaming and replication.\n\nI'm curious, what architectural patterns or consistency models have you found most effective at Adyen for managing these trade-offs, particularly when pushing for both high velocity and financial-grade data integrity?",
-          "characterCount": 1094,
-          "maxAllowedCharacters": 1900,
-          "isWithinLimit": true,
-          "angleExplanation": "Poses a strategic, technical question grounded in Adyen's known architectural challenges and Jeroen's public expertise, inviting a discussion on trade-offs.",
-          "supportingEvidence": "Public talk/post: 'Scaling Architecture for High Velocity' and Operational Challenge: 'Maintaining ultra-low latency and high throughput for billions of global transactions; Ensuring data consistency and integrity across a globally distributed financial system.'",
-          "whyRelevant": "Directly tied to Jeroen's engineering roadmap and the strategic architectural decisions he would be making or overseeing.",
-          "intendedTone": "Direct & technical",
-          "assumptionsFlagged": [
-            "Jeroen is actively involved in defining or evaluating architectural patterns for consistency and performance.",
-            "Adyen's current architectural choices for consistency models are a topic of ongoing strategic consideration."
-          ],
-          "approvalStatus": "pending_review",
-          "version": 1,
-          "history": []
-        }
-      ],
-      "outreachStatus": "draft_ready",
-      "activityLog": [
-        {
-          "timestamp": "2026-10-23T17:18:33.366Z",
-          "action": "Outreach Drafts Generated",
-          "details": "Created 3 individualized drafts across multiple channels and personalization angles.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T17:18:10.268Z",
-          "action": "Stage E & F: Qualified and Scored",
-          "details": "Overall Fit Score: 83/100 (Qualified: YES). Claims cataloged: 3.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T17:17:56.732Z",
-          "action": "Stage D: Industry Analysis Completed",
-          "details": "Synthesized market pressures and regulatory vectors for FinTech / Payments.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T17:17:47.049Z",
-          "action": "Stage C: Person Intelligence Completed",
-          "details": "Mapped executive scope, public talks, and problem ownership for Jeroen van der Valk.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T17:17:32.573Z",
-          "action": "Stage B: Company Intelligence Completed",
-          "details": "Analyzed products, competitors, tech stack, and strategic priorities for Adyen.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T17:17:20.411Z",
-          "action": "Stage A: Identity Verified",
-          "details": "Corroborated identity for Jeroen van der Valk at Adyen. Seniority: VP.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T17:16:32.075Z",
-          "action": "Prospect Discovered",
-          "details": "Discovered via LinkedIn Profile & Company Tech Blog. Grounded in https://www.adyen.com/blog/tech.",
-          "actor": "system"
-        }
-      ],
-      "createdAt": "2026-10-23T17:16:32.075Z",
-      "updatedAt": "2026-10-23T17:18:33.366Z",
-      "selectedDraftId": "draft_prospect_1792775792075_7ljd3_linkedin_connect_insight_led_0"
-    },
-    {
-      "id": "prospect_1792775792074_3g0hd",
-      "campaignId": "camp_fintech_q4_2026",
-      "icpId": "icp_fintech_enterprise",
-      "name": "Ankit Gupta",
-      "role": "Executive Director, Head of Data Platform Engineering",
-      "company": "JPMorgan Chase & Co.",
-      "domain": "jpmorganchase.com",
-      "location": "New York, United States",
-      "linkedinUrl": "https://linkedin.com/in/ankit-gupta-data-platform",
-      "email": "ankit.gupta@jpmorganchase.com",
-      "stage": "drafting",
-      "discoverySource": "LinkedIn Profile & Company Tech Blog",
-      "discoveryTimestamp": "2026-10-23T17:16:32.074Z",
-      "verified": true,
-      "fitScore": 86,
-      "buyingSignalScore": 25,
-      "confidenceScore": 90,
-      "companyData": {
-        "id": "comp_prospect_1792775792074_3g0hd",
-        "name": "JPMorgan Chase & Co.",
-        "domain": "jpmorganchase.com",
-        "website": "https://jpmorganchase.com",
-        "industry": "FinTech / Enterprise Financial Services",
-        "headquarters": "New York, United States",
-        "employeeCount": "250",
-        "estimatedRevenue": "$35M ARR",
-        "businessModel": "B2B SaaS / Infrastructure API",
-        "whatTheyDo": "JPMorgan Chase & Co. is a global financial services firm and one of the largest banks in the United States. It provides a comprehensive range of financial services, including investment banking, financial services for consumers and small businesses, commercial banking, financial transaction processing, and asset management. The company operates through four primary segments: Consumer & Community Banking (CCB), Corporate & Investment Bank (CIB), Commercial Banking (CB), and Asset & Wealth Management (AWM).",
-        "productsAndServices": [
-          "Consumer Banking (checking, savings, credit cards, mortgages, auto loans)",
-          "Investment Banking (advisory, equity & debt underwriting, M&A)",
-          "Sales & Trading (fixed income, equities, currencies, commodities)",
-          "Treasury Services (cash management, trade finance)",
-          "Commercial Lending",
-          "Asset Management (institutional, retail, high-net-worth)",
-          "Wealth Management",
-          "Payment Processing",
-          "Custody Services"
-        ],
-        "targetCustomers": [
-          "Individual consumers",
-          "Small and mid-sized businesses",
-          "Large multinational corporations",
-          "Institutional investors (pension funds, endowments, sovereign wealth funds)",
-          "High-net-worth individuals and families",
-          "Governments and public sector entities"
-        ],
-        "strategicPriorities": [
-          "**Technology Investment & Digital Transformation**: Investing over $15 billion annually in technology, focusing on cloud adoption, AI/ML, data analytics, cybersecurity, and modernizing core infrastructure to enhance efficiency and client experience. (Verified: JPMC investor presentations, earnings calls)",
-          "**Client Experience & Innovation**: Enhancing digital channels, personalizing services, and developing new products across all segments to meet evolving customer demands and maintain competitive advantage. (Verified: JPMC public statements)",
-          "**Operational Resilience & Efficiency**: Streamlining operations, reducing costs through automation, and ensuring near-100% system stability and availability for critical financial services. (Verified: Regulatory requirements, internal statements)",
-          "**Global Expansion & Market Share**: Expanding presence in key international markets, particularly in payments, investment banking, and wealth management, to capture new growth opportunities. (Verified: JPMC reports)",
-          "**Risk Management & Regulatory Compliance**: Continuously strengthening risk frameworks, data governance, and compliance systems to navigate complex global financial regulations and protect against financial crime. (Verified: Industry standard, regulatory environment)"
-        ],
-        "growthSignals": [
-          "Consistent strong financial performance with robust revenue growth and net income across diversified business segments. (Verified: JPMC quarterly and annual reports)",
-          "Significant annual technology budget exceeding $15 billion, indicating aggressive investment in future-proofing infrastructure and digital capabilities. (Verified: JPMC investor presentations)",
-          "Strategic acquisitions and investments in FinTech companies (e.g., Aumni, Renovite, Viva Wallet stake) to enhance capabilities in data analytics, payments, and digital banking. (Verified: Public announcements, news reports)",
-          "Expansion of digital platforms and user base, such as growth in Chase Mobile app users and the J.P. Morgan Payments platform, signaling successful digital adoption. (Verified: JPMC investor presentations)",
-          "Accelerated cloud adoption and migration initiatives across various business units to improve scalability, agility, and cost efficiency. (Verified: JPMC tech blogs, investor calls)"
-        ],
-        "operationalChallenges": [
-          "**Legacy Infrastructure Modernization**: Managing and migrating vast, complex, and often monolithic legacy systems to modern, cloud-native architectures without disrupting critical 24/7 global financial operations. This is a multi-year, multi-billion-dollar undertaking.",
-          "**Data Volume & Velocity**: Processing petabytes of transactional data daily across diverse systems, requiring high-throughput, low-latency data pipelines for real-time analytics, fraud detection, and regulatory reporting at scale.",
-          "**System Uptime & Resilience**: Ensuring near-100% availability for critical financial services (e.g., trading, payments, consumer banking apps) where any downtime can result in significant financial loss, reputational damage, and regulatory penalties.",
-          "**Transactional Performance**: Meeting stringent performance requirements for high-frequency trading, real-time payments, and other time-sensitive financial transactions, often requiring sub-millisecond to sub-10ms response times to maintain competitive edge.",
-          "**Regulatory Scrutiny & Compliance**: The continuous need for auditable, reliable, and secure data processing and storage to meet evolving global financial regulations (e.g., MiFID II, Dodd-Frank, GDPR, Basel III) and internal risk management policies.",
-          "**Scalability**: Architecting systems that can dynamically scale to handle massive spikes in transaction volumes, especially during market events, peak business hours, or global payment surges, without performance degradation."
-        ],
-        "knownTechStack": [
-          "Oracle (extensive legacy database usage)",
-          "PostgreSQL",
-          "Apache Kafka (heavily used for real-time data streaming)",
-          "Kubernetes",
-          "Docker",
-          "AWS (increasing adoption for cloud infrastructure)",
-          "Microsoft Azure",
-          "Google Cloud Platform (hybrid/multi-cloud strategy)",
-          "Java (dominant programming language)",
-          "Python",
-          "C++",
-          "Go",
-          "Apache Spark",
-          "Hadoop Ecosystem (HDFS, Hive)",
-          "Cassandra",
-          "MongoDB"
-        ],
-        "competitors": [
-          "Goldman Sachs (Investment Banking, Asset Management)",
-          "Morgan Stanley (Investment Banking, Wealth Management)",
-          "Bank of America (Consumer, Commercial, Investment Banking)",
-          "Citigroup (Consumer, Commercial, Investment Banking)",
-          "Wells Fargo (Consumer, Commercial Banking)",
-          "BlackRock (Asset Management)",
-          "Stripe (Payments, FinTech)",
-          "Fidelity Investments (Asset Management, Brokerage)",
-          "UBS (Investment Banking, Wealth Management)"
-        ],
-        "offeringBenefitFit": "JPMorgan Chase's operational challenges, particularly legacy infrastructure modernization, the need for extreme system uptime, and sub-10ms transactional performance, directly align with our value proposition. Our 'high-reliability distributed streaming architecture' directly addresses their need for robust, scalable data processing for real-time analytics and fraud detection across their vast data landscape, enhancing operational resilience. The 'zero-downtime database migration' capability is critical for JPMC's ongoing efforts to modernize its extensive legacy database footprint without disrupting mission-critical financial services, mitigating significant risk and accelerating their digital transformation. Furthermore, our 'sub-10ms transactional verification engines' directly solves their challenge of maintaining competitive speed in high-frequency trading and real-time payments, improving both market competitiveness and client experience.",
-        "verifiedAt": "2026-10-23T17:16:32.074Z"
-      },
-      "personData": {
-        "id": "person_prospect_1792775792074_3g0hd",
-        "fullName": "Ankit Gupta",
-        "currentRole": "Executive Director, Head of Data Platform Engineering",
-        "company": "JPMorgan Chase & Co.",
-        "companyDomain": "jpmorganchase.com",
-        "location": "New York, United States",
-        "linkedinUrl": "https://linkedin.com/in/ankit-gupta-data-platform",
-        "email": "ankit.gupta@jpmorganchase.com",
-        "department": "Platform & Technology",
-        "seniority": "VP",
-        "publicBio": "Ankit Gupta is an experienced technology leader specializing in data platform engineering. He currently serves as Executive Director, Head of Data Platform Engineering at JPMorgan Chase & Co., leading a global team in strategy, architecture, and delivery of critical data infrastructure. His expertise includes distributed systems, cloud computing, and big data technologies.",
-        "pastExperience": [
-          "VP, Head of Data Platform Engineering at Morgan Stanley (2 years)",
-          "Associate, Data Platform Engineering at Morgan Stanley (2 years)",
-          "Senior Software Engineer at Bloomberg LP (2 years)",
-          "Software Engineer at Oracle (2 years)"
-        ],
-        "responsibilities": [
-          "Primary architectural responsibility for JPMorgan Chase's next-gen Data Platform",
-          "Leading global engineering teams to build and operate data platforms",
-          "Defining architectural strategy, roadmap, and execution for critical data capabilities",
-          "Driving adoption of modern data technologies (e.g., cloud, streaming, AI/ML data infrastructure)",
-          "Ensuring data quality, governance, security, and compliance across the data platform from an engineering perspective"
-        ],
-        "publicContentAndTalks": [
-          {
-            "title": "Building a Modern Data Platform with Lakehouse Architecture at JPMorgan Chase",
-            "type": "talk",
-            "url": "https://www.databricks.com/dataaisummit/",
-            "date": "2023-06-28",
-            "excerpt": "Our strategy focuses on democratizing access to high-quality, secure data across the enterprise, leveraging a modern lakehouse architecture to power advanced analytics and AI/ML initiatives, all while adhering to the stringent regulatory requirements of financial services."
-          }
-        ],
-        "publicTopics": [
-          "Building scalable and secure data platforms in financial services",
-          "Cloud adoption strategies for enterprise data",
-          "Leveraging modern data technologies (streaming, AI/ML infrastructure)",
-          "Data governance and quality within large organizations",
-          "Lakehouse architecture for financial data"
-        ],
-        "problemOwnership": "As the Head of Data Platform Engineering, Ankit Gupta is the primary owner of the technical foundation and engineering execution for all data initiatives at JPMorgan Chase. This includes the underlying infrastructure (on-premise and cloud), the tools and technologies used for data ingestion, processing, storage, and serving, and the engineering practices for data quality, security, and compliance. He leads the teams responsible for building and operating the platforms that enable data scientists, analysts, and application developers to leverage data effectively across the firm.",
-        "whyThisPerson": "Ankit Gupta is the key decision-maker and influencer for solutions related to data infrastructure, data pipeline efficiency, data platform modernization, and the engineering challenges of handling large-scale, sensitive financial data. His role encompasses the strategic direction and hands-on execution of the core data platforms, making him the ideal contact for technologies or services that enhance data engineering capabilities, improve data accessibility, or address architectural challenges within JPMorgan Chase's data ecosystem.",
-        "verifiedAt": "2026-10-23T17:16:32.074Z"
-      },
-      "industryData": {
-        "industry": "FinTech / Enterprise Financial Services",
-        "keyTrends": [
-          "Accelerated Digital Transformation & Cloud Adoption: Banks are heavily investing in modernizing infrastructure, moving to cloud-native architectures for scalability, efficiency, and innovation across all business lines.",
-          "AI/ML Integration: Widespread adoption of Artificial Intelligence and Machine Learning for enhanced fraud detection, personalized customer experiences, advanced risk management, algorithmic trading, and operational efficiency.",
-          "Data Analytics & Hyper-Personalization: Leveraging vast amounts of data to offer tailored products, services, and insights to corporate and retail clients, driving deeper engagement and revenue.",
-          "ESG (Environmental, Social, Governance) Focus: Increasing pressure from investors, regulators, and customers to demonstrate commitment to sustainability, ethical practices, and social responsibility, impacting investment strategies, lending, and reporting.",
-          "Embedded Finance: The seamless integration of financial services into non-financial platforms (e.g., e-commerce, ERP systems), blurring industry lines and creating new distribution channels."
-        ],
-        "competitivePressures": [
-          "Neobanks & Challenger Banks: Agile, digitally-native banks offering superior user experience, lower fees, and specialized services, attracting younger demographics and small businesses.",
-          "Big Tech & Specialized FinTechs: Companies like Apple, Google, and Amazon entering financial services (payments, lending) leveraging their massive user bases and tech capabilities, alongside niche FinTech startups offering innovative solutions in specific areas (e.g., payments, lending, wealth management tech).",
-          "Traditional Bank Competition: Fierce competition from other large global banks (e.g., Bank of America, Citi, Wells Fargo, HSBC) for market share in corporate banking, investment banking, and wealth management.",
-          "Non-bank Lenders & Private Credit: Growth of private credit funds and other non-bank entities providing alternative financing options to corporations, bypassing traditional banking channels.",
-          "Talent War: Intense competition for top tech, data science, and finance talent with both traditional rivals and tech giants, driving up compensation and requiring robust talent development strategies."
-        ],
-        "regulatoryOrTechShifts": [
-          "Open Banking & API Economy: Regulatory mandates (e.g., PSD2 in Europe, similar initiatives globally) pushing for data sharing via APIs, fostering innovation but increasing data security and privacy concerns.",
-          "Cybersecurity & Data Privacy Regulations: Ever-evolving and stricter regulations (e.g., GDPR, CCPA, NYDFS Part 500) requiring significant investment in security infrastructure, data governance, and compliance.",
-          "Blockchain & DLT (Distributed Ledger Technology): Ongoing exploration and investment in DLT for potential transformation of payments (e.g., JPM Coin, Onyx), trade finance, and capital markets infrastructure.",
-          "AI Ethics & Regulation: Emerging regulations and industry standards around the ethical use of AI, bias detection, transparency in algorithmic decision-making, and accountability for AI systems.",
-          "Basel IV/CRD VI & Climate-related Financial Risk Disclosure: Ongoing capital and liquidity requirements impacting balance sheet management and lending capacity, coupled with increasing regulatory focus on assessing and disclosing climate-related financial risks."
-        ],
-        "implicationsForRole": "Executives must prioritize accelerated digital transformation, including significant investments in cloud infrastructure, AI/ML capabilities, and advanced data analytics to enhance customer experience, operational efficiency, and risk management. A critical focus will be on fostering innovation through internal development and strategic partnerships/acquisitions with FinTechs to counter competitive pressures. Ensuring robust cybersecurity defenses and navigating complex, evolving regulatory landscapes (data privacy, AI ethics, financial stability, ESG reporting) will be paramount. Talent acquisition and retention, particularly for tech and data science roles, will require innovative strategies. Furthermore, embedding ESG considerations into business strategy, risk management, and product offerings will be essential for long-term sustainability and stakeholder trust.",
-        "sources": [
-          "https://www.jpmorganchase.com/technology/data-analytics"
-        ]
-      },
-      "claims": [
-        {
-          "id": "claim_1792775792074_1",
-          "claim": "JPMorgan Chase & Co. is an active market entity in FinTech / Enterprise Financial Services.",
-          "claimType": "fact",
-          "sourceUrl": "https://www.jpmorganchase.com/technology/data-analytics",
-          "sourceTitle": "JPMorgan Chase & Co. Corporate Overview",
-          "publisher": "JPMorgan Chase & Co.",
-          "publishedDate": "2026-08-01",
-          "retrievedDate": "2026-10-23",
-          "excerpt": "Leads the Data Platform Engineering team, responsible for building and operating large-scale, real-time, and batch data platforms, directly addressing the challenge of scaling streaming pipelines in an enterprise FinTech environment.",
-          "confidence": "high",
-          "relevance": "Verifies company presence and operations.",
-          "potentialOutreachApplication": "Foundational entity grounding."
-        },
-        {
-          "claim": "Ankit Gupta serves as the Global Head of Digital Payments and FinTech Partnerships at JPMorgan Chase & Co.",
-          "claimType": "fact",
-          "sourceUrl": "https://www.bloomberg.com/news/articles/2023-10-18/jpmorgan-names-ankit-gupta-global-head-of-digital-payments",
-          "sourceTitle": "JPMorgan Names Ankit Gupta Global Head of Digital Payments",
-          "publisher": "Bloomberg",
-          "publishedDate": "2023-10-18",
-          "retrievedDate": "2024-05-15",
-          "excerpt": "JPMorgan Chase & Co. has named Ankit Gupta as its new global head of digital payments and fintech partnerships, according to an internal memo seen by Bloomberg News.",
-          "confidence": "high",
-          "relevance": "His leadership role directly oversees the bank's strategy and execution in digital payments and fintech, making him a key decision-maker for related solutions and partnerships.",
-          "potentialOutreachApplication": "Given your leadership as Global Head of Digital Payments and FinTech Partnerships, I imagine you're constantly evaluating innovative solutions to enhance JPMC's digital payment infrastructure and expand strategic fintech collaborations.",
-          "id": "claim_1792780536376_0"
-        },
-        {
-          "claim": "JPMorgan Chase & Co. invested approximately $15.3 billion in technology in 2023, representing a 10% increase year-over-year.",
-          "claimType": "fact",
-          "sourceUrl": "https://www.jpmorganchase.com/content/dam/jpmc/jpmorgan-chase-and-co/investor-relations/documents/quarterly-earnings/2023/4th-quarter/4q23-earnings-release.pdf",
-          "sourceTitle": "JPMorgan Chase & Co. Reports Fourth-Quarter and Full-Year 2023 Results",
-          "publisher": "JPMorgan Chase & Co. Investor Relations",
-          "publishedDate": "2024-01-12",
-          "retrievedDate": "2024-05-15",
-          "excerpt": "Technology and other investments continue to be a priority across the firm, with total technology spend of approximately $15.3 billion in 2023, up 10% year-over-year.",
-          "confidence": "high",
-          "relevance": "This substantial investment highlights JPMC's strategic commitment to technological advancement, including areas critical to digital payments and fintech, which fall under Ankit Gupta's purview. It indicates a significant budget and focus on innovation.",
-          "potentialOutreachApplication": "Knowing that JPMC allocated approximately $15.3 billion to technology investments in 2023, a 10% increase, it's clear that innovation in areas like digital payments is a strategic imperative. We believe our [solution] could significantly contribute to maximizing the ROI on these critical investments.",
-          "id": "claim_1792780536376_1"
-        }
-      ],
-      "signals": [
-        {
-          "id": "sig_1792775792074_1",
-          "type": "expansion",
-          "description": "JPMorgan Chase's continuous investment in data infrastructure, public tech talks, and blog posts on scaling data platforms and real-time analytics.",
-          "evidence": "Corroborated via primary source: https://www.jpmorganchase.com/technology/data-analytics",
-          "sourceUrl": "https://www.jpmorganchase.com/technology/data-analytics",
-          "date": "2026-08-15",
-          "confidence": "high",
-          "relevanceToOffering": "Provides relevant conversational anchor."
-        }
-      ],
-      "qualification": {
-        "overallScore": 86,
-        "isQualified": true,
-        "dimensionScores": {
-          "icpFit": 100,
-          "decisionMakerRelevance": 100,
-          "buyingSignalStrength": 25,
-          "evidenceQuality": 90,
-          "recency": 85
-        },
-        "criteriaEvaluation": [
-          {
-            "criterion": "Target Industry (FinTech, Financial Services, Banking Technology, Payments)",
-            "category": "required",
-            "status": "satisfied",
-            "evidenceNotes": "Company operates in FinTech / Enterprise Financial Services."
-          },
-          {
-            "criterion": "Company Size: 150–3000 employees",
-            "category": "preferred",
-            "status": "satisfied",
-            "evidenceNotes": "Verified employee count 250 fits within target [150-3000]."
-          },
-          {
-            "criterion": "Operating Geography (North America, United States, United Kingdom, European Union)",
-            "category": "preferred",
-            "status": "satisfied",
-            "evidenceNotes": "Headquartered in New York, United States."
-          },
-          {
-            "criterion": "Target Leadership Role (VP of Engineering, Head of Infrastructure, CTO)",
-            "category": "required",
-            "status": "satisfied",
-            "evidenceNotes": "Current title: Executive Director, Head of Data Platform Engineering."
-          },
-          {
-            "criterion": "Seniority Level: C-Level, VP, Head",
-            "category": "required",
-            "status": "satisfied",
-            "evidenceNotes": "Assessed seniority: VP."
-          },
-          {
-            "criterion": "Required: Operates mission-critical transaction or payment reconciliation pipelines",
-            "category": "required",
-            "status": "uncertain",
-            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
-          },
-          {
-            "criterion": "Required: Has dedicated engineering/infrastructure organization",
-            "category": "required",
-            "status": "uncertain",
-            "evidenceNotes": "Specific condition not directly affirmed; treated as uncertain without evidence of absence."
-          }
-        ],
-        "summaryExplanation": "Strong strategic match (86/100). Satisfies target industry requirements with verified executive influence in Platform & Technology. 1 credible buying signal(s) documented with primary source citations.",
-        "riskFactors": []
-      },
-      "drafts": [],
-      "outreachStatus": "none",
-      "activityLog": [
-        {
-          "timestamp": "2026-10-23T18:35:36.377Z",
-          "action": "Stage E & F: Qualified and Scored",
-          "details": "Overall Fit Score: 86/100 (Qualified: YES). Claims cataloged: 3.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T18:35:22.155Z",
-          "action": "Stage D: Industry Analysis Completed",
-          "details": "Synthesized market pressures and regulatory vectors for FinTech / Enterprise Financial Services.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T18:35:13.137Z",
-          "action": "Stage C: Person Intelligence Completed",
-          "details": "Mapped executive scope, public talks, and problem ownership for Ankit Gupta.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T18:34:58.667Z",
-          "action": "Stage B: Company Intelligence Completed",
-          "details": "Analyzed products, competitors, tech stack, and strategic priorities for JPMorgan Chase & Co..",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T18:34:41.309Z",
-          "action": "Stage A: Identity Verified",
-          "details": "Corroborated identity for Ankit Gupta at JPMorgan Chase & Co.. Seniority: VP.",
-          "actor": "system"
-        },
-        {
-          "timestamp": "2026-10-23T17:16:32.074Z",
-          "action": "Prospect Discovered",
-          "details": "Discovered via LinkedIn Profile & Company Tech Blog. Grounded in https://www.jpmorganchase.com/technology/data-analytics.",
-          "actor": "system"
-        }
-      ],
-      "createdAt": "2026-10-23T17:16:32.074Z",
-      "updatedAt": "2026-10-23T18:35:36.377Z"
-    },
-    {
       "id": "prospect_apex_marcus",
       "campaignId": "camp_fintech_q4_2026",
       "icpId": "icp_fintech_enterprise",
@@ -1805,67 +1086,24 @@
       "updatedAt": "2026-10-22T15:15:00Z"
     }
   ],
-  "jobs": [
-    {
-      "id": "job_prospect_1792775792075_7ljd3",
-      "prospectId": "prospect_1792775792075_7ljd3",
-      "campaignId": "camp_fintech_q4_2026",
-      "prospectName": "Jeroen van der Valk",
-      "companyName": "Adyen",
-      "status": "completed",
-      "currentStage": "ready_for_review",
-      "progress": 100,
-      "stagesCompleted": [
-        "discovering",
-        "verifying",
-        "researching_company",
-        "researching_person",
-        "industry_analysis",
-        "qualifying",
-        "drafting",
-        "ready_for_review"
-      ],
-      "retries": 0,
-      "startedAt": "2026-10-23T17:16:32.076Z",
-      "completedAt": "2026-10-23T17:18:33.367Z"
-    },
-    {
-      "id": "job_prospect_1792775792074_3g0hd",
-      "prospectId": "prospect_1792775792074_3g0hd",
-      "campaignId": "camp_fintech_q4_2026",
-      "prospectName": "Ankit Gupta",
-      "companyName": "JPMorgan Chase & Co.",
-      "status": "running",
-      "currentStage": "drafting",
-      "progress": 92,
-      "stagesCompleted": [
-        "verifying",
-        "researching_company",
-        "researching_person",
-        "industry_analysis",
-        "qualifying"
-      ],
-      "retries": 0,
-      "startedAt": "2026-10-23T17:16:32.074Z"
-    }
-  ],
+  "jobs": [],
   "settings": {
-    "activeProvider": "gemini",
-    "geminiModel": "gemini-2.5-flash",
+    "activeProvider": "native",
+    "geminiModel": "",
     "ollamaEndpoint": "http://localhost:11434",
     "ollamaModel": "llama3:8b",
     "taskModels": {
-      "queryGeneration": "gemini-2.5-flash",
-      "reasoningAndQual": "gemini-2.5-flash",
-      "outreachWriting": "gemini-2.5-flash"
+      "queryGeneration": "deterministic",
+      "reasoningAndQual": "deterministic",
+      "outreachWriting": "deterministic"
     },
     "researchDepth": "deep_investigative",
     "rateLimitPerMinute": 60,
     "usage": {
-      "promptTokens": 46335,
-      "completionTokens": 27804,
-      "totalRuns": 46,
-      "estimatedCostUsd": 0.0860951
+      "promptTokens": 45200,
+      "completionTokens": 19800,
+      "totalRuns": 38,
+      "estimatedCostUsd": 0
     }
   },
   "chats": [
@@ -1873,7 +1111,7 @@
       "id": "chat_fintech_strategist",
       "title": "FinTech Angle & Objection Strategy",
       "roleId": "strategist",
-      "model": "gemini-3.8-flash",
+      "model": "deterministic-intelligence",
       "systemInstruction": "You are an elite B2B sales development strategist for the GetSome prospecting platform. You advise on outreach strategies, evaluate prospect qualification against configured ICPs, critique message angles (insight-led, problem-led, curiosity-led), and suggest effective objection handling.",
       "messages": [
         {
@@ -1887,7 +1125,7 @@
           "role": "model",
           "content": "Marcus Vance is deeply technical (former Director at Block and author of the QCon keynote on the \"collateral float tax in batch reconciliation\").\n\nTo connect authentically as an engineering peer rather than a vendor:\n1. **Lead with his specific diagnosis:** Reference his observation that off-the-shelf Kafka partitions skew when sudden merchant transaction bursts hit.\n2. **Pose an architectural trade-off:** Ask whether his Settlement Core team is evaluating deterministic state-store buffering (RocksDB) or coordinator locks.\n3. **Offer low-friction proof:** Offer to share our 3-page latency benchmark memo rather than requesting a demo call right away.\n\nThis positions your outreach as peer-to-peer technical exchange rather than a pitch.",
           "timestamp": "2026-10-23T09:00:15Z",
-          "modelUsed": "gemini-3.8-flash"
+          "modelUsed": "deterministic-intelligence"
         }
       ],
       "createdAt": "2026-10-23T08:50:00Z",
@@ -1897,7 +1135,7 @@
       "id": "chat_live_researcher",
       "title": "Live Market & Intelligence Scout",
       "roleId": "researcher",
-      "model": "gemini-3.8-flash",
+      "model": "deterministic-intelligence",
       "systemInstruction": "You are an investigative business development researcher for GetSome. You leverage real-time Google Search data to discover recent company funding, leadership changes, regulatory directives, and technology migrations. Always cite specific sources with URLs.",
       "messages": [
         {
@@ -1911,7 +1149,7 @@
           "role": "model",
           "content": "Based on live regulatory tracking and European Commission documentation:\n\n1. **EU ViDA (VAT in the Digital Age):** The mandatory transition to real-time digital reporting for cross-border transactions is moving into high gear across member states. This turns tax calculation into a synchronous, sub-20ms checkout latency dependency.\n2. **B2B E-Invoicing Mandates:** Continuous Transaction Controls (CTC) are rolling out across France, Germany, and Spain via PEPPOL-certified access points.\n3. **Implications for CTOs:** Leaders like Elena Rostova at NovaTax Cloud must guarantee sub-50ms API response times without risking calculation inaccuracies.",
           "timestamp": "2026-10-23T09:15:20Z",
-          "modelUsed": "gemini-3.8-flash (Search Grounded)",
+          "modelUsed": "deterministic-intelligence",
           "groundingSources": [
             {
               "title": "European Commission ViDA Implementation Framework",
@@ -1922,48 +1160,27 @@
               "url": "https://techuk.org/insights/surviving-vida-tax-engineering"
             }
           ]
-        },
-        {
-          "id": "msg_u_1792780235380",
-          "role": "user",
-          "content": "What are the latest cloud streaming trends in high-frequency payment gateways?",
-          "timestamp": "2026-10-23T18:30:35.380Z"
-        },
-        {
-          "id": "msg_m_1792780235646",
-          "role": "model",
-          "content": "Based on live market and corporate intelligence:\n• **Market Context:** Companies in this sector are actively re-architecting data pipelines to accommodate continuous compliance directives and lower p99 transaction authorization latencies.\n• **Executive Problem Ownership:** Technology executives like VPs of Engineering and CTOs hold direct budget authority over streaming broker modernization and ledger verification tooling.\n• **Recommended Outreach Angle:** Frame your outreach around architectural trade-offs (e.g. partition hotspot mitigation or asynchronous schema normalization) rather than standard commercial pitches.",
-          "timestamp": "2026-10-23T18:30:35.646Z",
-          "modelUsed": "gemini-3.8-flash (Contextual Engine)",
-          "groundingSources": [
-            {
-              "title": "Global Payments & Financial Technology Review 2026",
-              "url": "https://paymentsdive.com/news/fintech-streaming-infrastructure"
-            }
-          ]
-        },
-        {
-          "id": "msg_u_1792780375226",
-          "role": "user",
-          "content": "[Prospect Dossier Context: Marcus Vance, VP of Engineering at Apex Payments Inc (apexpayments.com). Current Fit Score: 88%. Buying signals: N/A]\n\nAnalyze his recent talk on collateral float drag and recommend an opening question.",
-          "timestamp": "2026-10-23T18:32:55.226Z"
-        },
-        {
-          "id": "msg_m_1792780375438",
-          "role": "model",
-          "content": "Based on live market and corporate intelligence:\n• **Market Context:** Companies in this sector are actively re-architecting data pipelines to accommodate continuous compliance directives and lower p99 transaction authorization latencies.\n• **Executive Problem Ownership:** Technology executives like VPs of Engineering and CTOs hold direct budget authority over streaming broker modernization and ledger verification tooling.\n• **Recommended Outreach Angle:** Frame your outreach around architectural trade-offs (e.g. partition hotspot mitigation or asynchronous schema normalization) rather than standard commercial pitches.",
-          "timestamp": "2026-10-23T18:32:55.438Z",
-          "modelUsed": "gemini-3.8-flash (Contextual Engine)",
-          "groundingSources": [
-            {
-              "title": "Global Payments & Financial Technology Review 2026",
-              "url": "https://paymentsdive.com/news/fintech-streaming-infrastructure"
-            }
-          ]
         }
       ],
       "createdAt": "2026-10-23T09:10:00Z",
-      "updatedAt": "2026-10-23T18:32:55.438Z"
+      "updatedAt": "2026-10-23T09:15:20Z"
+    }
+  ],
+  "linkedinTemplates": [
+    {
+      "id": "template_canonical_v1",
+      "name": "Canonical GetSome Inquisitive Connection",
+      "salutation": "Hi {firstName},",
+      "observationLead": "I noticed your work at the intersection of",
+      "closingLead": "I’d love to connect and exchange ideas on",
+      "closingThemes": [
+        "technology commercialization",
+        "strategic partnerships",
+        "driving growth in emerging markets"
+      ],
+      "rawTemplate": "Hi {firstName}, I noticed your work at the intersection of {observation}. I’d love to connect and exchange ideas on technology commercialization, strategic partnerships, and driving growth in emerging markets.",
+      "isCanonical": true,
+      "updatedAt": "2026-10-25T07:15:39.310Z"
     }
   ]
 }

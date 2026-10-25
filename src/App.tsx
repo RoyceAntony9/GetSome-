@@ -14,7 +14,6 @@ import { LinkedInWorkspace } from './components/LinkedInWorkspace';
 import { GmailDraftsView } from './components/GmailDraftsView';
 import { CampaignManager } from './components/CampaignManager';
 import { ICPBuilder } from './components/ICPBuilder';
-import { ChatCopilot } from './components/ChatCopilot';
 import { IntegrationsView } from './components/IntegrationsView';
 import { DiscoveryModal } from './components/DiscoveryModal';
 import {
@@ -478,24 +477,17 @@ export function App() {
                 />
               )}
 
-              {activeTab === 'copilot' && (
-                <ChatCopilot
-                  prospects={prospects}
-                  initialProspectId={selectedProspect?.id}
-                />
-              )}
-
               {activeTab === 'settings' && (
                 <IntegrationsView
                   settings={settings || {
-                    activeProvider: 'gemini',
-                    geminiModel: 'gemini-3.8-flash',
+                    activeProvider: 'native' as any,
+                    geminiModel: '',
                     ollamaEndpoint: '',
                     ollamaModel: '',
                     taskModels: {
-                      queryGeneration: 'gemini-3.1-flash-lite',
-                      reasoningAndQual: 'gemini-3.8-flash',
-                      outreachWriting: 'gemini-3.8-flash',
+                      queryGeneration: 'deterministic',
+                      reasoningAndQual: 'deterministic',
+                      outreachWriting: 'deterministic',
                     },
                     researchDepth: 'deep_investigative',
                     rateLimitPerMinute: 60,
